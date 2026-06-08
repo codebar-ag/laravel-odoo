@@ -8,7 +8,9 @@ use Saloon\Http\Response;
 
 abstract class OdooResponse
 {
-    protected function __construct(protected readonly Response $response) {}
+    protected function __construct(protected readonly Response $response)
+    {
+    }
 
     public function successful(): bool
     {

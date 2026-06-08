@@ -22,7 +22,8 @@ class OdooConnector extends Connector
     public function __construct(
         private readonly string $baseUrl,
         private readonly string $db,
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     protected function defaultConfig(): array
@@ -59,7 +60,7 @@ class OdooConnector extends Connector
     public function getPasskeyOptions(): PasskeyOptionsResponse
     {
         return PasskeyOptionsResponse::fromResponse(
-            $this->send(new GetPasskeyOptionsRequest)
+            $this->send(new GetPasskeyOptionsRequest())
         );
     }
 
