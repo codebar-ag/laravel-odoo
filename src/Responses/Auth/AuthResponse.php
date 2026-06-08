@@ -26,12 +26,6 @@ class AuthResponse extends OdooResponse
             return null;
         }
 
-        $contentType = $this->response->header('Content-Type') ?? '';
-
-        if (str_contains($contentType, 'text/html')) {
-            return $this->dtoFromHtml($this->response->body());
-        }
-
         $result = $this->response->json('result');
 
         if (! is_array($result)) {
@@ -39,36 +33,5 @@ class AuthResponse extends OdooResponse
         }
 
         return AuthDto::fromResponse($result);
-    }
-
-    private function dtoFromHtml(string $html): ?AuthDto
-    {
-        $marker = 'odoo.__session_info__ = ';
-        $start = strpos($html, $marker);
-
-        if ($start === false) {
-            return null;
-        }
-
-        $start += strlen($marker);
-        $end = strpos($html, '};', $start);
-
-        if ($end === false) {
-            return null;
-        }
-
-        $data = json_decode(substr($html, $start, $end - $start + 1), true);
-
-        if (! is_array($data)) {
-            return null;
-        }
-
-        return new AuthDto(
-            uid: isset($data['uid']) ? (int) $data['uid'] : null,
-            sessionId: null,
-            db: isset($data['db']) ? (string) $data['db'] : null,
-            login: isset($data['username']) ? (string) $data['username'] : null,
-            totpRequired: false,
-        );
     }
 }

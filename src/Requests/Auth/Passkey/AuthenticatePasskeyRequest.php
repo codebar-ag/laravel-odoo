@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Requests\Auth;
+namespace CodebarAg\Odoo\Requests\Auth\Passkey;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;

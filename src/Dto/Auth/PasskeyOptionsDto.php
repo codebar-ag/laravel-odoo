@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Auth;
 
+use Illuminate\Support\Arr;
+
 readonly class PasskeyOptionsDto
 {
     /**
-     * @param array<int, mixed> $allowCredentials
+     * @param  array<int, mixed>  $allowCredentials
      */
     public function __construct(
         public ?string $challenge,
@@ -21,11 +23,11 @@ readonly class PasskeyOptionsDto
     public static function fromResponse(array $data): self
     {
         return new self(
-            challenge: isset($data['challenge']) ? (string) $data['challenge'] : null,
-            rpId: isset($data['rpId']) ? (string) $data['rpId'] : null,
-            timeout: isset($data['timeout']) ? (int) $data['timeout'] : null,
-            userVerification: isset($data['userVerification']) ? (string) $data['userVerification'] : null,
-            allowCredentials: is_array($data['allowCredentials'] ?? null) ? $data['allowCredentials'] : [],
+            challenge: ($v = Arr::get($data, 'challenge')) !== null ? (string) $v : null,
+            rpId: ($v = Arr::get($data, 'rpId')) !== null ? (string) $v : null,
+            timeout: ($v = Arr::get($data, 'timeout')) !== null ? (int) $v : null,
+            userVerification: ($v = Arr::get($data, 'userVerification')) !== null ? (string) $v : null,
+            allowCredentials: is_array($v = Arr::get($data, 'allowCredentials')) ? $v : [],
         );
     }
 }

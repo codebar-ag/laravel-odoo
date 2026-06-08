@@ -7,11 +7,11 @@ namespace CodebarAg\Odoo;
 use CodebarAg\Odoo\Dto\Auth\Authenticate2FADto;
 use CodebarAg\Odoo\Dto\Auth\AuthenticateDto;
 use CodebarAg\Odoo\Dto\Auth\AuthenticatePasskeyDto;
-use CodebarAg\Odoo\Requests\Auth\Authenticate2FARequest;
-use CodebarAg\Odoo\Requests\Auth\AuthenticatePasskeyRequest;
-use CodebarAg\Odoo\Requests\Auth\AuthenticateRequest;
-use CodebarAg\Odoo\Requests\Auth\GetPasskeyOptionsRequest;
-use CodebarAg\Odoo\Requests\Auth\GetTotpPageRequest;
+use CodebarAg\Odoo\Requests\Auth\BasicAuth\AuthenticateRequest;
+use CodebarAg\Odoo\Requests\Auth\Passkey\AuthenticatePasskeyRequest;
+use CodebarAg\Odoo\Requests\Auth\Passkey\GetPasskeyOptionsRequest;
+use CodebarAg\Odoo\Requests\Auth\TwoFactor\Authenticate2FARequest;
+use CodebarAg\Odoo\Requests\Auth\TwoFactor\GetTotpPageRequest;
 use CodebarAg\Odoo\Responses\Auth\AuthResponse;
 use CodebarAg\Odoo\Responses\Auth\PasskeyOptionsResponse;
 use GuzzleHttp\Cookie\CookieJar;
@@ -28,8 +28,11 @@ class OdooConnector extends Connector
     protected function defaultConfig(): array
     {
         return [
-            'cookies' => new CookieJar(),
-            'allow_redirects' => ['max' => 5, 'track_redirects' => true],
+            'cookies' => new CookieJar,
+            'allow_redirects' => [
+                'max' => 5,
+                'track_redirects' => true,
+            ],
         ];
     }
 
@@ -47,12 +50,14 @@ class OdooConnector extends Connector
 
     public function verifyTotp(Authenticate2FADto $dto): AuthResponse
     {
-        $pageHtml = $this->send(new GetTotpPageRequest())->body();
+        $pageHtml = $this->send(new GetTotpPageRequest)->body();
         preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
         $csrfToken = $matches[1] ?? '';
 
         return AuthResponse::fromResponse(
-            $this->send(new Authenticate2FARequest(array_merge($dto->toArray(), ['csrf_token' => $csrfToken])))
+            $this->send(new Authenticate2FARequest(array_merge($dto->toArray(), [
+                'csrf_token' => $csrfToken,
+            ])))
         );
     }
 

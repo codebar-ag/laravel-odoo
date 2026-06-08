@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Auth;
 
+use Illuminate\Support\Arr;
+
 readonly class AuthDto
 {
     public function __construct(
@@ -17,13 +19,13 @@ readonly class AuthDto
     /** @param array<string, mixed> $data */
     public static function fromResponse(array $data): self
     {
-        $totpRequired = $data['totp_required'] ?? null;
+        $totpRequired = Arr::get($data, 'totp_required');
 
         return new self(
-            uid: isset($data['uid']) ? (int) $data['uid'] : null,
-            sessionId: isset($data['session_id']) ? (string) $data['session_id'] : null,
-            db: isset($data['db']) ? (string) $data['db'] : null,
-            login: isset($data['login']) ? (string) $data['login'] : null,
+            uid: ($v = Arr::get($data, 'uid')) !== null ? (int) $v : null,
+            sessionId: ($v = Arr::get($data, 'session_id')) !== null ? (string) $v : null,
+            db: ($v = Arr::get($data, 'db')) !== null ? (string) $v : null,
+            login: ($v = Arr::get($data, 'login')) !== null ? (string) $v : null,
             totpRequired: is_bool($totpRequired) ? $totpRequired : null,
         );
     }

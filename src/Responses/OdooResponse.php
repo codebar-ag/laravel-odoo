@@ -31,8 +31,12 @@ abstract class OdooResponse
             return null;
         }
 
-        $message = $this->response->json('error.data.message')
-            ?? $this->response->json('error.message');
+        try {
+            $message = $this->response->json('error.data.message')
+                ?? $this->response->json('error.message');
+        } catch (\JsonException) {
+            return null;
+        }
 
         return is_string($message) ? $message : null;
     }
@@ -58,8 +62,17 @@ abstract class OdooResponse
             return null;
         }
 
-        $code = $this->response->json('error.code');
+        try {
+            $code = $this->response->json('error.code');
+        } catch (\JsonException) {
+            return null;
+        }
 
         return $code !== null ? (string) $code : null;
+    }
+
+    public function sessionId(): ?string
+    {
+        return $this->cookie('session_id');
     }
 }
