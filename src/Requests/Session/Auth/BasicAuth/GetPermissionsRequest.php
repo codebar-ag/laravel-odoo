@@ -16,7 +16,9 @@ class GetPermissionsRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(private readonly PermissionDto $dto) {}
+    public function __construct(private readonly PermissionDto $dto)
+    {
+    }
 
     public function resolveEndpoint(): string
     {

@@ -16,7 +16,9 @@ class Authenticate2FARequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(private readonly Authenticate2FADto $dto) {}
+    public function __construct(private readonly Authenticate2FADto $dto)
+    {
+    }
 
     public function resolveEndpoint(): string
     {

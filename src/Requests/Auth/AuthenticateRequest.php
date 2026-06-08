@@ -16,7 +16,9 @@ class AuthenticateRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(private readonly AuthenticateDto $dto) {}
+    public function __construct(private readonly AuthenticateDto $dto)
+    {
+    }
 
     public function resolveEndpoint(): string
     {
