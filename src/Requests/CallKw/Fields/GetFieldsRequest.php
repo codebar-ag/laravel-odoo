@@ -12,7 +12,8 @@ class GetFieldsRequest extends CallKwRequest
     public function __construct(
         private readonly string $model,
         private readonly array $attributes = ['string', 'type', 'required'],
-    ) {}
+    ) {
+    }
 
     protected function getModel(): string
     {

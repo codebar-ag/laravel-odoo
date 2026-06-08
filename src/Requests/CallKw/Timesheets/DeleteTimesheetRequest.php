@@ -8,7 +8,9 @@ use CodebarAg\Odoo\Requests\CallKw\CallKwRequest;
 
 class DeleteTimesheetRequest extends CallKwRequest
 {
-    public function __construct(private readonly int $id) {}
+    public function __construct(private readonly int $id)
+    {
+    }
 
     protected function getModel(): string
     {

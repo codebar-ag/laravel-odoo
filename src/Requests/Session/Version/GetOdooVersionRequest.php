@@ -6,6 +6,7 @@ namespace CodebarAg\Odoo\Requests\Session\Version;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
+
 class GetOdooVersionRequest extends Request
 {
     protected Method $method = Method::GET;

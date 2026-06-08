@@ -8,7 +8,9 @@ use CodebarAg\Odoo\Requests\CallKw\CallKwRequest;
 
 class GetEmployeeByUserIdRequest extends CallKwRequest
 {
-    public function __construct(private readonly int $userId) {}
+    public function __construct(private readonly int $userId)
+    {
+    }
 
     protected function getModel(): string
     {

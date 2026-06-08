@@ -14,7 +14,8 @@ class GetTasksByProjectRequest extends CallKwRequest
     public function __construct(
         private readonly int $projectId,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     protected function getModel(): string
     {

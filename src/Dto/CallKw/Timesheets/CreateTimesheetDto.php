@@ -12,7 +12,8 @@ readonly class CreateTimesheetDto
         public int $taskId,
         public string $date,
         public float $unitAmount,
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     public function toArray(): array

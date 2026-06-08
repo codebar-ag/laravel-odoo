@@ -11,7 +11,8 @@ readonly class PermissionDto
         public string $method,
         public array $args = [],
         public array $kwargs = [],
-    ) {}
+    ) {
+    }
 
     /** @return array<string, mixed> */
     public function toArray(): array

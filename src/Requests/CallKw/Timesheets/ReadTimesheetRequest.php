@@ -14,7 +14,8 @@ class ReadTimesheetRequest extends CallKwRequest
     public function __construct(
         private readonly int $id,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     protected function getModel(): string
     {
