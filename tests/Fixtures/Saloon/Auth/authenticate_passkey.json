@@ -1,0 +1,7 @@
+{
+    "data": "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":{\"uid\":1,\"session_id\":\"abc123sessiontoken\",\"db\":\"mycompany\",\"login\":\"admin\",\"totp_required\":false}}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json"]
+    }
+}

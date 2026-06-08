@@ -1,0 +1,68 @@
+{
+    "name": "codebar-ag/laravel-odoo",
+    "description": "A simple way to interact with the Odoo API in Laravel",
+    "keywords": [
+        "codebar-ag",
+        "laravel-odoo",
+        "odoo",
+        "laravel"
+    ],
+    "homepage": "https://github.com/codebar-ag/laravel-odoo",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "codebar AG",
+            "email": "hello@codebar.ch",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.4",
+        "illuminate/contracts": "^13.0",
+        "saloonphp/laravel-plugin": "^3.0",
+        "saloonphp/saloon": "^3.0",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.0",
+        "laravel/pint": "^1.0",
+        "nunomaduro/collision": "^8.1|^9.0",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^3.0|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.0|^4.0",
+        "spatie/ray": "^1.28"
+    },
+    "autoload": {
+        "psr-4": {
+            "CodebarAg\\Odoo\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "CodebarAg\\Odoo\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/pest",
+        "lint": "vendor/bin/pint"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "CodebarAg\\Odoo\\OdooServiceProvider"
+            ],
+            "aliases": {
+                "Odoo": "CodebarAg\\Odoo\\Facades\\Odoo"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
