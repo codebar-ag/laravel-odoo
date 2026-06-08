@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Responses\Auth;
 
-use CodebarAg\Odoo\Dto\Auth\AuthDto;
+use CodebarAg\Odoo\Dto\Session\Auth\AuthDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
 use Saloon\Http\Response;
 
