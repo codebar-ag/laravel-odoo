@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Requests\Auth\TwoFactor;
+namespace CodebarAg\Odoo\Requests\Session\Auth\BasicAuth;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Traits\Body\HasFormBody;
+use Saloon\Traits\Body\HasJsonBody;
 
-class Authenticate2FARequest extends Request implements HasBody
+class AuthenticateRequest extends Request implements HasBody
 {
-    use HasFormBody;
+    use HasJsonBody;
 
     protected Method $method = Method::POST;
 
@@ -20,12 +20,17 @@ class Authenticate2FARequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return '/web/login/totp';
+        return '/web/session/authenticate';
     }
 
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return $this->params;
+        return [
+            'jsonrpc' => '2.0',
+            'method' => 'call',
+            'id' => 1,
+            'params' => $this->params,
+        ];
     }
 }

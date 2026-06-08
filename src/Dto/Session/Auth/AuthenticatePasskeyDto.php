@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Dto\Auth;
+namespace CodebarAg\Odoo\Dto\Session\Auth;
 
 readonly class AuthenticatePasskeyDto
 {
     /**
-     * @param array<string, string> $response WebAuthn assertion response (clientDataJSON, authenticatorData, signature, userHandle)
+     * @param  array<string, string>  $response  WebAuthn assertion response (clientDataJSON, authenticatorData, signature, userHandle)
      */
     public function __construct(
         public string $id,

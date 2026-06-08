@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Dto\Auth;
+namespace CodebarAg\Odoo\Dto\Session\Auth;
 
 readonly class Authenticate2FADto
 {

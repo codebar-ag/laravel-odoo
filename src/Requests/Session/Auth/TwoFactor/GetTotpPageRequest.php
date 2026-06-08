@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Requests\Auth\TwoFactor;
+namespace CodebarAg\Odoo\Requests\Session\Auth\TwoFactor;
 
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
