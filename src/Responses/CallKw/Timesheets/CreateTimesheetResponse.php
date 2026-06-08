@@ -25,12 +25,8 @@ class CreateTimesheetResponse extends OdooResponse
             return null;
         }
 
-        try {
-            $result = $this->response->json('result');
+        $result = $this->response->json('result');
 
-            return is_int($result) ? $result : null;
-        } catch (\JsonException) {
-            return null;
-        }
+        return is_int($result) ? $result : null;
     }
 }

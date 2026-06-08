@@ -21,23 +21,15 @@ class VersionResponse extends OdooResponse
 
     public function serverVersion(): ?string
     {
-        try {
-            $v = $this->response->json('result.server_version');
+        $v = $this->response->json('result.server_version');
 
-            return is_string($v) ? $v : null;
-        } catch (\JsonException) {
-            return null;
-        }
+        return \is_string($v) ? $v : null;
     }
 
     public function serie(): ?string
     {
-        try {
-            $v = $this->response->json('result.server_serie');
+        $v = $this->response->json('result.server_serie');
 
-            return is_string($v) ? $v : null;
-        } catch (\JsonException) {
-            return null;
-        }
+        return \is_string($v) ? $v : null;
     }
 }

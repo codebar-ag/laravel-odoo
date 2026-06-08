@@ -27,19 +27,12 @@ class TasksResponse extends OdooResponse
             return [];
         }
 
-        try {
-            $result = $this->response->json('result');
-        } catch (\JsonException) {
+        $result = $this->response->json('result');
+
+        if (! \is_array($result)) {
             return [];
         }
 
-        if (! is_array($result)) {
-            return [];
-        }
-
-        return array_map(
-            fn (array $item) => TaskDto::fromArray($item),
-            $result,
-        );
+        return array_map(TaskDto::fromArray(...), $result);
     }
 }

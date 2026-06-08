@@ -1,7 +1,0 @@
-{
-    "data": "{\"challenge\":\"dGhpcyBpcyBhIHRlc3QgY2hhbGxlbmdl\",\"rpId\":\"mycompany.odoo.com\",\"timeout\":60000,\"userVerification\":\"preferred\",\"allowCredentials\":[{\"type\":\"public-key\",\"id\":\"credentialId123\"}]}",
-    "statusCode": 200,
-    "headers": {
-        "Content-Type": ["application/json"]
-    }
-}

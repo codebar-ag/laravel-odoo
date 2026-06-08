@@ -26,13 +26,9 @@ class EmployeeResponse extends OdooResponse
             return null;
         }
 
-        try {
-            $result = $this->response->json('result');
-        } catch (\JsonException) {
-            return null;
-        }
+        $result = $this->response->json('result');
 
-        if (! is_array($result) || empty($result)) {
+        if (! \is_array($result) || empty($result)) {
             return null;
         }
 

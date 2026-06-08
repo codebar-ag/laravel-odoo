@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
+use CodebarAg\Odoo\Dto\Auth\Authenticate2FADto as NewAuthenticate2FADto;
+use CodebarAg\Odoo\Dto\Auth\AuthenticateDto as NewAuthenticateDto;
 use CodebarAg\Odoo\Dto\CallKw\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\CallKw\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Dto\Session\Auth\Authenticate2FADto;
 use CodebarAg\Odoo\Dto\Session\Auth\AuthenticateDto;
 use CodebarAg\Odoo\Dto\Session\Permissions\PermissionDto;
+use CodebarAg\Odoo\Requests\Auth\Authenticate2FARequest as NewAuthenticate2FARequest;
+use CodebarAg\Odoo\Requests\Auth\AuthenticateRequest as NewAuthenticateRequest;
 use CodebarAg\Odoo\Requests\CallKw\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\CallKw\Fields\GetAllFieldsRequest;
 use CodebarAg\Odoo\Requests\CallKw\Fields\GetFieldsRequest;
@@ -126,6 +130,20 @@ class OdooConnector extends Connector
             $this->send(new Authenticate2FARequest(array_merge($dto->toArray(), [
                 'csrf_token' => $csrfToken,
             ])))
+        );
+    }
+
+    public function login(NewAuthenticateDto $dto): AuthResponse
+    {
+        return AuthResponse::fromResponse(
+            $this->send(new NewAuthenticateRequest($dto))
+        );
+    }
+
+    public function verifyTotp(NewAuthenticate2FADto $dto): AuthResponse
+    {
+        return AuthResponse::fromResponse(
+            $this->send(new NewAuthenticate2FARequest($dto))
         );
     }
 

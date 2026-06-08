@@ -1,0 +1,7 @@
+{
+    "data": "{\"jsonrpc\":\"2.0\",\"id\":null,\"result\":{\"name\":{\"string\":\"Name\",\"type\":\"char\",\"required\":true},\"date\":{\"string\":\"Date\",\"type\":\"date\",\"required\":true},\"unit_amount\":{\"string\":\"Duration\",\"type\":\"float\",\"required\":false}}}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json"]
+    }
+}

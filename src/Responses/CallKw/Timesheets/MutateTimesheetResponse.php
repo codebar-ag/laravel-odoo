@@ -25,10 +25,6 @@ class MutateTimesheetResponse extends OdooResponse
             return false;
         }
 
-        try {
-            return $this->response->json('result') === true;
-        } catch (\JsonException) {
-            return false;
-        }
+        return $this->response->json('result') === true;
     }
 }

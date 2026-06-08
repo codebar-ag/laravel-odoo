@@ -1,0 +1,7 @@
+{
+    "data": "{\"jsonrpc\":\"2.0\",\"id\":null,\"result\":[{\"id\":1,\"name\":\"John Doe\",\"job_title\":\"Developer\",\"work_email\":\"john@example.com\",\"user_id\":[5,\"john\"],\"department_id\":[2,\"Engineering\"]}]}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json"]
+    }
+}

@@ -31,12 +31,8 @@ abstract class OdooResponse
             return null;
         }
 
-        try {
-            $message = $this->response->json('error.data.message')
-                ?? $this->response->json('error.message');
-        } catch (\JsonException) {
-            return null;
-        }
+        $message = $this->response->json('error.data.message')
+            ?? $this->response->json('error.message');
 
         return is_string($message) ? $message : null;
     }
@@ -62,11 +58,7 @@ abstract class OdooResponse
             return null;
         }
 
-        try {
-            $code = $this->response->json('error.code');
-        } catch (\JsonException) {
-            return null;
-        }
+        $code = $this->response->json('error.code');
 
         return $code !== null ? (string) $code : null;
     }

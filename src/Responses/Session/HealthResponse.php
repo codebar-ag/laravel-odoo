@@ -21,10 +21,6 @@ class HealthResponse extends OdooResponse
 
     public function isHealthy(): bool
     {
-        try {
-            return $this->response->json('status') === 'pass';
-        } catch (\JsonException) {
-            return false;
-        }
+        return $this->response->json('status') === 'pass';
     }
 }

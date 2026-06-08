@@ -16,6 +16,10 @@ class TestCase extends Orchestra
 
         MockClient::destroyGlobal();
         Config::allowStrayRequests();
+
+        if ($this->resolveEnvValue('ODOO_URL') === '') {
+            $this->markTestSkipped('Live tests require ODOO_URL to be set in .env.testing');
+        }
     }
 
     protected function getPackageProviders($app): array

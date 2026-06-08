@@ -1,7 +1,0 @@
-{
-    "data": "<!DOCTYPE html><html><head><script>var odoo = { csrf_token: \"test_csrf_token\", debug: \"\" };</script></head><body></body></html>",
-    "statusCode": 200,
-    "headers": {
-        "Content-Type": ["text/html"]
-    }
-}

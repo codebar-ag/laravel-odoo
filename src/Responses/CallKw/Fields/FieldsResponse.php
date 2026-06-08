@@ -27,19 +27,15 @@ class FieldsResponse extends OdooResponse
             return [];
         }
 
-        try {
-            $result = $this->response->json('result');
-        } catch (\JsonException) {
-            return [];
-        }
+        $result = $this->response->json('result');
 
-        if (! is_array($result)) {
+        if (! \is_array($result)) {
             return [];
         }
 
         $fields = [];
         foreach ($result as $name => $data) {
-            if (is_string($name) && is_array($data)) {
+            if (\is_string($name) && \is_array($data)) {
                 $fields[$name] = FieldDto::fromArray($name, $data);
             }
         }

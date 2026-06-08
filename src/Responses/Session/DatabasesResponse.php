@@ -26,12 +26,8 @@ class DatabasesResponse extends OdooResponse
             return [];
         }
 
-        try {
-            $result = $this->response->json('result');
+        $result = $this->response->json('result');
 
-            return is_array($result) ? $result : [];
-        } catch (\JsonException) {
-            return [];
-        }
+        return is_array($result) ? $result : [];
     }
 }

@@ -1,0 +1,7 @@
+{
+    "data": "{\"jsonrpc\":\"2.0\",\"id\":null,\"result\":[{\"id\":10,\"name\":\"Fix Bug\",\"description\":\"Critical fix\",\"project_id\":[1,\"My Project\"],\"user_ids\":[5],\"stage_id\":[2,\"In Progress\"],\"date_deadline\":\"2024-06-30\",\"priority\":\"1\"}]}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json"]
+    }
+}
