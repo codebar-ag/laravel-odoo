@@ -44,7 +44,7 @@ class OdooConnector extends Connector
         private readonly string $db,
         ?string $sessionId = null,
     ) {
-        $this->cookieJar = new CookieJar;
+        $this->cookieJar = new CookieJar();
 
         if ($sessionId !== null) {
             $host = parse_url($baseUrl, PHP_URL_HOST) ?: '';
@@ -94,17 +94,17 @@ class OdooConnector extends Connector
 
     public function health(): Response
     {
-        return $this->send(new HealthRequest);
+        return $this->send(new HealthRequest());
     }
 
     public function version(): Response
     {
-        return $this->send(new GetOdooVersionRequest);
+        return $this->send(new GetOdooVersionRequest());
     }
 
     public function databases(): Response
     {
-        return $this->send(new GetDatabasesRequest);
+        return $this->send(new GetDatabasesRequest());
     }
 
     // Auth
@@ -118,7 +118,7 @@ class OdooConnector extends Connector
 
     public function twoFactorLogin(Authenticate2FADto $dto): AuthResponse
     {
-        $pageHtml = $this->send(new GetTotpPageRequest)->body();
+        $pageHtml = $this->send(new GetTotpPageRequest())->body();
         preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
         $csrfToken = $matches[1] ?? '';
 
@@ -131,7 +131,7 @@ class OdooConnector extends Connector
 
     public function logout(): Response
     {
-        return $this->send(new LogoutRequest);
+        return $this->send(new LogoutRequest());
     }
 
     // Employees
@@ -150,7 +150,7 @@ class OdooConnector extends Connector
 
     public function getAllFields(): Response
     {
-        return $this->send(new GetAllFieldsRequest);
+        return $this->send(new GetAllFieldsRequest());
     }
 
     // Permissions

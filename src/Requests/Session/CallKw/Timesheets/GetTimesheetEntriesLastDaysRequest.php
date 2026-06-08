@@ -14,7 +14,8 @@ class GetTimesheetEntriesLastDaysRequest extends CallKwRequest
     public function __construct(
         private readonly int $days,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     protected function getModel(): string
     {

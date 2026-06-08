@@ -15,7 +15,8 @@ class GetProjectsRequest extends CallKwRequest
         private readonly array $fields = [],
         private readonly array $domain = [],
         private readonly int $limit = 100,
-    ) {}
+    ) {
+    }
 
     protected function getModel(): string
     {

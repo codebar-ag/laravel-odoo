@@ -16,7 +16,9 @@ class Authenticate2FARequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /** @param array<string, mixed> $params */
-    public function __construct(protected array $params) {}
+    public function __construct(protected array $params)
+    {
+    }
 
     public function resolveEndpoint(): string
     {

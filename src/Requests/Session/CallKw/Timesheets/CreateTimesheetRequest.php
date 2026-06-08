@@ -9,7 +9,9 @@ use CodebarAg\Odoo\Requests\CallKw\CallKwRequest;
 
 class CreateTimesheetRequest extends CallKwRequest
 {
-    public function __construct(private readonly CreateTimesheetDto $dto) {}
+    public function __construct(private readonly CreateTimesheetDto $dto)
+    {
+    }
 
     protected function getModel(): string
     {
