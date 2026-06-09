@@ -21,7 +21,8 @@ class GetEmployeeByUserIdRequest extends Request implements HasBody
     public function __construct(
         private readonly int $userId,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     public function resolveEndpoint(): string
     {

@@ -22,7 +22,8 @@ class GetTimesheetEntriesRequest extends Request implements HasBody
         private readonly array $fields = [],
         private readonly array $domain = [],
         private readonly int $limit = 100,
-    ) {}
+    ) {
+    }
 
     public function resolveEndpoint(): string
     {
