@@ -29,7 +29,7 @@ class OdooConnector extends Connector
 {
     public function __construct(
         private readonly string $baseUrl,
-        private readonly string $apiKey,
+        private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
     ) {
     }
@@ -39,7 +39,7 @@ class OdooConnector extends Connector
         return $this->baseUrl;
     }
 
-    public function getApiKey(): string
+    public function getApiKey(): ?string
     {
         return $this->apiKey;
     }
@@ -55,7 +55,7 @@ class OdooConnector extends Connector
         return [
             'Content-Type' => 'application/json',
             'Accept' => 'application/json',
-            'Authorization' => "Bearer {$this->apiKey}",
+            ...($this->apiKey !== null ? ['Authorization' => "Bearer {$this->apiKey}"] : []),
             ...($this->db !== null ? ['X-Odoo-Database' => $this->db] : []),
         ];
     }
