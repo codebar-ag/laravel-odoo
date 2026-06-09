@@ -21,7 +21,8 @@ class GetTasksByProjectRequest extends Request implements HasBody
     public function __construct(
         private readonly int $projectId,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     public function resolveEndpoint(): string
     {

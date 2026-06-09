@@ -22,7 +22,8 @@ readonly class TaskDto
         public ?string $stageName,
         public ?string $dateDeadline,
         public string $priority,
-    ) {}
+    ) {
+    }
 
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self

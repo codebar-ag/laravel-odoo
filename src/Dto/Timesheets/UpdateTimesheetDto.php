@@ -10,5 +10,6 @@ class UpdateTimesheetDto
     public function __construct(
         public int $id,
         public array $values,
-    ) {}
+    ) {
+    }
 }
