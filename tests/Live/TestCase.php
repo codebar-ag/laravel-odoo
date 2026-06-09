@@ -33,21 +33,12 @@ class TestCase extends Orchestra
     {
         return new OdooConnector(
             baseUrl: $this->resolveEnvValue('ODOO_URL'),
-            db: $this->resolveEnvValue('ODOO_DB'),
+            apiKey: $this->resolveEnvValue('ODOO_API_KEY'),
+            db: ($db = $this->resolveEnvValue('ODOO_DB')) !== '' ? $db : null,
         );
     }
 
-    public function login(): string
-    {
-        return $this->resolveEnvValue('ODOO_LOGIN');
-    }
-
-    public function password(): string
-    {
-        return $this->resolveEnvValue('ODOO_PASSWORD');
-    }
-
-    private function resolveEnvValue(string $key): string
+    public function resolveEnvValue(string $key): string
     {
         $value = env($key);
         if (is_string($value) && $value !== '') {

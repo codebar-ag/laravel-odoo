@@ -11,6 +11,8 @@ class OdooServiceProvider extends PackageServiceProvider
 {
     public function configurePackage(Package $package): void
     {
-        $package->name('laravel-odoo');
+        $package
+            ->name('laravel-odoo')
+            ->hasConfigFile();
     }
 }

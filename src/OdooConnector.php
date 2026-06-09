@@ -4,37 +4,24 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
-use CodebarAg\Odoo\Dto\Auth\Authenticate2FADto as NewAuthenticate2FADto;
-use CodebarAg\Odoo\Dto\Auth\AuthenticateDto as NewAuthenticateDto;
 use CodebarAg\Odoo\Dto\CallKw\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\CallKw\Timesheets\UpdateTimesheetDto;
-use CodebarAg\Odoo\Dto\Session\Auth\Authenticate2FADto;
-use CodebarAg\Odoo\Dto\Session\Auth\AuthenticateDto;
-use CodebarAg\Odoo\Dto\Session\Permissions\PermissionDto;
-use CodebarAg\Odoo\Requests\Auth\Authenticate2FARequest as NewAuthenticate2FARequest;
-use CodebarAg\Odoo\Requests\Auth\AuthenticateRequest as NewAuthenticateRequest;
-use CodebarAg\Odoo\Requests\CallKw\Employees\GetEmployeeByUserIdRequest;
-use CodebarAg\Odoo\Requests\CallKw\Fields\GetAllFieldsRequest;
-use CodebarAg\Odoo\Requests\CallKw\Fields\GetFieldsRequest;
-use CodebarAg\Odoo\Requests\CallKw\Projects\GetProjectsRequest;
-use CodebarAg\Odoo\Requests\CallKw\Tasks\GetAllTasksRequest;
-use CodebarAg\Odoo\Requests\CallKw\Tasks\GetTasksByProjectRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\CreateTimesheetRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\DeleteTimesheetRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\GetTimesheetEntriesLastDaysRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\GetTimesheetEntriesRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\ReadTimesheetRequest;
-use CodebarAg\Odoo\Requests\CallKw\Timesheets\UpdateTimesheetRequest;
-use CodebarAg\Odoo\Requests\Session\Auth\BasicAuth\AuthenticateRequest;
-use CodebarAg\Odoo\Requests\Session\Auth\BasicAuth\GetPermissionsRequest;
-use CodebarAg\Odoo\Requests\Session\Auth\LogoutRequest;
-use CodebarAg\Odoo\Requests\Session\Auth\TwoFactor\Authenticate2FARequest;
-use CodebarAg\Odoo\Requests\Session\Auth\TwoFactor\GetTotpPageRequest;
+use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
+use CodebarAg\Odoo\Requests\Api\Fields\GetAllFieldsRequest;
+use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
+use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
+use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\GetAllTasksRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\GetTasksByProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\CreateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\DeleteTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
-use CodebarAg\Odoo\Responses\Auth\AuthResponse;
-use Illuminate\Support\Arr;
 use Saloon\Http\Connector;
 use Saloon\Http\Response;
 
@@ -42,8 +29,8 @@ class OdooConnector extends Connector
 {
     public function __construct(
         private readonly string $baseUrl,
-        private readonly string $db,
-        private readonly ?string $sessionId = null,
+        private readonly string $apiKey,
+        private readonly ?string $db = null,
     ) {}
 
     public function resolveBaseUrl(): string
@@ -51,29 +38,25 @@ class OdooConnector extends Connector
         return $this->baseUrl;
     }
 
-    public function getDb(): string
+    public function getApiKey(): string
     {
-        return $this->db;
+        return $this->apiKey;
     }
 
-    public function getSessionId(): ?string
+    public function getDb(): ?string
     {
-        return $this->sessionId;
+        return $this->db;
     }
 
     /** @return array<string, string> */
     protected function defaultHeaders(): array
     {
-        $headers = [
+        return [
             'Content-Type' => 'application/json',
-            'X-Odoo-Database' => $this->db,
+            'Accept' => 'application/json',
+            'Authorization' => "Bearer {$this->apiKey}",
+            ...($this->db !== null ? ['X-Odoo-Database' => $this->db] : []),
         ];
-
-        if ($this->sessionId !== null) {
-            Arr::set($headers, 'Cookie', "session_id={$this->sessionId}");
-        }
-
-        return $headers;
     }
 
     /** @return array<string, mixed> */
@@ -104,56 +87,17 @@ class OdooConnector extends Connector
         return $this->send(new GetDatabasesRequest);
     }
 
-    // Auth
-
-    public function sessionLogin(AuthenticateDto $dto): AuthResponse
-    {
-        return AuthResponse::fromResponse(
-            $this->send(new AuthenticateRequest($dto->toArray()))
-        );
-    }
-
-    public function twoFactorLogin(Authenticate2FADto $dto): AuthResponse
-    {
-        $pageHtml = $this->send(new GetTotpPageRequest)->body();
-        preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
-        $csrfToken = $matches[1] ?? '';
-
-        return AuthResponse::fromResponse(
-            $this->send(new Authenticate2FARequest(array_merge($dto->toArray(), [
-                'csrf_token' => $csrfToken,
-            ])))
-        );
-    }
-
-    public function login(NewAuthenticateDto $dto): AuthResponse
-    {
-        return AuthResponse::fromResponse(
-            $this->send(new NewAuthenticateRequest($dto))
-        );
-    }
-
-    public function verifyTotp(NewAuthenticate2FADto $dto): AuthResponse
-    {
-        return AuthResponse::fromResponse(
-            $this->send(new NewAuthenticate2FARequest($dto))
-        );
-    }
-
-    public function logout(): Response
-    {
-        return $this->send(new LogoutRequest);
-    }
-
     // Employees
 
-    public function getEmployeeByUserId(int $userId): Response
+    /** @param array<string> $fields */
+    public function getEmployeeByUserId(int $userId, array $fields = []): Response
     {
-        return $this->send(new GetEmployeeByUserIdRequest($userId));
+        return $this->send(new GetEmployeeByUserIdRequest($userId, $fields));
     }
 
     // Fields
 
+    /** @param array<string> $attributes */
     public function getFields(string $model, array $attributes = []): Response
     {
         return $this->send(new GetFieldsRequest($model, $attributes));
@@ -166,13 +110,14 @@ class OdooConnector extends Connector
 
     // Permissions
 
-    public function checkPermissions(string $model, string $operation): Response
+    public function getPermissions(string $model, string $operation): Response
     {
-        return $this->send(new GetPermissionsRequest(new PermissionDto($model, $operation)));
+        return $this->send(new GetPermissionsRequest($model, $operation));
     }
 
     // Projects
 
+    /** @param array<string> $fields @param array<mixed> $domain */
     public function getProjects(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetProjectsRequest($fields, $domain, $limit));
@@ -180,11 +125,13 @@ class OdooConnector extends Connector
 
     // Tasks
 
+    /** @param array<string> $fields @param array<mixed> $domain */
     public function getAllTasks(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetAllTasksRequest($fields, $domain, $limit));
     }
 
+    /** @param array<string> $fields */
     public function getTasksByProject(int $projectId, array $fields = []): Response
     {
         return $this->send(new GetTasksByProjectRequest($projectId, $fields));
@@ -192,16 +139,19 @@ class OdooConnector extends Connector
 
     // Timesheets
 
+    /** @param array<string> $fields @param array<mixed> $domain */
     public function getTimesheetEntries(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetTimesheetEntriesRequest($fields, $domain, $limit));
     }
 
+    /** @param array<string> $fields */
     public function getTimesheetEntriesLastDays(int $days, array $fields = []): Response
     {
         return $this->send(new GetTimesheetEntriesLastDaysRequest($days, $fields));
     }
 
+    /** @param array<string> $fields */
     public function readTimesheet(int $id, array $fields = []): Response
     {
         return $this->send(new ReadTimesheetRequest($id, $fields));

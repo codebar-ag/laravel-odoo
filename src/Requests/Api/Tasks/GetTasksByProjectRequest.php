@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CodebarAg\Odoo\Requests\Api\Tasks;
+
+use Saloon\Contracts\Body\HasBody;
+use Saloon\Enums\Method;
+use Saloon\Http\Request;
+use Saloon\Traits\Body\HasJsonBody;
+
+class GetTasksByProjectRequest extends Request implements HasBody
+{
+    use HasJsonBody;
+
+    private const DEFAULT_FIELDS = ['id', 'name', 'description', 'project_id', 'user_ids', 'stage_id', 'date_deadline', 'priority'];
+
+    protected Method $method = Method::POST;
+
+    /** @param array<string> $fields */
+    public function __construct(
+        private readonly int $projectId,
+        private readonly array $fields = [],
+    ) {}
+
+    public function resolveEndpoint(): string
+    {
+        return '/json/2/project.task/search_read';
+    }
+
+    /** @return array<string, mixed> */
+    protected function defaultBody(): array
+    {
+        return [
+            'domain' => [['project_id', '=', $this->projectId]],
+            'fields' => $this->fields ?: self::DEFAULT_FIELDS,
+        ];
+    }
+}
