@@ -1,6 +1,7 @@
 <?php
 
 use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
+
 it('gets all fields for account.analytic.line', function () {
     $response = FieldsResponse::fromResponse(
         $this->connector()->getAllFields()

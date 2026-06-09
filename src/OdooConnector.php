@@ -31,7 +31,8 @@ class OdooConnector extends Connector
         private readonly string $baseUrl,
         private readonly string $apiKey,
         private readonly ?string $db = null,
-    ) {}
+    ) {
+    }
 
     public function resolveBaseUrl(): string
     {
@@ -74,17 +75,17 @@ class OdooConnector extends Connector
 
     public function health(): Response
     {
-        return $this->send(new HealthRequest);
+        return $this->send(new HealthRequest());
     }
 
     public function version(): Response
     {
-        return $this->send(new GetOdooVersionRequest);
+        return $this->send(new GetOdooVersionRequest());
     }
 
     public function databases(): Response
     {
-        return $this->send(new GetDatabasesRequest);
+        return $this->send(new GetDatabasesRequest());
     }
 
     // Employees
@@ -105,7 +106,7 @@ class OdooConnector extends Connector
 
     public function getAllFields(): Response
     {
-        return $this->send(new GetAllFieldsRequest);
+        return $this->send(new GetAllFieldsRequest());
     }
 
     // Permissions

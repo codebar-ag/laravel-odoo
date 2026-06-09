@@ -23,7 +23,8 @@ class TestCase extends Orchestra
         ];
     }
 
-    protected function connector(){
+    protected function connector()
+    {
         return new OdooConnector(
             baseUrl: env('ODOO_URL'),
             apiKey: env('ODOO_API_KEY'),

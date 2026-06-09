@@ -3,6 +3,7 @@
 use CodebarAg\Odoo\Responses\Session\DatabasesResponse;
 use CodebarAg\Odoo\Responses\Session\HealthResponse;
 use CodebarAg\Odoo\Responses\Session\VersionResponse;
+
 it('health returns pass', function () {
     $response = HealthResponse::fromResponse($this->connector()->health());
 
