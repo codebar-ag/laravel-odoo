@@ -25,51 +25,16 @@ abstract class OdooResponse
         return $this->response->status();
     }
 
-    public function error(): ?string
+   public function error(): ?string
     {
         if ($this->successful()) {
             return null;
         }
-
-        $message = $this->response->json('error.data.message')
+        $message = $this->response->json('error_description')
+            ?? $this->response->json('error.data.message')
             ?? $this->response->json('error.message');
 
         return is_string($message) ? $message : null;
-    }
-
-    public function body(): string
-    {
-        return $this->response->body();
-    }
-
-    public function cookie(string $name): ?string
-    {
-        $header = $this->response->header('Set-Cookie');
-        $cookies = \is_array($header) ? $header : (\is_string($header) ? [$header] : []);
-
-        foreach ($cookies as $cookieStr) {
-            if (! \is_string($cookieStr)) {
-                continue;
-            }
-            [$nameVal] = explode(';', $cookieStr, 2);
-            $parts = explode('=', $nameVal, 2);
-            if (\count($parts) === 2 && \trim($parts[0]) === $name) {
-                return \urldecode(\trim($parts[1]));
-            }
-        }
-
-        return null;
-    }
-
-    public function header(string $name): ?string
-    {
-        $value = $this->response->header($name);
-
-        if (\is_array($value)) {
-            $value = $value[0] ?? null;
-        }
-
-        return \is_string($value) ? $value : null;
     }
 
     public function errorCode(): ?string
@@ -77,14 +42,14 @@ abstract class OdooResponse
         if ($this->successful()) {
             return null;
         }
+        $code = $this->response->json('error')
+            ?? $this->response->json('error.code');
 
-        $code = $this->response->json('error.code');
-
-        return $code !== null ? \strval($code) : null;
+        return \is_string($code) ? $code : null;
     }
 
-    public function sessionId(): ?string
+    public function body(): string
     {
-        return $this->cookie('session_id');
+        return $this->response->body();
     }
 }

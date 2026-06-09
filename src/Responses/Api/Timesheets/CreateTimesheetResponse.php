@@ -26,13 +26,14 @@ class CreateTimesheetResponse extends OdooResponse
         }
 
         $body = $this->response->json();
+        $first = \reset($body);
 
-        if (is_int($body)) {
-            return $body;
+        if (\is_int($first)) {
+            return $first;
         }
 
         $id = $this->response->json('id');
 
-        return is_int($id) ? $id : null;
+        return \is_int($id) ? $id : null;
     }
 }

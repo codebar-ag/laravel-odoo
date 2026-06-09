@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Responses\Api\Tasks;
 
-use CodebarAg\Odoo\Dto\CallKw\Tasks\TaskDto;
+use CodebarAg\Odoo\Dto\Tasks\TaskDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
 use Saloon\Http\Response;
 
@@ -29,10 +29,13 @@ class TasksResponse extends OdooResponse
 
         $result = $this->response->json();
 
-        if (! \is_array($result)) {
-            return [];
+        $tasks = [];
+        foreach ($result as $item) {
+            if (\is_array($item)) {
+                $tasks[] = TaskDto::fromArray($item);
+            }
         }
 
-        return array_map(TaskDto::fromArray(...), $result);
+        return $tasks;
     }
 }

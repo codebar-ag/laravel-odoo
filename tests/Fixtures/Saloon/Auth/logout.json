@@ -1,7 +1,0 @@
-{
-    "data": "{\"jsonrpc\":\"2.0\",\"id\":null,\"result\":null}",
-    "statusCode": 200,
-    "headers": {
-        "Content-Type": ["application/json"]
-    }
-}

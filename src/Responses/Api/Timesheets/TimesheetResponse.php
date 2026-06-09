@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Responses\Api\Timesheets;
 
-use CodebarAg\Odoo\Dto\CallKw\Timesheets\TimesheetEntryDto;
+use CodebarAg\Odoo\Dto\Timesheets\TimesheetEntryDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
 use Saloon\Http\Response;
 
@@ -28,11 +28,12 @@ class TimesheetResponse extends OdooResponse
 
         $result = $this->response->json();
 
-        if (! \is_array($result) || empty($result)) {
+        if (empty($result)) {
             return null;
         }
 
-        $record = isset($result[0]) && \is_array($result[0]) ? $result[0] : $result;
+        $first = $result[0] ?? null;
+        $record = \is_array($first) ? $first : $result;
 
         return TimesheetEntryDto::fromArray($record);
     }

@@ -28,6 +28,7 @@ class DatabasesResponse extends OdooResponse
 
         $result = $this->response->json('result');
 
-        return is_array($result) ? $result : [];
+        return \is_array($result) ? \array_values(\array_filter($result, '\is_string')) : [];
     }
 }
+ 

@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 1, \"name\": \"John Doe\", \"job_title\": false, \"work_email\": \"alice@example.com\", \"user_id\": [2, \"John Doe\"], }]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

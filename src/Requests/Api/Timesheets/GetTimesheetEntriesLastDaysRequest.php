@@ -31,7 +31,8 @@ class GetTimesheetEntriesLastDaysRequest extends Request implements HasBody
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        $since = date('Y-m-d', strtotime("-{$this->days} days"));
+        $timestamp = \strtotime("-{$this->days} days");
+        $since = \date('Y-m-d', $timestamp !== false ? $timestamp : 0);
 
         return [
             'domain' => [['date', '>=', $since]],

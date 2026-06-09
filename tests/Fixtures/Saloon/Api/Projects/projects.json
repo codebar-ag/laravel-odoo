@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 1, \"name\": \"Internal\", \"description\": false, \"partner_id\": false, \"user_id\": [1, \"OdooBot\"], \"date_start\": false, \"date\": false}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

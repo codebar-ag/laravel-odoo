@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Timesheets;
 
-use CodebarAg\Odoo\Dto\CallKw\Timesheets\UpdateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -20,12 +20,15 @@ class UpdateTimesheetRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/json/2/account.analytic.line/{$this->dto->id}/write";
+        return '/json/2/account.analytic.line/write';
     }
 
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return ['vals' => $this->dto->values];
+        return [
+            'ids' => [$this->dto->id],
+            'vals' => $this->dto->values,
+        ];
     }
 }

@@ -1,0 +1,9 @@
+{
+    "data": "{\"id\": {}, \"display_name\": {}, \"account_id\": {}, \"auto_account_id\": {}, \"name\": {}, \"date\": {}, \"amount\": {}, \"unit_amount\": {}, \"product_uom_id\": {}, \"partner_id\": {}, \"user_id\": {}, \"company_id\": {}, \"currency_id\": {}, \"category\": {}, \"fiscal_year_search\": {}, \"analytic_distribution\": {}, \"analytic_precision\": {}, \"create_uid\": {}, \"create_date\": {}, \"write_uid\": {}, \"write_date\": {}, \"task_id\": {}, \"parent_task_id\": {}, \"project_id\": {}, \"employee_id\": {}, \"job_title\": {}, \"department_id\": {}, \"manager_id\": {}, \"encoding_uom_id\": {}, \"readonly_timesheet\": {}, \"milestone_id\": {}, \"message_partner_ids\": {}, \"calendar_display_name\": {}, \"color\": {}, \"sequence\": {}, \"validated\": {}, \"validated_status\": {}, \"user_can_validate\": {}, \"is_hatched\": {}, \"x_plan1_id\": {}}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

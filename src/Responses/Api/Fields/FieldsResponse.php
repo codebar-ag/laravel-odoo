@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Responses\Api\Fields;
 
-use CodebarAg\Odoo\Dto\CallKw\Fields\FieldDto;
+use CodebarAg\Odoo\Dto\Fields\FieldDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
 use Saloon\Http\Response;
 
@@ -28,10 +28,6 @@ class FieldsResponse extends OdooResponse
         }
 
         $result = $this->response->json();
-
-        if (! \is_array($result)) {
-            return [];
-        }
 
         $fields = [];
         foreach ($result as $name => $data) {

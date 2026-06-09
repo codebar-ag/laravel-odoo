@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Responses\Api\Projects;
 
-use CodebarAg\Odoo\Dto\CallKw\Projects\ProjectDto;
+use CodebarAg\Odoo\Dto\Projects\ProjectDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
 use Saloon\Http\Response;
 
@@ -29,10 +29,13 @@ class ProjectsResponse extends OdooResponse
 
         $result = $this->response->json();
 
-        if (! \is_array($result)) {
-            return [];
+        $projects = [];
+        foreach ($result as $item) {
+            if (\is_array($item)) {
+                $projects[] = ProjectDto::fromArray($item);
+            }
         }
 
-        return array_map(ProjectDto::fromArray(...), $result);
+        return $projects;
     }
 }

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
-use CodebarAg\Odoo\Dto\CallKw\Timesheets\CreateTimesheetDto;
-use CodebarAg\Odoo\Dto\CallKw\Timesheets\UpdateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetAllFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
@@ -125,7 +125,10 @@ class OdooConnector extends Connector
 
     // Projects
 
-    /** @param array<string> $fields @param array<mixed> $domain */
+    /**
+     * @param array<string> $fields
+     * @param array<mixed> $domain
+     */
     public function getProjects(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetProjectsRequest($fields, $domain, $limit));
@@ -133,7 +136,10 @@ class OdooConnector extends Connector
 
     // Tasks
 
-    /** @param array<string> $fields @param array<mixed> $domain */
+    /**
+     * @param array<string> $fields
+     * @param array<mixed> $domain
+     */
     public function getAllTasks(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetAllTasksRequest($fields, $domain, $limit));
@@ -147,7 +153,10 @@ class OdooConnector extends Connector
 
     // Timesheets
 
-    /** @param array<string> $fields @param array<mixed> $domain */
+    /**
+     * @param array<string> $fields
+     * @param array<mixed> $domain
+     */
     public function getTimesheetEntries(array $fields = [], array $domain = [], int $limit = 100): Response
     {
         return $this->send(new GetTimesheetEntriesRequest($fields, $domain, $limit));

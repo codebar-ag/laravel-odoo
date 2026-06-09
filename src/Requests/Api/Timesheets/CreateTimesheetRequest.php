@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Timesheets;
 
-use CodebarAg\Odoo\Dto\CallKw\Timesheets\CreateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;

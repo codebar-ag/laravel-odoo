@@ -25,6 +25,6 @@ class PermissionsResponse extends OdooResponse
             return false;
         }
 
-        return $this->response->json() === true;
+        return \json_decode($this->response->body()) === true;
     }
 }

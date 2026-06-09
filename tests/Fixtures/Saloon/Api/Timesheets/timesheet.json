@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 6, \"name\": \"Fixture test entry \u2014 safe to delete\", \"project_id\": [1, \"Internal\"], \"task_id\": [2, \"Meeting\"], \"unit_amount\": 0.25, \"date\": \"2026-06-09\", \"employee_id\": [1, \"John Doe\"]}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
