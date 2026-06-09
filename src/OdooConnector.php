@@ -19,6 +19,7 @@ use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
@@ -85,6 +86,13 @@ class OdooConnector extends Connector
     public function databases(): Response
     {
         return $this->send(new GetDatabasesRequest);
+    }
+
+    // User
+
+    public function getUser(): Response
+    {
+        return $this->send(new GetUserRequest);
     }
 
     // Employees
