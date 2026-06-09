@@ -126,8 +126,8 @@ class OdooConnector extends Connector
     // Projects
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed> $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function getProjects(array $fields = [], array $domain = [], int $limit = 100): Response
     {
@@ -137,8 +137,8 @@ class OdooConnector extends Connector
     // Tasks
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed> $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function getAllTasks(array $fields = [], array $domain = [], int $limit = 100): Response
     {
@@ -154,8 +154,8 @@ class OdooConnector extends Connector
     // Timesheets
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed> $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function getTimesheetEntries(array $fields = [], array $domain = [], int $limit = 100): Response
     {

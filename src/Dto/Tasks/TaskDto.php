@@ -7,7 +7,7 @@ namespace CodebarAg\Odoo\Dto\Tasks;
 readonly class TaskDto
 {
     /**
-     * @param array<int> $userIds
+     * @param  array<int>  $userIds
      */
     public function __construct(
         public int $id,
@@ -20,8 +20,7 @@ readonly class TaskDto
         public ?string $stageName,
         public ?string $dateDeadline,
         public string $priority,
-    ) {
-    }
+    ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(array $data): self

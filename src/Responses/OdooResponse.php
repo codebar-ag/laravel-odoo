@@ -25,7 +25,7 @@ abstract class OdooResponse
         return $this->response->status();
     }
 
-   public function error(): ?string
+    public function error(): ?string
     {
         if ($this->successful()) {
             return null;

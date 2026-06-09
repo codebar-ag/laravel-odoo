@@ -18,8 +18,8 @@ class GetAllTasksRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed> $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function __construct(
         private readonly array $fields = [],

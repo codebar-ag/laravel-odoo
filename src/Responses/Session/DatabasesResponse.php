@@ -31,4 +31,3 @@ class DatabasesResponse extends OdooResponse
         return \is_array($result) ? \array_values(\array_filter($result, '\is_string')) : [];
     }
 }
- 
