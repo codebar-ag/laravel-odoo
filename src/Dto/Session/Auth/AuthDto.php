@@ -14,8 +14,7 @@ readonly class AuthDto
         public ?string $db,
         public ?string $login,
         public ?bool $totpRequired,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromResponse(array $data): self
@@ -23,11 +22,11 @@ readonly class AuthDto
         $totpRequired = Arr::get($data, 'totp_required');
 
         return new self(
-            uid: ($v = Arr::get($data, 'uid')) !== null ? (int) $v : null,
-            sessionId: ($v = Arr::get($data, 'session_id')) !== null ? (string) $v : null,
-            db: ($v = Arr::get($data, 'db')) !== null ? (string) $v : null,
-            login: ($v = Arr::get($data, 'login')) !== null ? (string) $v : null,
-            totpRequired: is_bool($totpRequired) ? $totpRequired : null,
+            uid: ($v = Arr::get($data, 'uid')) !== null ? \intval($v) : null,
+            sessionId: ($v = Arr::get($data, 'session_id')) !== null ? \strval($v) : null,
+            db: ($v = Arr::get($data, 'db')) !== null ? \strval($v) : null,
+            login: ($v = Arr::get($data, 'login')) !== null ? \strval($v) : null,
+            totpRequired: \is_bool($totpRequired) ? $totpRequired : null,
         );
     }
 }

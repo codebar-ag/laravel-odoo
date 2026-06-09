@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Facade;
  *
  * @method static \CodebarAg\Odoo\Responses\Auth\AuthResponse login(\CodebarAg\Odoo\Dto\Auth\AuthenticateDto $dto)
  * @method static \CodebarAg\Odoo\Responses\Auth\AuthResponse verifyTotp(\CodebarAg\Odoo\Dto\Auth\Authenticate2FADto $dto)
- * @method static \CodebarAg\Odoo\Responses\Auth\PasskeyOptionsResponse getPasskeyOptions()
- * @method static \CodebarAg\Odoo\Responses\Auth\AuthResponse loginWithPasskey(\CodebarAg\Odoo\Dto\Auth\AuthenticatePasskeyDto $dto)
  */
 class Odoo extends Facade
 {

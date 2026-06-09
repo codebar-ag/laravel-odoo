@@ -17,8 +17,7 @@ readonly class EmployeeDto
         public ?string $userLogin,
         public ?int $departmentId,
         public ?string $departmentName,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
@@ -27,14 +26,14 @@ readonly class EmployeeDto
         $department = Arr::get($data, 'department_id');
 
         return new self(
-            id: (int) Arr::get($data, 'id'),
-            name: (string) Arr::get($data, 'name'),
-            jobTitle: ($v = Arr::get($data, 'job_title')) ? (string) $v : null,
-            workEmail: ($v = Arr::get($data, 'work_email')) ? (string) $v : null,
-            userId: is_array($user) ? (int) $user[0] : null,
-            userLogin: is_array($user) ? (string) $user[1] : null,
-            departmentId: is_array($department) ? (int) $department[0] : null,
-            departmentName: is_array($department) ? (string) $department[1] : null,
+            id: \intval(Arr::get($data, 'id')),
+            name: \strval(Arr::get($data, 'name') ?? ''),
+            jobTitle: ($v = Arr::get($data, 'job_title')) ? \strval($v) : null,
+            workEmail: ($v = Arr::get($data, 'work_email')) ? \strval($v) : null,
+            userId: \is_array($user) ? \intval($user[0]) : null,
+            userLogin: \is_array($user) ? \strval($user[1] ?? '') : null,
+            departmentId: \is_array($department) ? \intval($department[0]) : null,
+            departmentName: \is_array($department) ? \strval($department[1] ?? '') : null,
         );
     }
 }

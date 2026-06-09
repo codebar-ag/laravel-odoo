@@ -18,8 +18,7 @@ readonly class ProjectDto
         public ?string $userName,
         public ?string $dateStart,
         public ?string $date,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
@@ -28,15 +27,15 @@ readonly class ProjectDto
         $user = Arr::get($data, 'user_id');
 
         return new self(
-            id: (int) Arr::get($data, 'id'),
-            name: (string) Arr::get($data, 'name'),
-            description: ($v = Arr::get($data, 'description')) ? (string) $v : null,
-            partnerId: is_array($partner) ? (int) $partner[0] : null,
-            partnerName: is_array($partner) ? (string) $partner[1] : null,
-            userId: is_array($user) ? (int) $user[0] : null,
-            userName: is_array($user) ? (string) $user[1] : null,
-            dateStart: ($v = Arr::get($data, 'date_start')) ? (string) $v : null,
-            date: ($v = Arr::get($data, 'date')) ? (string) $v : null,
+            id: \intval(Arr::get($data, 'id')),
+            name: \strval(Arr::get($data, 'name') ?? ''),
+            description: ($v = Arr::get($data, 'description')) ? \strval($v) : null,
+            partnerId: \is_array($partner) ? \intval($partner[0]) : null,
+            partnerName: \is_array($partner) ? \strval($partner[1] ?? '') : null,
+            userId: \is_array($user) ? \intval($user[0]) : null,
+            userName: \is_array($user) ? \strval($user[1] ?? '') : null,
+            dateStart: ($v = Arr::get($data, 'date_start')) ? \strval($v) : null,
+            date: ($v = Arr::get($data, 'date')) ? \strval($v) : null,
         );
     }
 }

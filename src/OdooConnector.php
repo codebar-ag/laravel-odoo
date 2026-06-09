@@ -34,32 +34,16 @@ use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
 use CodebarAg\Odoo\Responses\Auth\AuthResponse;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 use Saloon\Http\Connector;
 use Saloon\Http\Response;
 
 class OdooConnector extends Connector
 {
-    private CookieJar $cookieJar;
-
     public function __construct(
         private readonly string $baseUrl,
         private readonly string $db,
-        ?string $sessionId = null,
-    ) {
-        $this->cookieJar = new CookieJar();
-
-        if ($sessionId !== null) {
-            $host = parse_url($baseUrl, PHP_URL_HOST) ?: '';
-            $this->cookieJar->setCookie(new SetCookie([
-                'Name' => 'session_id',
-                'Value' => $sessionId,
-                'Domain' => $host,
-                'Path' => '/',
-            ]));
-        }
-    }
+        private readonly ?string $sessionId = null,
+    ) {}
 
     public function resolveBaseUrl(): string
     {
@@ -73,20 +57,28 @@ class OdooConnector extends Connector
 
     public function getSessionId(): ?string
     {
-        foreach ($this->cookieJar as $cookie) {
-            if ($cookie->getName() === 'session_id') {
-                return $cookie->getValue();
-            }
+        return $this->sessionId;
+    }
+
+    /** @return array<string, string> */
+    protected function defaultHeaders(): array
+    {
+        $headers = [
+            'Content-Type' => 'application/json',
+            'X-Odoo-Database' => $this->db,
+        ];
+
+        if ($this->sessionId !== null) {
+            $headers['Cookie'] = "session_id={$this->sessionId}";
         }
 
-        return null;
+        return $headers;
     }
 
     /** @return array<string, mixed> */
     protected function defaultConfig(): array
     {
         return [
-            'cookies' => $this->cookieJar,
             'allow_redirects' => [
                 'max' => 5,
                 'track_redirects' => true,
@@ -98,17 +90,17 @@ class OdooConnector extends Connector
 
     public function health(): Response
     {
-        return $this->send(new HealthRequest());
+        return $this->send(new HealthRequest);
     }
 
     public function version(): Response
     {
-        return $this->send(new GetOdooVersionRequest());
+        return $this->send(new GetOdooVersionRequest);
     }
 
     public function databases(): Response
     {
-        return $this->send(new GetDatabasesRequest());
+        return $this->send(new GetDatabasesRequest);
     }
 
     // Auth
@@ -122,7 +114,7 @@ class OdooConnector extends Connector
 
     public function twoFactorLogin(Authenticate2FADto $dto): AuthResponse
     {
-        $pageHtml = $this->send(new GetTotpPageRequest())->body();
+        $pageHtml = $this->send(new GetTotpPageRequest)->body();
         preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
         $csrfToken = $matches[1] ?? '';
 
@@ -149,7 +141,7 @@ class OdooConnector extends Connector
 
     public function logout(): Response
     {
-        return $this->send(new LogoutRequest());
+        return $this->send(new LogoutRequest);
     }
 
     // Employees
@@ -168,7 +160,7 @@ class OdooConnector extends Connector
 
     public function getAllFields(): Response
     {
-        return $this->send(new GetAllFieldsRequest());
+        return $this->send(new GetAllFieldsRequest);
     }
 
     // Permissions
