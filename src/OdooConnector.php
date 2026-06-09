@@ -34,6 +34,7 @@ use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
 use CodebarAg\Odoo\Responses\Auth\AuthResponse;
+use Illuminate\Support\Arr;
 use Saloon\Http\Connector;
 use Saloon\Http\Response;
 
@@ -69,7 +70,7 @@ class OdooConnector extends Connector
         ];
 
         if ($this->sessionId !== null) {
-            $headers['Cookie'] = "session_id={$this->sessionId}";
+            Arr::set($headers, 'Cookie', "session_id={$this->sessionId}");
         }
 
         return $headers;
