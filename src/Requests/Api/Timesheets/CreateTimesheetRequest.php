@@ -16,9 +16,7 @@ class CreateTimesheetRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(private readonly CreateTimesheetDto $dto)
-    {
-    }
+    public function __construct(private readonly CreateTimesheetDto $dto) {}
 
     public function resolveEndpoint(): string
     {

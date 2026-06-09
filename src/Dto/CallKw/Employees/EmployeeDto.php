@@ -17,8 +17,7 @@ readonly class EmployeeDto
         public ?string $userLogin,
         public ?int $departmentId,
         public ?string $departmentName,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromArray(array $data): self
