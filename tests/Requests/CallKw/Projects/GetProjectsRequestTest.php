@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest())
+        $connector->send(new GetProjectsRequest)
     );
 
     $mockClient->assertSent(GetProjectsRequest::class);
@@ -28,7 +28,7 @@ it('sends correct json-rpc body', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'demo');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetProjectsRequest());
+    $connector->send(new GetProjectsRequest);
 
     $mockClient->assertSent(function (GetProjectsRequest $request) {
         $body = $request->body()->all();
@@ -49,7 +49,7 @@ it('parses response correctly', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest())
+        $connector->send(new GetProjectsRequest)
     );
 
     $projects = $response->projects();
