@@ -2,32 +2,29 @@
 
 declare(strict_types=1);
 
-namespace CodebarAg\Odoo\Requests\Auth;
+namespace CodebarAg\Odoo\Requests\Api\Timesheets;
 
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class AuthenticatePasskeyRequest extends Request implements HasBody
+class DeleteTimesheetRequest extends Request implements HasBody
 {
     use HasJsonBody;
 
     protected Method $method = Method::POST;
 
-    /** @param array<string, mixed> $data */
-    public function __construct(protected array $data)
-    {
-    }
+    public function __construct(private readonly int $id) {}
 
     public function resolveEndpoint(): string
     {
-        return '/api/auth/passkey/login';
+        return '/json/2/account.analytic.line/unlink';
     }
 
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return $this->data;
+        return ['ids' => [$this->id]];
     }
 }

@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = VersionResponse::fromResponse(
-        $connector->send(new GetOdooVersionRequest())
+        $connector->send(new GetOdooVersionRequest)
     );
 
     $mockClient->assertSent(GetOdooVersionRequest::class);
@@ -29,7 +29,7 @@ it('parses response correctly', function () {
     $connector->withMockClient($mockClient);
 
     $response = VersionResponse::fromResponse(
-        $connector->send(new GetOdooVersionRequest())
+        $connector->send(new GetOdooVersionRequest)
     );
 
     expect($response->serverVersion())->toBe('16.0');
