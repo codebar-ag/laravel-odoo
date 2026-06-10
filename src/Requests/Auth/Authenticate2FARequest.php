@@ -7,27 +7,27 @@ namespace CodebarAg\Odoo\Requests\Auth;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
-use Saloon\Traits\Body\HasJsonBody;
+use Saloon\Traits\Body\HasFormBody;
 
-class AuthenticatePasskeyRequest extends Request implements HasBody
+class Authenticate2FARequest extends Request implements HasBody
 {
-    use HasJsonBody;
+    use HasFormBody;
 
     protected Method $method = Method::POST;
 
-    /** @param array<string, mixed> $data */
-    public function __construct(protected array $data)
+    /** @param array<string, mixed> $params */
+    public function __construct(protected array $params)
     {
     }
 
     public function resolveEndpoint(): string
     {
-        return '/api/auth/passkey/login';
+        return '/web/login/totp';
     }
 
     /** @return array<string, mixed> */
     protected function defaultBody(): array
     {
-        return $this->data;
+        return $this->params;
     }
 }
