@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 2, \"name\": \"Meeting\", \"description\": false, \"project_id\": [1, \"Internal\"], \"user_ids\": [2], \"stage_id\": false, \"date_deadline\": false, \"priority\": \"0\"}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

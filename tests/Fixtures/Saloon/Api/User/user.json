@@ -1,5 +1,5 @@
 {
-    "data": "false",
+    "data": "[{\"id\": 2, \"name\": \"Administrator\", \"lang\": \"en_US\"}]",
     "statusCode": 200,
     "headers": {
         "Content-Type": [
