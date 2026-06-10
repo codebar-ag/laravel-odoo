@@ -21,8 +21,7 @@ class ReadTimesheetRequest extends Request implements HasBody
     public function __construct(
         private readonly int $id,
         private readonly array $fields = [],
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
