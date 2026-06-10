@@ -4,18 +4,27 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
-use CodebarAg\Odoo\Dto\Auth\Authenticate2FADto;
-use CodebarAg\Odoo\Dto\Auth\AuthenticateDto;
-use CodebarAg\Odoo\Dto\Auth\AuthenticatePasskeyDto;
-use CodebarAg\Odoo\Requests\Auth\Authenticate2FARequest;
-use CodebarAg\Odoo\Requests\Auth\AuthenticatePasskeyRequest;
-use CodebarAg\Odoo\Requests\Auth\AuthenticateRequest;
-use CodebarAg\Odoo\Requests\Auth\GetPasskeyOptionsRequest;
-use CodebarAg\Odoo\Requests\Auth\GetTotpPageRequest;
-use CodebarAg\Odoo\Responses\Auth\AuthResponse;
-use CodebarAg\Odoo\Responses\Auth\PasskeyOptionsResponse;
-use GuzzleHttp\Cookie\CookieJar;
+use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
+use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
+use CodebarAg\Odoo\Requests\Api\Fields\GetAllFieldsRequest;
+use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
+use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
+use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\GetAllTasksRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\GetTasksByProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\CreateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\DeleteTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
+use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
+use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
+use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
 use Saloon\Http\Connector;
+use Saloon\Http\Response;
 
 class OdooConnector extends Connector
 {
@@ -26,53 +35,17 @@ class OdooConnector extends Connector
     ) {
     }
 
-    /** @return array<string, mixed> */
-    protected function defaultConfig(): array
-    {
-        return [
-            'cookies' => new CookieJar(),
-            'allow_redirects' => ['max' => 5, 'track_redirects' => true],
-        ];
-    }
-
     public function resolveBaseUrl(): string
     {
         return $this->baseUrl;
     }
 
-    public function login(AuthenticateDto $dto): AuthResponse
+    public function getApiKey(): ?string
     {
-        return AuthResponse::fromResponse(
-            $this->send(new AuthenticateRequest($dto->toArray()))
-        );
+        return $this->apiKey;
     }
 
-    public function verifyTotp(Authenticate2FADto $dto): AuthResponse
-    {
-        $pageHtml = $this->send(new GetTotpPageRequest())->body();
-        preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
-        $csrfToken = $matches[1] ?? '';
-
-        return AuthResponse::fromResponse(
-            $this->send(new Authenticate2FARequest(array_merge($dto->toArray(), ['csrf_token' => $csrfToken])))
-        );
-    }
-
-    public function getPasskeyOptions(): PasskeyOptionsResponse
-    {
-        return PasskeyOptionsResponse::fromResponse(
-            $this->send(new GetPasskeyOptionsRequest())
-        );
-    }
-
-    public function loginWithPasskey(AuthenticatePasskeyDto $dto): AuthResponse
-    {
-        return AuthResponse::fromResponse(
-            $this->send(new AuthenticatePasskeyRequest($dto->toArray()))
-        );
-    }
-
-    public function getDb(): string
+    public function getDb(): ?string
     {
         return $this->db;
     }
