@@ -10,8 +10,7 @@ readonly class AuthenticateDto
         public string $db,
         public string $login,
         public string $password,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, string> */
     public function toArray(): array

@@ -7,7 +7,7 @@ namespace CodebarAg\Odoo\Dto\Auth;
 readonly class PasskeyOptionsDto
 {
     /**
-     * @param array<int, mixed> $allowCredentials
+     * @param  array<int, mixed>  $allowCredentials
      */
     public function __construct(
         public ?string $challenge,
@@ -15,8 +15,7 @@ readonly class PasskeyOptionsDto
         public ?int $timeout,
         public ?string $userVerification,
         public array $allowCredentials,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromResponse(array $data): self

@@ -12,6 +12,5 @@ readonly class PermissionDto
         public string $method,
         public array $args = [],
         public array $kwargs = [],
-    ) {
-    }
+    ) {}
 }

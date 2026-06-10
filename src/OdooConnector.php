@@ -22,14 +22,13 @@ class OdooConnector extends Connector
     public function __construct(
         private readonly string $baseUrl,
         private readonly string $db,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, mixed> */
     protected function defaultConfig(): array
     {
         return [
-            'cookies' => new CookieJar(),
+            'cookies' => new CookieJar,
             'allow_redirects' => ['max' => 5, 'track_redirects' => true],
         ];
     }
@@ -48,7 +47,7 @@ class OdooConnector extends Connector
 
     public function verifyTotp(Authenticate2FADto $dto): AuthResponse
     {
-        $pageHtml = $this->send(new GetTotpPageRequest())->body();
+        $pageHtml = $this->send(new GetTotpPageRequest)->body();
         preg_match('/csrf_token:\s*"([^"]+)"/', $pageHtml, $matches);
         $csrfToken = $matches[1] ?? '';
 
@@ -60,7 +59,7 @@ class OdooConnector extends Connector
     public function getPasskeyOptions(): PasskeyOptionsResponse
     {
         return PasskeyOptionsResponse::fromResponse(
-            $this->send(new GetPasskeyOptionsRequest())
+            $this->send(new GetPasskeyOptionsRequest)
         );
     }
 
