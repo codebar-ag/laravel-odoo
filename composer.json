@@ -43,7 +43,8 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest",
+        "test": "vendor/bin/pest --no-coverage",
+        "test:live": "vendor/bin/pest tests/Live --no-coverage",
         "lint": "vendor/bin/pint"
     },
     "config": {

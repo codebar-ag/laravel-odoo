@@ -16,16 +16,17 @@ class GetUserRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     public function resolveEndpoint(): string
-    {
-        return '/json/2/hr.employee/search_read';
-    }
+{
+    return '/json/2/res.users/search_read';
+}
 
-    /** @return array<string, mixed> */
-    protected function defaultBody(): array
-    {
-        return [
-            'fields' => ['id', 'name'],
-            'limit' => 1,
-        ];
-    }
+/** @return array<string, mixed> */
+protected function defaultBody(): array
+{
+    return [
+        'domain' => [],
+        'fields' => ['id', 'name', 'lang'],
+        'limit' => 1,
+    ];
+}
 }

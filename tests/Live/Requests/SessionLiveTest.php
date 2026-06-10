@@ -13,6 +13,7 @@ it('health returns pass', function () {
 
 it('version returns server version', function () {
     $response = VersionResponse::fromResponse($this->connector()->version());
+    
     expect($response->successful())->toBeTrue()
         ->and($response->serverVersion())->toBeString()->not->toBeEmpty();
 })->group('live');
