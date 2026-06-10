@@ -17,8 +17,7 @@ readonly class CreateTimesheetDto
         public float $unitAmount,
         public ?int $employeeId = null,
         public array $extraValues = [],
-    ) {
-    }
+    ) {}
 
     /** @return array<string, mixed> */
     public function toArray(): array
