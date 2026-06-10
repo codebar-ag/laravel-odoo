@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = HealthResponse::fromResponse(
-        $connector->send(new HealthRequest)
+        $connector->send(new HealthRequest())
     );
 
     $mockClient->assertSent(HealthRequest::class);
@@ -29,7 +29,7 @@ it('parses response correctly', function () {
     $connector->withMockClient($mockClient);
 
     $response = HealthResponse::fromResponse(
-        $connector->send(new HealthRequest)
+        $connector->send(new HealthRequest())
     );
 
     expect($response->isHealthy())->toBeTrue();

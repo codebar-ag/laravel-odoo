@@ -16,7 +16,9 @@ class AuthenticatePasskeyRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /** @param array<string, mixed> $data */
-    public function __construct(protected array $data) {}
+    public function __construct(protected array $data)
+    {
+    }
 
     public function resolveEndpoint(): string
     {
