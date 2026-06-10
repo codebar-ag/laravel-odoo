@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = TimesheetEntriesResponse::fromResponse(
-        $connector->send(new GetTimesheetEntriesRequest)
+        $connector->send(new GetTimesheetEntriesRequest())
     );
 
     $mockClient->assertSent(GetTimesheetEntriesRequest::class);
@@ -28,7 +28,7 @@ it('sends correct json-rpc body', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'demo');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetTimesheetEntriesRequest);
+    $connector->send(new GetTimesheetEntriesRequest());
 
     $mockClient->assertSent(function (GetTimesheetEntriesRequest $request) {
         $body = $request->body()->all();
@@ -49,7 +49,7 @@ it('parses response correctly', function () {
     $connector->withMockClient($mockClient);
 
     $response = TimesheetEntriesResponse::fromResponse(
-        $connector->send(new GetTimesheetEntriesRequest)
+        $connector->send(new GetTimesheetEntriesRequest())
     );
 
     $entries = $response->entries();
