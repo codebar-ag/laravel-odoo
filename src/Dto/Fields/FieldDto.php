@@ -11,15 +11,14 @@ readonly class FieldDto
         public string $type,
         public string $label,
         public bool $required,
-    ) {
-    }
+    ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(string $name, array $data): self
     {
-        $type = $data['type'] ?? 'char';
-        $label = $data['string'] ?? $name;
-        $required = $data['required'] ?? false;
+        $type = data_get($data, 'type', 'char');
+        $label = data_get($data, 'string', $name);
+        $required = data_get($data, 'required', false);
 
         return new self(
             name: $name,

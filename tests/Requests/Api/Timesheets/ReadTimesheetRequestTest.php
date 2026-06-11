@@ -33,7 +33,7 @@ it('sends correct domain filtering by id', function () {
     $mockClient->assertSent(function (ReadTimesheetRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === [['id', '=', 42]];
+        return data_get($body, 'domain') === [['id', '=', 42]];
     });
 });
 

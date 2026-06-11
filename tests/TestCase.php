@@ -28,9 +28,9 @@ class TestCase extends Orchestra
     protected function connector(): OdooConnector
     {
         return new OdooConnector(
-            baseUrl: env('ODOO_URL'),
-            apiKey: env('ODOO_API_KEY'),
-            db: ($db = env('ODOO_DB')) !== '' ? $db : null,
+            baseUrl: env('LARAVEL_ODOO_URL'),
+            apiKey: env('LARAVEL_ODOO_API_KEY'),
+            db: ($db = env('LARAVEL_ODOO_DB')) !== '' ? $db : null,
         );
     }
 }

@@ -21,8 +21,8 @@ class GetTasksByProjectRequest extends Request implements HasBody
     public function __construct(
         private readonly int $projectId,
         private readonly array $fields = [],
-    ) {
-    }
+        private readonly int $limit = 100,
+    ) {}
 
     public function resolveEndpoint(): string
     {
@@ -35,6 +35,7 @@ class GetTasksByProjectRequest extends Request implements HasBody
         return [
             'domain' => [['project_id', '=', $this->projectId]],
             'fields' => $this->fields ?: self::DEFAULT_FIELDS,
+            'limit' => $this->limit,
         ];
     }
 }

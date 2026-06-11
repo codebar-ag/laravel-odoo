@@ -47,7 +47,7 @@ it('sends custom attributes in body', function () {
     $mockClient->assertSent(function (GetFieldsRequest $request) {
         $body = $request->body()->all();
 
-        return $body['attributes'] === ['string', 'type'];
+        return data_get($body, 'attributes') === ['string', 'type'];
     });
 });
 
@@ -65,7 +65,7 @@ it('parses fields from response', function () {
     $fields = $response->fields();
 
     expect($fields)->toHaveKey('name');
-    expect($fields['name']->type)->toBe('char');
-    expect($fields['name']->label)->toBe('Description');
-    expect($fields['date']->type)->toBe('date');
+    expect(data_get($fields, 'name')->type)->toBe('char');
+    expect(data_get($fields, 'name')->label)->toBe('Description');
+    expect(data_get($fields, 'date')->type)->toBe('date');
 });

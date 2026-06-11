@@ -2,6 +2,7 @@
 
 use CodebarAg\Odoo\OdooConnector;
 use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
+use CodebarAg\Odoo\Responses\Api\User\UserResponse;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
@@ -12,7 +13,7 @@ it('sends request to correct endpoint', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new GetUserRequest());
+    $response = $connector->send(new GetUserRequest);
 
     $mockClient->assertSent(GetUserRequest::class);
     expect($response->successful())->toBeTrue();
@@ -25,30 +26,33 @@ it('sends correct body with id name lang fields and limit 1', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetUserRequest());
+    $connector->send(new GetUserRequest);
 
     $mockClient->assertSent(function (GetUserRequest $request) {
         $body = $request->body()->all();
 
-        return $body['limit'] === 1
-            && in_array('id', $body['fields'])
-            && in_array('name', $body['fields'])
-            && in_array('lang', $body['fields']);
+        return data_get($body, 'limit') === 1
+            && in_array('id', data_get($body, 'fields', []))
+            && in_array('name', data_get($body, 'fields', []))
+            && in_array('lang', data_get($body, 'fields', []));
     });
 });
 
-it('parses user data from response', function () {
+it('parses user data into a dto', function () {
     $mockClient = new MockClient([
         GetUserRequest::class => MockResponse::fixture('Api/User/user'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new GetUserRequest());
-    $users = $response->json();
+    $response = UserResponse::fromResponse(
+        $connector->send(new GetUserRequest)
+    );
 
-    expect($users)->not->toBeEmpty();
-    expect($users[0]['id'])->toBe(2);
-    expect($users[0]['name'])->toBe('Administrator');
-    expect($users[0]['lang'])->toBe('en_US');
+    $dto = $response->dto();
+
+    expect($dto)->not->toBeNull();
+    expect($dto->id)->toBe(2);
+    expect($dto->name)->toBe('Administrator');
+    expect($dto->lang)->toBe('en_US');
 });

@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = DatabasesResponse::fromResponse(
-        $connector->send(new GetDatabasesRequest())
+        $connector->send(new GetDatabasesRequest)
     );
 
     $mockClient->assertSent(GetDatabasesRequest::class);
@@ -29,7 +29,7 @@ it('parses response correctly', function () {
     $connector->withMockClient($mockClient);
 
     $response = DatabasesResponse::fromResponse(
-        $connector->send(new GetDatabasesRequest())
+        $connector->send(new GetDatabasesRequest)
     );
 
     expect($response->databases())->toContain('mycompany');

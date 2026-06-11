@@ -17,8 +17,8 @@ class TestCase extends Orchestra
         MockClient::destroyGlobal();
         Config::allowStrayRequests();
 
-        if ($this->resolveEnvValue('ODOO_URL') === '') {
-            $this->markTestSkipped('Live tests require ODOO_URL to be set in .env.testing');
+        if (! env('LARAVEL_ODOO_URL') || ! env('LARAVEL_ODOO_API_KEY')) {
+            $this->markTestSkipped('Live tests require LARAVEL_ODOO_URL and LARAVEL_ODOO_API_KEY to be set in phpunit.xml');
         }
     }
 
@@ -32,32 +32,9 @@ class TestCase extends Orchestra
     public function connector(): OdooConnector
     {
         return new OdooConnector(
-            baseUrl: $this->resolveEnvValue('ODOO_URL'),
-            apiKey: $this->resolveEnvValue('ODOO_API_KEY'),
-            db: ($db = $this->resolveEnvValue('ODOO_DB')) !== '' ? $db : null,
+            baseUrl: env('LARAVEL_ODOO_URL'),
+            apiKey: env('LARAVEL_ODOO_API_KEY'),
+            db: ($db = env('LARAVEL_ODOO_DB')) !== '' ? $db : null,
         );
-    }
-
-    public function resolveEnvValue(string $key): string
-    {
-        $value = env($key);
-        if (is_string($value) && $value !== '') {
-            return $value;
-        }
-
-        $envFile = realpath(__DIR__.'/../../.env.testing');
-        if ($envFile && is_readable($envFile)) {
-            foreach (file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) as $line) {
-                if (str_starts_with(trim($line), '#') || ! str_contains($line, '=')) {
-                    continue;
-                }
-                [$envKey, $envValue] = explode('=', $line, 2);
-                if (trim($envKey) === $key) {
-                    return trim($envValue, " \t\n\r\0\x0B\"'");
-                }
-            }
-        }
-
-        return '';
     }
 }

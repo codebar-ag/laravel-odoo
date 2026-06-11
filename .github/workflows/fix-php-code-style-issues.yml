@@ -1,15 +1,12 @@
-name: Check & fix styling
+name: Fix PHP code style issues
 
-on:
-  push:
-    paths:
-      - '**.php'
+on: [push]
 
 permissions:
   contents: write
 
 jobs:
-  php-cs-fixer:
+  php-code-styling:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -19,10 +16,17 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
-      - name: Run PHP CS Fixer
-        uses: docker://oskarstark/php-cs-fixer-ga
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          args: --config=.php-cs-fixer.dist.php --allow-risky=yes
+          php-version: '8.5'
+          coverage: none
+
+      - name: Install composer dependencies
+        uses: ramsey/composer-install@v4
+
+      - name: Run Laravel Pint
+        run: vendor/bin/pint
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v7

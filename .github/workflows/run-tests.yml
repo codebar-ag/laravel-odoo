@@ -1,4 +1,4 @@
-name: Tests
+name: run-tests
 
 on:
   push:
@@ -27,7 +27,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
-        php: [8.5]
+        php: [8.4, 8.5]
         laravel: [13.*]
         stability: [prefer-lowest, prefer-stable]
 
@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -58,8 +58,8 @@ jobs:
       - name: List Installed Dependencies
         run: composer show -D
 
-      - name: Execute tests
+      - name: Copy PHPUnit configuration
         run: cp phpunit.xml.dist phpunit.xml
 
       - name: Execute tests
-        run: vendor/bin/pest --ci --exclude-group=live
+        run: composer test

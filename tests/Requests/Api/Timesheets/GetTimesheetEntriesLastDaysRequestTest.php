@@ -32,11 +32,11 @@ it('sends correct domain with date >= filter', function () {
 
     $mockClient->assertSent(function (GetTimesheetEntriesLastDaysRequest $request) {
         $body = $request->body()->all();
-        $domain = $body['domain'] ?? [];
+        $domain = data_get($body, 'domain', []);
 
         return count($domain) === 1
-            && $domain[0][0] === 'date'
-            && $domain[0][1] === '>=';
+            && data_get($domain, '0.0') === 'date'
+            && data_get($domain, '0.1') === '>=';
     });
 });
 
@@ -54,6 +54,6 @@ it('parses timesheet entries from response', function () {
     $entries = $response->entries();
 
     expect($entries)->toHaveCount(2);
-    expect($entries[0]->id)->toBe(6);
-    expect($entries[0]->date)->toBe('2026-06-09');
+    expect(data_get($entries, '0.id'))->toBe(6);
+    expect(data_get($entries, '0.date'))->toBe('2026-06-09');
 });

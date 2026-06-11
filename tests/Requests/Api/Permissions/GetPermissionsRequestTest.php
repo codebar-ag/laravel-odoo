@@ -33,7 +33,7 @@ it('includes model name in endpoint and sends operation in body', function () {
     $mockClient->assertSent(function (GetPermissionsRequest $request) {
         $body = $request->body()->all();
 
-        return $body['operation'] === 'write'
+        return data_get($body, 'operation') === 'write'
             && str_contains($request->resolveEndpoint(), 'account.analytic.line');
     });
 });

@@ -6,20 +6,9 @@ namespace CodebarAg\Odoo\Responses\Api\Timesheets;
 
 use CodebarAg\Odoo\Dto\Timesheets\TimesheetEntryDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
-use Saloon\Http\Response;
 
 class TimesheetResponse extends OdooResponse
 {
-    private function __construct(Response $response)
-    {
-        parent::__construct($response);
-    }
-
-    public static function fromResponse(Response $response): self
-    {
-        return new self($response);
-    }
-
     public function dto(): ?TimesheetEntryDto
     {
         if ($this->failed()) {
@@ -28,11 +17,11 @@ class TimesheetResponse extends OdooResponse
 
         $result = $this->response->json();
 
-        if (empty($result)) {
+        if (blank($result)) {
             return null;
         }
 
-        $first = $result[0] ?? null;
+        $first = data_get($result, 0);
         $record = \is_array($first) ? $first : $result;
 
         return TimesheetEntryDto::fromArray($record);

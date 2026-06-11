@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = TimesheetEntriesResponse::fromResponse(
-        $connector->send(new GetTimesheetEntriesRequest())
+        $connector->send(new GetTimesheetEntriesRequest)
     );
 
     $mockClient->assertSent(GetTimesheetEntriesRequest::class);
@@ -28,14 +28,14 @@ it('sends correct body with domain and limit', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetTimesheetEntriesRequest());
+    $connector->send(new GetTimesheetEntriesRequest);
 
     $mockClient->assertSent(function (GetTimesheetEntriesRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === []
-            && $body['limit'] === 100
-            && in_array('name', $body['fields']);
+        return data_get($body, 'domain') === []
+            && data_get($body, 'limit') === 100
+            && in_array('name', data_get($body, 'fields', []));
     });
 });
 
@@ -47,14 +47,14 @@ it('parses timesheet entries from response', function () {
     $connector->withMockClient($mockClient);
 
     $response = TimesheetEntriesResponse::fromResponse(
-        $connector->send(new GetTimesheetEntriesRequest())
+        $connector->send(new GetTimesheetEntriesRequest)
     );
 
     $entries = $response->entries();
 
     expect($entries)->toHaveCount(2);
-    expect($entries[0]->id)->toBe(6);
-    expect($entries[0]->projectId)->toBe(1);
-    expect($entries[0]->projectName)->toBe('Internal');
-    expect($entries[0]->unitAmount)->toBe(0.25);
+    expect(data_get($entries, '0.id'))->toBe(6);
+    expect(data_get($entries, '0.projectId'))->toBe(1);
+    expect(data_get($entries, '0.projectName'))->toBe('Internal');
+    expect(data_get($entries, '0.unitAmount'))->toBe(0.25);
 });

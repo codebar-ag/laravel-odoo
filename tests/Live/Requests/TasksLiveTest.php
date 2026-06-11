@@ -11,11 +11,11 @@ it('gets tasks by project', function () {
     $projects = $this->connector()->getProjects(limit: 1);
     $projectDtos = $projects->projects();
 
-    if (empty($projectDtos)) {
+    if (blank($projectDtos)) {
         $this->markTestSkipped('No projects found');
     }
 
-    $response = $this->connector()->getTasksByProject(projectId: $projectDtos[0]->id);
+    $response = $this->connector()->getTasksByProject(projectId: data_get($projectDtos, '0.id'));
 
     expect($response->successful())->toBeTrue()
         ->and($response->body())->toBeJson();

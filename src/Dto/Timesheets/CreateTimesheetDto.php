@@ -17,8 +17,7 @@ readonly class CreateTimesheetDto
         public float $unitAmount,
         public ?int $employeeId = null,
         public array $extraValues = [],
-    ) {
-    }
+    ) {}
 
     /** @return array<string, mixed> */
     public function toArray(): array
@@ -35,6 +34,6 @@ readonly class CreateTimesheetDto
             $data['employee_id'] = $this->employeeId;
         }
 
-        return array_merge($data, $this->extraValues);
+        return [...$data, ...$this->extraValues];
     }
 }

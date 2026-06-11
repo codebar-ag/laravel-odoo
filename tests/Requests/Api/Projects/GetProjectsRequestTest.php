@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest())
+        $connector->send(new GetProjectsRequest)
     );
 
     $mockClient->assertSent(GetProjectsRequest::class);
@@ -28,14 +28,14 @@ it('sends correct body with domain and limit', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetProjectsRequest());
+    $connector->send(new GetProjectsRequest);
 
     $mockClient->assertSent(function (GetProjectsRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === []
-            && $body['limit'] === 100
-            && in_array('name', $body['fields']);
+        return data_get($body, 'domain') === []
+            && data_get($body, 'limit') === 100
+            && in_array('name', data_get($body, 'fields', []));
     });
 });
 
@@ -47,14 +47,14 @@ it('parses projects from response', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest())
+        $connector->send(new GetProjectsRequest)
     );
 
     $projects = $response->projects();
 
     expect($projects)->toHaveCount(1);
-    expect($projects[0]->id)->toBe(1);
-    expect($projects[0]->name)->toBe('Internal');
-    expect($projects[0]->userId)->toBe(1);
-    expect($projects[0]->userName)->toBe('OdooBot');
+    expect(data_get($projects, '0.id'))->toBe(1);
+    expect(data_get($projects, '0.name'))->toBe('Internal');
+    expect(data_get($projects, '0.userId'))->toBe(1);
+    expect(data_get($projects, '0.userName'))->toBe('OdooBot');
 });

@@ -17,33 +17,28 @@ readonly class TimesheetEntryDto
         public string $date,
         public ?int $employeeId,
         public ?string $employeeName,
-    ) {
-    }
+    ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(array $data): self
     {
-        $project = $data['project_id'] ?? false;
-        $task = $data['task_id'] ?? false;
-        $employee = $data['employee_id'] ?? false;
-
-        $projectId = \is_array($project) ? ($project[0] ?? null) : null;
-        $projectName = \is_array($project) ? ($project[1] ?? null) : null;
-        $taskId = \is_array($task) ? ($task[0] ?? null) : null;
-        $taskName = \is_array($task) ? ($task[1] ?? null) : null;
-        $employeeId = \is_array($employee) ? ($employee[0] ?? null) : null;
-        $employeeName = \is_array($employee) ? ($employee[1] ?? null) : null;
-        $unitAmountRaw = $data['unit_amount'] ?? 0.0;
+        $projectId = data_get($data, 'project_id.0');
+        $projectName = data_get($data, 'project_id.1');
+        $taskId = data_get($data, 'task_id.0');
+        $taskName = data_get($data, 'task_id.1');
+        $employeeId = data_get($data, 'employee_id.0');
+        $employeeName = data_get($data, 'employee_id.1');
+        $unitAmountRaw = data_get($data, 'unit_amount', 0.0);
 
         return new self(
-            id: \is_int($v = $data['id'] ?? 0) ? $v : 0,
-            name: \is_string($v = $data['name'] ?? '') ? $v : '',
+            id: \is_int($v = data_get($data, 'id', 0)) ? $v : 0,
+            name: \is_string($v = data_get($data, 'name', '')) ? $v : '',
             projectId: \is_int($projectId) ? $projectId : null,
             projectName: \is_string($projectName) ? $projectName : null,
             taskId: \is_int($taskId) ? $taskId : null,
             taskName: \is_string($taskName) ? $taskName : null,
             unitAmount: \is_numeric($unitAmountRaw) ? \floatval($unitAmountRaw) : 0.0,
-            date: \is_string($v = $data['date'] ?? '') ? $v : '',
+            date: \is_string($v = data_get($data, 'date', '')) ? $v : '',
             employeeId: \is_int($employeeId) ? $employeeId : null,
             employeeName: \is_string($employeeName) ? $employeeName : null,
         );

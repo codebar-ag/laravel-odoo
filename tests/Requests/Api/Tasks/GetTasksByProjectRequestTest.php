@@ -33,7 +33,8 @@ it('sends correct domain filtering by project id', function () {
     $mockClient->assertSent(function (GetTasksByProjectRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === [['project_id', '=', 5]];
+        return data_get($body, 'domain') === [['project_id', '=', 5]]
+            && data_get($body, 'limit') === 100;
     });
 });
 
@@ -51,8 +52,8 @@ it('parses tasks from response', function () {
     $tasks = $response->tasks();
 
     expect($tasks)->toHaveCount(1);
-    expect($tasks[0]->id)->toBe(2);
-    expect($tasks[0]->name)->toBe('Meeting');
-    expect($tasks[0]->projectId)->toBe(1);
-    expect($tasks[0]->projectName)->toBe('Internal');
+    expect(data_get($tasks, '0.id'))->toBe(2);
+    expect(data_get($tasks, '0.name'))->toBe('Meeting');
+    expect(data_get($tasks, '0.projectId'))->toBe(1);
+    expect(data_get($tasks, '0.projectName'))->toBe('Internal');
 });

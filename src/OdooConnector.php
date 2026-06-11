@@ -7,7 +7,6 @@ namespace CodebarAg\Odoo;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
-use CodebarAg\Odoo\Requests\Api\Fields\GetAllFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
@@ -32,11 +31,11 @@ use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetEntriesResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
+use CodebarAg\Odoo\Responses\Api\User\UserResponse;
 use CodebarAg\Odoo\Responses\Session\DatabasesResponse;
 use CodebarAg\Odoo\Responses\Session\HealthResponse;
 use CodebarAg\Odoo\Responses\Session\VersionResponse;
 use Saloon\Http\Connector;
-use Saloon\Http\Response;
 
 class OdooConnector extends Connector
 {
@@ -44,8 +43,7 @@ class OdooConnector extends Connector
         private readonly string $baseUrl,
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
-    ) {
-    }
+    ) {}
 
     public function resolveBaseUrl(): string
     {
@@ -86,23 +84,22 @@ class OdooConnector extends Connector
 
     public function health(): HealthResponse
     {
-
-        return HealthResponse::fromResponse($this->send(new HealthRequest()));
+        return HealthResponse::fromResponse($this->send(new HealthRequest));
     }
 
     public function version(): VersionResponse
     {
-        return VersionResponse::fromResponse($this->send(new GetOdooVersionRequest()));
+        return VersionResponse::fromResponse($this->send(new GetOdooVersionRequest));
     }
 
     public function databases(): DatabasesResponse
     {
-        return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest()));
+        return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest));
     }
 
-    public function getUser(): Response
+    public function getUser(): UserResponse
     {
-        return $this->send(new GetUserRequest());
+        return UserResponse::fromResponse($this->send(new GetUserRequest));
     }
 
     /** @param array<string> $fields */
@@ -119,7 +116,7 @@ class OdooConnector extends Connector
 
     public function getAllFields(): FieldsResponse
     {
-        return FieldsResponse::fromResponse($this->send(new GetAllFieldsRequest()));
+        return FieldsResponse::fromResponse($this->send(new GetFieldsRequest('account.analytic.line')));
     }
 
     public function getPermissions(string $model, string $operation): PermissionsResponse
@@ -146,9 +143,9 @@ class OdooConnector extends Connector
     }
 
     /** @param array<string> $fields */
-    public function getTasksByProject(int $projectId, array $fields = []): TasksResponse
+    public function getTasksByProject(int $projectId, array $fields = [], int $limit = 100): TasksResponse
     {
-        return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields)));
+        return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields, $limit)));
     }
 
     /**
