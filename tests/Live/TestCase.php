@@ -31,9 +31,20 @@ class TestCase extends Orchestra
 
     public function connector(): OdooConnector
     {
+        return $this->connectorForKey(env('LARAVEL_ODOO_API_KEY'));
+    }
+
+    /**
+     * Build a connector for an explicit API key (permission tier).
+     *
+     * Lets the suite exercise the same operations against several Odoo users
+     * (administrator, "Benutzer", no-permission) instead of only the admin key.
+     */
+    public function connectorForKey(?string $apiKey): OdooConnector
+    {
         return new OdooConnector(
             baseUrl: env('LARAVEL_ODOO_URL'),
-            apiKey: env('LARAVEL_ODOO_API_KEY'),
+            apiKey: $apiKey,
             db: ($db = env('LARAVEL_ODOO_DB')) !== '' ? $db : null,
         );
     }
