@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 2, \"name\": \"Administrator\", \"lang\": \"en_US\", \"login\": \"admin\", \"email\": \"admin@example.com\", \"tz\": \"Europe/Zurich\", \"job_title\": false, \"active\": true, \"share\": false, \"partner_id\": [3, \"Mitchell Admin\"], \"company_id\": [1, \"MyCompany\"], \"employee_id\": [1, \"John Doe\"]}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

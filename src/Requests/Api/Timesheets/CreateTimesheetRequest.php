@@ -1,0 +1,31 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CodebarAg\Odoo\Requests\Api\Timesheets;
+
+use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
+use Saloon\Contracts\Body\HasBody;
+use Saloon\Enums\Method;
+use Saloon\Http\Request;
+use Saloon\Traits\Body\HasJsonBody;
+
+class CreateTimesheetRequest extends Request implements HasBody
+{
+    use HasJsonBody;
+
+    protected Method $method = Method::POST;
+
+    public function __construct(private readonly CreateTimesheetDto $dto) {}
+
+    public function resolveEndpoint(): string
+    {
+        return '/json/2/account.analytic.line/create';
+    }
+
+    /** @return array<string, mixed> */
+    protected function defaultBody(): array
+    {
+        return ['vals_list' => $this->dto->toArray()];
+    }
+}

@@ -1,0 +1,7 @@
+{
+    "data": "{\"status\":\"pass\"}",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": ["application/json"]
+    }
+}

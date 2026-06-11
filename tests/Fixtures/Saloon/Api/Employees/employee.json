@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 1, \"name\": \"John Doe\", \"work_email\": \"john.doe@example.com\", \"work_phone\": false, \"mobile_phone\": false, \"job_title\": \"Developer\", \"department_id\": [1, \"Research & Development\"], \"job_id\": [1, \"Developer\"], \"parent_id\": false, \"coach_id\": false, \"user_id\": [2, \"Administrator\"], \"company_id\": [1, \"MyCompany\"], \"timesheet_manager_id\": false, \"last_validated_timesheet_date\": \"2026-06-09\", \"active\": true}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
