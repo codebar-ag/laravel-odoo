@@ -55,4 +55,11 @@ it('parses user data into a dto', function () {
     expect($dto->id)->toBe(2);
     expect($dto->name)->toBe('Administrator');
     expect($dto->lang)->toBe('en_US');
+    expect($dto->login)->toBe('admin');
+    expect($dto->email)->toBe('admin@example.com');
+    expect($dto->tz)->toBe('Europe/Zurich');
+    expect($dto->active)->toBeTrue();
+    expect($dto->share)->toBeFalse();
+    expect($dto->companyName)->toBe('MyCompany');
+    expect($dto->employeeId)->toBe(1);
 });

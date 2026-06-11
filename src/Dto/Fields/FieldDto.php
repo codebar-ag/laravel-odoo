@@ -11,6 +11,8 @@ readonly class FieldDto
         public string $type,
         public string $label,
         public bool $required,
+        public bool $readonly,
+        public ?string $relation,
     ) {}
 
     /** @param array<array-key, mixed> $data */
@@ -19,12 +21,16 @@ readonly class FieldDto
         $type = data_get($data, 'type', 'char');
         $label = data_get($data, 'string', $name);
         $required = data_get($data, 'required', false);
+        $readonly = data_get($data, 'readonly', false);
+        $relation = data_get($data, 'relation');
 
         return new self(
             name: $name,
             type: \is_string($type) ? $type : 'char',
             label: \is_string($label) ? $label : $name,
             required: (bool) $required,
+            readonly: (bool) $readonly,
+            relation: \is_string($relation) ? $relation : null,
         );
     }
 }

@@ -57,4 +57,7 @@ it('parses tasks from response', function () {
     expect(data_get($tasks, '0.name'))->toBe('Fix Bug');
     expect(data_get($tasks, '0.projectId'))->toBe(1);
     expect(data_get($tasks, '0.projectName'))->toBe('Internal');
+    expect(data_get($tasks, '0.active'))->toBeTrue();
+    expect(data_get($tasks, '0.state'))->toBe('01_in_progress');
+    expect(data_get($tasks, '0.companyName'))->toBe('MyCompany');
 });

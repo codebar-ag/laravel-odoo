@@ -32,7 +32,7 @@ it('sends correct attributes in body', function () {
     $mockClient->assertSent(function (GetFieldsRequest $request) {
         $body = $request->body()->all();
 
-        return data_get($body, 'attributes') === ['string', 'type', 'required'];
+        return data_get($body, 'attributes') === ['string', 'type', 'required', 'readonly', 'relation'];
     });
 });
 

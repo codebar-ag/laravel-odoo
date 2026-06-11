@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Tasks;
 
+use CodebarAg\Odoo\Requests\Api\Tasks\Concerns\HasTaskFields;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
@@ -12,8 +13,7 @@ use Saloon\Traits\Body\HasJsonBody;
 class GetAllTasksRequest extends Request implements HasBody
 {
     use HasJsonBody;
-
-    private const DEFAULT_FIELDS = ['id', 'name', 'description', 'project_id', 'user_ids', 'stage_id', 'date_deadline', 'priority'];
+    use HasTaskFields;
 
     protected Method $method = Method::POST;
 

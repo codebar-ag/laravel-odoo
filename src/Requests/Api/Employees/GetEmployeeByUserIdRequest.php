@@ -13,7 +13,11 @@ class GetEmployeeByUserIdRequest extends Request implements HasBody
 {
     use HasJsonBody;
 
-    private const DEFAULT_FIELDS = ['id', 'name'];
+    private const DEFAULT_FIELDS = [
+        'id', 'name', 'work_email', 'work_phone', 'mobile_phone', 'job_title',
+        'department_id', 'job_id', 'parent_id', 'coach_id', 'user_id', 'company_id',
+        'timesheet_manager_id', 'last_validated_timesheet_date', 'active',
+    ];
 
     protected Method $method = Method::POST;
 

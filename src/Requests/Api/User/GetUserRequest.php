@@ -25,7 +25,10 @@ class GetUserRequest extends Request implements HasBody
     {
         return [
             'domain' => [],
-            'fields' => ['id', 'name', 'lang'],
+            'fields' => [
+                'id', 'name', 'lang', 'login', 'email', 'tz', 'job_title',
+                'active', 'share', 'partner_id', 'company_id', 'employee_id',
+            ],
             'limit' => 1,
         ];
     }

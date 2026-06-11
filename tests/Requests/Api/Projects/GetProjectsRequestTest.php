@@ -57,4 +57,9 @@ it('parses projects from response', function () {
     expect(data_get($projects, '0.name'))->toBe('Internal');
     expect(data_get($projects, '0.userId'))->toBe(1);
     expect(data_get($projects, '0.userName'))->toBe('OdooBot');
+    expect(data_get($projects, '0.active'))->toBeTrue();
+    expect(data_get($projects, '0.companyName'))->toBe('MyCompany');
+    expect(data_get($projects, '0.effectiveHours'))->toBe(87.25);
+    expect(data_get($projects, '0.taskCount'))->toBe(2);
+    expect(data_get($projects, '0.privacyVisibility'))->toBe('portal');
 });

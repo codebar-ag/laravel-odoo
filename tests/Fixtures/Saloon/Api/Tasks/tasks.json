@@ -1,5 +1,5 @@
 {
-    "data": "[{\"id\": 1, \"name\": \"Fix Bug\", \"description\": false, \"project_id\": [1, \"Internal\"], \"user_ids\": [2], \"stage_id\": false, \"date_deadline\": false, \"priority\": \"0\"}]",
+    "data": "[{\"id\": 1, \"name\": \"Fix Bug\", \"description\": false, \"project_id\": [1, \"Internal\"], \"user_ids\": [2], \"stage_id\": false, \"date_deadline\": false, \"priority\": \"0\", \"active\": true, \"state\": \"01_in_progress\", \"partner_id\": false, \"company_id\": [1, \"MyCompany\"], \"parent_id\": false, \"milestone_id\": false, \"allocated_hours\": 0.0, \"effective_hours\": 0.0, \"remaining_hours\": 0.0, \"total_hours_spent\": 0.0, \"progress\": 0.0, \"subtask_count\": 0, \"child_ids\": [], \"tag_ids\": [], \"date_assign\": \"2026-06-09 09:20:00\", \"date_last_stage_update\": false, \"create_date\": \"2026-06-09 09:18:06\", \"write_date\": \"2026-06-09 09:18:06\"}]",
     "statusCode": 200,
     "headers": {
         "Content-Type": [

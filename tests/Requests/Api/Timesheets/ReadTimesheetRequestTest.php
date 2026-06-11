@@ -57,4 +57,9 @@ it('parses single timesheet entry from response', function () {
     expect($entry->projectId)->toBe(1);
     expect($entry->projectName)->toBe('Internal');
     expect($entry->taskName)->toBe('Meeting');
+    expect($entry->validated)->toBeTrue();
+    expect($entry->validatedStatus)->toBe('validated');
+    expect($entry->readonlyTimesheet)->toBeTrue();
+    expect($entry->userName)->toBe('Administrator');
+    expect($entry->companyName)->toBe('MyCompany');
 });

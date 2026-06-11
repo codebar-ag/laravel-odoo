@@ -57,4 +57,12 @@ it('parses timesheet entries from response', function () {
     expect(data_get($entries, '0.projectId'))->toBe(1);
     expect(data_get($entries, '0.projectName'))->toBe('Internal');
     expect(data_get($entries, '0.unitAmount'))->toBe(0.25);
+
+    // Lock status after approval — validated/locked first entry, draft second.
+    expect(data_get($entries, '0.validated'))->toBeTrue();
+    expect(data_get($entries, '0.validatedStatus'))->toBe('validated');
+    expect(data_get($entries, '0.readonlyTimesheet'))->toBeTrue();
+    expect(data_get($entries, '1.validated'))->toBeFalse();
+    expect(data_get($entries, '1.validatedStatus'))->toBe('draft');
+    expect(data_get($entries, '1.readonlyTimesheet'))->toBeFalse();
 });

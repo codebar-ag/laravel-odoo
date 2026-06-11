@@ -68,4 +68,11 @@ it('parses fields from response', function () {
     expect(data_get($fields, 'name')->type)->toBe('char');
     expect(data_get($fields, 'name')->label)->toBe('Description');
     expect(data_get($fields, 'date')->type)->toBe('date');
+
+    // New metadata: readonly flag and relation target.
+    expect(data_get($fields, 'date')->required)->toBeTrue();
+    expect(data_get($fields, 'project_id')->relation)->toBe('project.project');
+    expect(data_get($fields, 'name')->relation)->toBeNull();
+    expect(data_get($fields, 'validated')->readonly)->toBeTrue();
+    expect(data_get($fields, 'name')->readonly)->toBeFalse();
 });

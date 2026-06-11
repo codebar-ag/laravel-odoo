@@ -45,7 +45,8 @@
     "scripts": {
         "test": "vendor/bin/pest --no-coverage",
         "test:live": "vendor/bin/pest tests/Live --no-coverage",
-        "lint": "vendor/bin/pint"
+        "lint": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse"
     },
     "config": {
         "sort-packages": true,

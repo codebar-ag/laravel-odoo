@@ -18,7 +18,7 @@ class GetFieldsRequest extends Request implements HasBody
     /** @param array<string> $attributes */
     public function __construct(
         private readonly string $model,
-        private readonly array $attributes = ['string', 'type', 'required'],
+        private readonly array $attributes = ['string', 'type', 'required', 'readonly', 'relation'],
     ) {}
 
     public function resolveEndpoint(): string

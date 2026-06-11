@@ -56,4 +56,9 @@ it('parses employee from response', function () {
     expect($employee)->not->toBeNull();
     expect($employee->id)->toBe(1);
     expect($employee->name)->toBe('John Doe');
+    expect($employee->workEmail)->toBe('john.doe@example.com');
+    expect($employee->jobTitle)->toBe('Developer');
+    expect($employee->departmentName)->toBe('Research & Development');
+    expect($employee->userId)->toBe(2);
+    expect($employee->active)->toBeTrue();
 });

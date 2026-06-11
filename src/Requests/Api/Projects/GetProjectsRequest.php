@@ -13,7 +13,12 @@ class GetProjectsRequest extends Request implements HasBody
 {
     use HasJsonBody;
 
-    private const DEFAULT_FIELDS = ['id', 'name', 'description', 'partner_id', 'user_id', 'date_start', 'date'];
+    private const DEFAULT_FIELDS = [
+        'id', 'name', 'description', 'partner_id', 'user_id', 'date_start', 'date',
+        'active', 'company_id', 'allocated_hours', 'effective_hours', 'remaining_hours',
+        'task_count', 'last_update_status', 'privacy_visibility', 'tag_ids', 'color',
+        'create_date', 'write_date',
+    ];
 
     protected Method $method = Method::POST;
 
