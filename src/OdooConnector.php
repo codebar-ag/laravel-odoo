@@ -44,7 +44,8 @@ class OdooConnector extends Connector
         private readonly string $baseUrl,
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
-    ) {}
+    ) {
+    }
 
     public function resolveBaseUrl(): string
     {
@@ -101,7 +102,7 @@ class OdooConnector extends Connector
 
     public function getUser(): Response
     {
-        return $this->send(new GetUserRequest);
+        return $this->send(new GetUserRequest());
     }
 
     /** @param array<string> $fields */
