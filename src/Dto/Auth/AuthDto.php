@@ -12,8 +12,7 @@ readonly class AuthDto
         public ?string $db,
         public ?string $login,
         public ?bool $totpRequired,
-    ) {
-    }
+    ) {}
 
     /** @param array<string, mixed> $data */
     public static function fromResponse(array $data): self

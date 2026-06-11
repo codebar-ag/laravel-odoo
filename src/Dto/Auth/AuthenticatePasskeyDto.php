@@ -14,8 +14,7 @@ readonly class AuthenticatePasskeyDto
         public string $rawId,
         public string $type,
         public array $response,
-    ) {
-    }
+    ) {}
 
     /** @return array<string, mixed> */
     public function toArray(): array

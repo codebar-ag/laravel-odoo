@@ -11,8 +11,7 @@ readonly class FieldDto
         public string $type,
         public string $label,
         public bool $required,
-    ) {
-    }
+    ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(string $name, array $data): self
