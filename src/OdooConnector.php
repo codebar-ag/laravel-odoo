@@ -44,8 +44,7 @@ class OdooConnector extends Connector
         private readonly string $baseUrl,
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
-    ) {
-    }
+    ) {}
 
     public function resolveBaseUrl(): string
     {
@@ -87,22 +86,22 @@ class OdooConnector extends Connector
     public function health(): HealthResponse
     {
 
-        return HealthResponse::fromResponse($this->send(new HealthRequest()));
+        return HealthResponse::fromResponse($this->send(new HealthRequest));
     }
 
     public function version(): VersionResponse
     {
-        return VersionResponse::fromResponse($this->send(new GetOdooVersionRequest()));
+        return VersionResponse::fromResponse($this->send(new GetOdooVersionRequest));
     }
 
     public function databases(): DatabasesResponse
     {
-        return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest()));
+        return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest));
     }
 
     public function getUser(): Response
     {
-        return $this->send(new GetUserRequest());
+        return $this->send(new GetUserRequest);
     }
 
     /** @param array<string> $fields */
@@ -119,7 +118,7 @@ class OdooConnector extends Connector
 
     public function getAllFields(): FieldsResponse
     {
-        return FieldsResponse::fromResponse($this->send(new GetAllFieldsRequest()));
+        return FieldsResponse::fromResponse($this->send(new GetAllFieldsRequest));
     }
 
     public function getPermissions(string $model, string $operation): PermissionsResponse

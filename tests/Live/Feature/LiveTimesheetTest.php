@@ -5,7 +5,7 @@ use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
 
-it('creates , reads updates,reads and deletes a timesheetentry',function () {
+it('creates , reads updates,reads and deletes a timesheetentry', function () {
 
     $dto = new CreateTimesheetDto(
         name: 'TestTimesheet',
@@ -14,7 +14,7 @@ it('creates , reads updates,reads and deletes a timesheetentry',function () {
         date: now()->toDateString(),
         unitAmount: 2.5,
         employeeId: 1,
-        extraValues:[]
+        extraValues: []
     );
 
     $creationResponse = $this->connector()->createTimesheet($dto);
@@ -22,7 +22,6 @@ it('creates , reads updates,reads and deletes a timesheetentry',function () {
     expect($creationResponse)->not->toBeEmpty();
     expect($creationResponse)->toBeInstanceOf(CreateTimesheetResponse::class);
     expect($creationResponse->id())->toBeNumeric();
-
 
     $readCreatedTimesheetResponse = $this->connector()->readTimesheet($creationResponse->id());
 
@@ -33,7 +32,7 @@ it('creates , reads updates,reads and deletes a timesheetentry',function () {
     $updateDto = new UpdateTimesheetDto(
         id: $creationResponse->id(),
         values: [
-            'unit_amount' => 4.5
+            'unit_amount' => 4.5,
         ]
     );
 
@@ -46,7 +45,6 @@ it('creates , reads updates,reads and deletes a timesheetentry',function () {
     expect($readUpdatedTimesheetResponse->dto()->name)->toBe('TestTimesheet');
     expect($readUpdatedTimesheetResponse->dto()->unitAmount)->toBe(4.5);
     expect($readUpdatedTimesheetResponse)->toBeInstanceOf(TimesheetResponse::class);
-
 
     $deleteTimesheetEntry = $this->connector()->deleteTimesheet($creationResponse->id());
 

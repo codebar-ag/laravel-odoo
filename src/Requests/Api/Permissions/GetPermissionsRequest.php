@@ -18,8 +18,7 @@ class GetPermissionsRequest extends Request implements HasBody
     public function __construct(
         private readonly string $model,
         private readonly string $operation,
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {
