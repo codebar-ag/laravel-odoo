@@ -87,7 +87,7 @@ class OdooConnector extends Connector
     {
 
         return HealthResponse::fromResponse($this->send(new HealthRequest()));
-
+    }
 
     public function version(): VersionResponse
     {
