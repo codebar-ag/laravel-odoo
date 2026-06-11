@@ -4,33 +4,30 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Fields;
 
-readonly class FieldDto
+use CodebarAg\Odoo\Data\OdooData;
+use Spatie\LaravelData\Attributes\MapInputName;
+
+class FieldDto extends OdooData
 {
     public function __construct(
-        public string $name,
-        public string $type,
-        public string $label,
-        public bool $required,
-        public bool $readonly,
-        public ?string $relation,
+        public string $name = '',
+        public string $type = 'char',
+        #[MapInputName('string')]
+        public string $label = '',
+        public bool $required = false,
+        public bool $readonly = false,
+        public ?string $relation = null,
     ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(string $name, array $data): self
     {
-        $type = data_get($data, 'type', 'char');
-        $label = data_get($data, 'string', $name);
-        $required = data_get($data, 'required', false);
-        $readonly = data_get($data, 'readonly', false);
-        $relation = data_get($data, 'relation');
+        $label = data_get($data, 'string');
 
-        return new self(
-            name: $name,
-            type: \is_string($type) ? $type : 'char',
-            label: \is_string($label) ? $label : $name,
-            required: (bool) $required,
-            readonly: (bool) $readonly,
-            relation: \is_string($relation) ? $relation : null,
-        );
+        return self::hydrate([
+            ...$data,
+            'name' => $name,
+            'string' => \is_string($label) ? $label : $name,
+        ]);
     }
 }

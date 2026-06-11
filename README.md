@@ -84,6 +84,28 @@ LARAVEL_ODOO_API_KEY=your-api-key
 LARAVEL_ODOO_DB=your-database
 ```
 
+### Response Caching
+
+Read-only requests (`search_read`, health, version, …) are cached through
+[Saloon's cache plugin](https://github.com/saloonphp/cache-plugin) using your
+Laravel cache store. Write requests (create/update/delete) are never cached.
+
+```dotenv
+# Any Laravel cache store; defaults to your CACHE_STORE, then "file"
+LARAVEL_ODOO_CACHE_DRIVER=file
+# Time-to-live in seconds (default 60)
+LARAVEL_ODOO_CACHE_LIFETIME_IN_SECONDS=60
+```
+
+Caching is opt-in per request and enabled by default on every read request. To
+bypass or refresh the cache for a single call, use the cache-plugin helpers on
+the request:
+
+```php
+$request->disableCaching();   // skip the cache for this request
+$request->invalidateCache();  // force a fresh response and re-cache it
+```
+
 ## 🚀 Basic Usage
 
 Create an `OdooConnector` instance with your Odoo URL, API key, and optionally a database name:
@@ -274,6 +296,12 @@ $timesheets = $results['timesheets']->entries();    // array<TimesheetEntryDto>
 ```
 
 ## 📦 DTOs
+
+Read DTOs are built on [spatie/laravel-data](https://spatie.be/docs/laravel-data).
+Odoo's relation tuples (`[id, name]`) are flattened onto paired properties
+(e.g. `projectId` / `projectName`) and its `false`-means-empty sentinel is
+normalised to `null`. Each DTO keeps a `fromArray()` factory for backwards
+compatibility and is also a full laravel-data `Data` object (`from()`, `collect()`, …).
 
 | DTO                  | Description                                    |
 |----------------------|------------------------------------------------|

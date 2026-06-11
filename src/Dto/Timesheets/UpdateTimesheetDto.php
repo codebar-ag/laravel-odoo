@@ -4,23 +4,31 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Timesheets;
 
-readonly class UpdateTimesheetDto
+use Spatie\LaravelData\Data;
+
+class UpdateTimesheetDto extends Data
 {
     /**
      * @param  array<string, mixed>  $extraValues  Additional Odoo field values (e.g. custom studio fields)
      */
     public function __construct(
-        public int $id,
-        public ?string $name = null,
-        public ?int $projectId = null,
-        public ?int $taskId = null,
-        public ?string $date = null,
-        public ?float $unitAmount = null,
-        public ?int $employeeId = null,
-        public array $extraValues = [],
+        public readonly int $id,
+        public readonly ?string $name = null,
+        public readonly ?int $projectId = null,
+        public readonly ?int $taskId = null,
+        public readonly ?string $date = null,
+        public readonly ?float $unitAmount = null,
+        public readonly ?int $employeeId = null,
+        public readonly array $extraValues = [],
     ) {}
 
-    /** @return array<string, mixed> */
+    /**
+     * Serialise to the Odoo `write` value map. The record `id` is carried separately by
+     * the request; only the fields explicitly provided are written, and `extraValues`
+     * (studio fields) are merged at the top level.
+     *
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         $data = [];

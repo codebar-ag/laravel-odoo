@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Projects;
 
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetProjectsRequest extends Request implements HasBody
+class GetProjectsRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
+    use HasOdooCaching;
 
     private const DEFAULT_FIELDS = [
         'id', 'name', 'description', 'partner_id', 'user_id', 'date_start', 'date',

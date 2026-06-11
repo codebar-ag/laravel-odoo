@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace CodebarAg\Odoo\Requests\Api\Tasks;
 
 use CodebarAg\Odoo\Requests\Api\Tasks\Concerns\HasTaskFields;
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetTasksByProjectRequest extends Request implements HasBody
+class GetTasksByProjectRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
+    use HasOdooCaching;
     use HasTaskFields;
 
     protected Method $method = Method::POST;
