@@ -5,7 +5,7 @@ use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
 
-it('creates , reads updates,reads and deletes a timesheetentry',function () {
+it('creates , reads updates,reads and deletes a timesheetentry', function () {
 
     $dto = new CreateTimesheetDto(
         name: 'TestTimesheet',
@@ -33,7 +33,7 @@ it('creates , reads updates,reads and deletes a timesheetentry',function () {
     $updateDto = new UpdateTimesheetDto(
         id: $creationResponse->id(),
         values: [
-            'unit_amount' => 4.5
+            'unit_amount' => 4.5,
         ]
     );
 
