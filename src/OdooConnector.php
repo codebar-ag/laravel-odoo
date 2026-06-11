@@ -23,6 +23,18 @@ use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
+use CodebarAg\Odoo\Responses\Api\Employees\EmployeeResponse;
+use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
+use CodebarAg\Odoo\Responses\Api\Permissions\PermissionsResponse;
+use CodebarAg\Odoo\Responses\Api\Projects\ProjectsResponse;
+use CodebarAg\Odoo\Responses\Api\Tasks\TasksResponse;
+use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
+use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
+use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetEntriesResponse;
+use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
+use CodebarAg\Odoo\Responses\Session\DatabasesResponse;
+use CodebarAg\Odoo\Responses\Session\HealthResponse;
+use CodebarAg\Odoo\Responses\Session\VersionResponse;
 use Saloon\Http\Connector;
 use Saloon\Http\Response;
 
@@ -72,19 +84,19 @@ class OdooConnector extends Connector
         ];
     }
 
-    public function health(): Response
+    public function health(): HealthResponse
     {
-        return $this->send(new HealthRequest());
+        return HealthResponse::fromResponse($this->send(new HealthRequest()));
     }
 
-    public function version(): Response
+    public function version(): VersionResponse
     {
-        return $this->send(new GetOdooVersionRequest());
+        return VersionResponse::fromResponse($this->send(new GetOdooVersionRequest()));
     }
 
-    public function databases(): Response
+    public function databases(): DatabasesResponse
     {
-        return $this->send(new GetDatabasesRequest());
+        return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest()));
     }
 
     public function getUser(): Response
@@ -93,88 +105,88 @@ class OdooConnector extends Connector
     }
 
     /** @param array<string> $fields */
-    public function getEmployeeByUserId(int $userId, array $fields = []): Response
+    public function getEmployeeByUserId(int $userId, array $fields = []): EmployeeResponse
     {
-        return $this->send(new GetEmployeeByUserIdRequest($userId, $fields));
+        return EmployeeResponse::fromResponse($this->send(new GetEmployeeByUserIdRequest($userId, $fields)));
     }
 
     /** @param array<string> $attributes */
-    public function getFields(string $model, array $attributes = []): Response
+    public function getFields(string $model, array $attributes = []): FieldsResponse
     {
-        return $this->send(new GetFieldsRequest($model, $attributes));
+        return FieldsResponse::fromResponse($this->send(new GetFieldsRequest($model, $attributes)));
     }
 
-    public function getAllFields(): Response
+    public function getAllFields(): FieldsResponse
     {
-        return $this->send(new GetAllFieldsRequest());
+        return FieldsResponse::fromResponse($this->send(new GetAllFieldsRequest()));
     }
 
-    public function getPermissions(string $model, string $operation): Response
+    public function getPermissions(string $model, string $operation): PermissionsResponse
     {
-        return $this->send(new GetPermissionsRequest($model, $operation));
-    }
-
-    /**
-     * @param  array<string>  $fields
-     * @param  array<mixed>  $domain
-     */
-    public function getProjects(array $fields = [], array $domain = [], int $limit = 100): Response
-    {
-        return $this->send(new GetProjectsRequest($fields, $domain, $limit));
+        return PermissionsResponse::fromResponse($this->send(new GetPermissionsRequest($model, $operation)));
     }
 
     /**
      * @param  array<string>  $fields
      * @param  array<mixed>  $domain
      */
-    public function getAllTasks(array $fields = [], array $domain = [], int $limit = 100): Response
+    public function getProjects(array $fields = [], array $domain = [], int $limit = 100): ProjectsResponse
     {
-        return $this->send(new GetAllTasksRequest($fields, $domain, $limit));
-    }
-
-    /** @param array<string> $fields */
-    public function getTasksByProject(int $projectId, array $fields = []): Response
-    {
-        return $this->send(new GetTasksByProjectRequest($projectId, $fields));
+        return ProjectsResponse::fromResponse($this->send(new GetProjectsRequest($fields, $domain, $limit)));
     }
 
     /**
      * @param  array<string>  $fields
      * @param  array<mixed>  $domain
      */
-    public function getTimesheetEntries(array $fields = [], array $domain = [], int $limit = 100): Response
+    public function getAllTasks(array $fields = [], array $domain = [], int $limit = 100): TasksResponse
     {
-        return $this->send(new GetTimesheetEntriesRequest($fields, $domain, $limit));
+        return TasksResponse::fromResponse($this->send(new GetAllTasksRequest($fields, $domain, $limit)));
     }
 
     /** @param array<string> $fields */
-    public function getTimesheetEntriesLastDays(int $days, array $fields = []): Response
+    public function getTasksByProject(int $projectId, array $fields = []): TasksResponse
     {
-        return $this->send(new GetTimesheetEntriesLastDaysRequest($days, $fields));
+        return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields)));
+    }
+
+    /**
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
+     */
+    public function getTimesheetEntries(array $fields = [], array $domain = [], int $limit = 100): TimesheetEntriesResponse
+    {
+        return TimesheetEntriesResponse::fromResponse($this->send(new GetTimesheetEntriesRequest($fields, $domain, $limit)));
     }
 
     /** @param array<string> $fields */
-    public function readTimesheet(int $id, array $fields = []): Response
+    public function getTimesheetEntriesLastDays(int $days, array $fields = []): TimesheetEntriesResponse
     {
-        return $this->send(new ReadTimesheetRequest($id, $fields));
+        return TimesheetEntriesResponse::fromResponse($this->send(new GetTimesheetEntriesLastDaysRequest($days, $fields)));
     }
 
-    public function createTimesheet(CreateTimesheetDto $dto): Response
+    /** @param array<string> $fields */
+    public function readTimesheet(int $id, array $fields = []): TimesheetResponse
     {
-        return $this->send(new CreateTimesheetRequest($dto));
+        return TimesheetResponse::fromResponse($this->send(new ReadTimesheetRequest($id, $fields)));
     }
 
-    public function updateTimesheet(UpdateTimesheetDto $dto): Response
+    public function createTimesheet(CreateTimesheetDto $dto): CreateTimesheetResponse
     {
-        return $this->send(new UpdateTimesheetRequest($dto));
+        return CreateTimesheetResponse::fromResponse($this->send(new CreateTimesheetRequest($dto)));
     }
 
-    public function deleteTimesheet(int $id): Response
+    public function updateTimesheet(UpdateTimesheetDto $dto): MutateTimesheetResponse
     {
-        return $this->send(new DeleteTimesheetRequest($id));
+        return MutateTimesheetResponse::fromResponse($this->send(new UpdateTimesheetRequest($dto)));
     }
 
-    /** @return array<string, Response> */
+    public function deleteTimesheet(int $id): MutateTimesheetResponse
+    {
+        return MutateTimesheetResponse::fromResponse($this->send(new DeleteTimesheetRequest($id)));
+    }
+
+    /** @return array{projects: ProjectsResponse, tasks: TasksResponse, timesheets: TimesheetEntriesResponse} */
     public function syncAll(): array
     {
         return [

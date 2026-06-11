@@ -1,11 +1,7 @@
 <?php
 
-use CodebarAg\Odoo\Responses\Api\Tasks\TasksResponse;
-
 it('gets all tasks', function () {
-    $response = TasksResponse::fromResponse(
-        $this->connector()->getAllTasks(limit: 5)
-    );
+    $response = $this->connector()->getAllTasks(limit: 5);
 
     expect($response->successful())->toBeTrue()
         ->and($response->body())->toBeJson();
@@ -13,17 +9,13 @@ it('gets all tasks', function () {
 
 it('gets tasks by project', function () {
     $projects = $this->connector()->getProjects(limit: 1);
-    $body = $projects->json();
+    $projectDtos = $projects->projects();
 
-    if (empty($body)) {
+    if (empty($projectDtos)) {
         $this->markTestSkipped('No projects found');
     }
 
-    $projectId = $body[0]['id'];
-
-    $response = TasksResponse::fromResponse(
-        $this->connector()->getTasksByProject(projectId: $projectId)
-    );
+    $response = $this->connector()->getTasksByProject(projectId: $projectDtos[0]->id);
 
     expect($response->successful())->toBeTrue()
         ->and($response->body())->toBeJson();
