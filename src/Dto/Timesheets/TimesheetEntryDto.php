@@ -4,48 +4,57 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Timesheets;
 
-readonly class TimesheetEntryDto
+use CodebarAg\Odoo\Data\Casts\IntCast;
+use CodebarAg\Odoo\Data\Casts\OdooRelationCast;
+use CodebarAg\Odoo\Data\Enums\RelationPart;
+use CodebarAg\Odoo\Data\OdooData;
+use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Attributes\WithCast;
+
+class TimesheetEntryDto extends OdooData
 {
     public function __construct(
-        public int $id,
-        public string $name,
-        public ?int $projectId,
-        public ?string $projectName,
-        public ?int $taskId,
-        public ?string $taskName,
-        public float $unitAmount,
-        public string $date,
-        public ?int $employeeId,
-        public ?string $employeeName,
-    ) {
-    }
+        #[WithCast(IntCast::class)]
+        public int $id = 0,
+        public string $name = '',
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $projectId = null,
+        #[MapInputName('project_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $projectName = null,
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $taskId = null,
+        #[MapInputName('task_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $taskName = null,
+        public float $unitAmount = 0.0,
+        public string $date = '',
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $employeeId = null,
+        #[MapInputName('employee_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $employeeName = null,
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $userId = null,
+        #[MapInputName('user_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $userName = null,
+        public ?bool $validated = null,
+        public ?string $validatedStatus = null,
+        public ?bool $userCanValidate = null,
+        public ?bool $readonlyTimesheet = null,
+        public ?float $amount = null,
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $companyId = null,
+        #[MapInputName('company_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $companyName = null,
+        #[WithCast(OdooRelationCast::class, RelationPart::Id)]
+        public ?int $partnerId = null,
+        #[MapInputName('partner_id'), WithCast(OdooRelationCast::class, RelationPart::Name)]
+        public ?string $partnerName = null,
+        public ?string $createDate = null,
+        public ?string $writeDate = null,
+    ) {}
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(array $data): self
     {
-        $project = $data['project_id'] ?? false;
-        $task = $data['task_id'] ?? false;
-        $employee = $data['employee_id'] ?? false;
-
-        $projectId = \is_array($project) ? ($project[0] ?? null) : null;
-        $projectName = \is_array($project) ? ($project[1] ?? null) : null;
-        $taskId = \is_array($task) ? ($task[0] ?? null) : null;
-        $taskName = \is_array($task) ? ($task[1] ?? null) : null;
-        $employeeId = \is_array($employee) ? ($employee[0] ?? null) : null;
-        $employeeName = \is_array($employee) ? ($employee[1] ?? null) : null;
-        $unitAmountRaw = $data['unit_amount'] ?? 0.0;
-
-        return new self(
-            id: \is_int($v = $data['id'] ?? 0) ? $v : 0,
-            name: \is_string($v = $data['name'] ?? '') ? $v : '',
-            projectId: \is_int($projectId) ? $projectId : null,
-            projectName: \is_string($projectName) ? $projectName : null,
-            taskId: \is_int($taskId) ? $taskId : null,
-            taskName: \is_string($taskName) ? $taskName : null,
-            unitAmount: \is_numeric($unitAmountRaw) ? \floatval($unitAmountRaw) : 0.0,
-            date: \is_string($v = $data['date'] ?? '') ? $v : '',
-            employeeId: \is_int($employeeId) ? $employeeId : null,
-            employeeName: \is_string($employeeName) ? $employeeName : null,
-        );
+        return self::hydrate($data);
     }
 }

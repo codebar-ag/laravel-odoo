@@ -30,6 +30,14 @@
     <logging>
         <junit outputFile="build/report.junit.xml"/>
     </logging>
+    <php>
+        <env name="LARAVEL_ODOO_URL" value="https://mycompany29.odoo.com"/>
+        <env name="LARAVEL_ODOO_API_KEY" value=""/>
+        <env name="LARAVEL_ODOO_API_KEY_USER" value=""/>
+        <env name="LARAVEL_ODOO_API_KEY_NONE" value=""/>
+        <env name="LARAVEL_ODOO_DB" value="mycompany29"/>
+        <env name="RESET_FIXTURES" value="false"/>
+    </php>
     <source>
         <include>
             <directory suffix=".php">./src</directory>

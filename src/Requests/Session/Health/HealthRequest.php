@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Session\Health;
 
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class HealthRequest extends Request
+class HealthRequest extends Request implements Cacheable
 {
+    use HasOdooCaching;
+
     protected Method $method = Method::GET;
 
     public function resolveEndpoint(): string

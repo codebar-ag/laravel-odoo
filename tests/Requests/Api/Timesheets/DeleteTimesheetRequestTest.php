@@ -33,7 +33,7 @@ it('sends correct ids body', function () {
     $mockClient->assertSent(function (DeleteTimesheetRequest $request) {
         $body = $request->body()->all();
 
-        return $body['ids'] === [42];
+        return data_get($body, 'ids') === [42];
     });
 });
 

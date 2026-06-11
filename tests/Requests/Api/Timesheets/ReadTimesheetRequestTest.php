@@ -33,7 +33,7 @@ it('sends correct domain filtering by id', function () {
     $mockClient->assertSent(function (ReadTimesheetRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === [['id', '=', 42]];
+        return data_get($body, 'domain') === [['id', '=', 42]];
     });
 });
 
@@ -57,4 +57,9 @@ it('parses single timesheet entry from response', function () {
     expect($entry->projectId)->toBe(1);
     expect($entry->projectName)->toBe('Internal');
     expect($entry->taskName)->toBe('Meeting');
+    expect($entry->validated)->toBeTrue();
+    expect($entry->validatedStatus)->toBe('validated');
+    expect($entry->readonlyTimesheet)->toBeTrue();
+    expect($entry->userName)->toBe('Administrator');
+    expect($entry->companyName)->toBe('MyCompany');
 });

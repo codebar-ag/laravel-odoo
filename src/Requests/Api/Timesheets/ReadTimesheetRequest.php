@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Timesheets;
 
+use CodebarAg\Odoo\Requests\Api\Timesheets\Concerns\HasTimesheetFields;
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class ReadTimesheetRequest extends Request implements HasBody
+class ReadTimesheetRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
-
-    private const DEFAULT_FIELDS = ['id', 'name', 'project_id', 'task_id', 'unit_amount', 'date', 'employee_id'];
+    use HasOdooCaching;
+    use HasTimesheetFields;
 
     protected Method $method = Method::POST;
 
@@ -21,8 +24,7 @@ class ReadTimesheetRequest extends Request implements HasBody
     public function __construct(
         private readonly int $id,
         private readonly array $fields = [],
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

@@ -15,4 +15,19 @@ class OdooServiceProvider extends PackageServiceProvider
             ->name('laravel-odoo')
             ->hasConfigFile();
     }
+
+    public function packageRegistered(): void
+    {
+        $this->app->singleton(OdooConnector::class, function (): OdooConnector {
+            $url = config('laravel-odoo.url', '');
+            $apiKey = config('laravel-odoo.api_key');
+            $db = config('laravel-odoo.db');
+
+            return new OdooConnector(
+                baseUrl: \is_string($url) ? $url : '',
+                apiKey: \is_string($apiKey) && $apiKey !== '' ? $apiKey : null,
+                db: \is_string($db) && $db !== '' ? $db : null,
+            );
+        });
+    }
 }

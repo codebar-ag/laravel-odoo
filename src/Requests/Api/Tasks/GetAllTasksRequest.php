@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Tasks;
 
+use CodebarAg\Odoo\Requests\Api\Tasks\Concerns\HasTaskFields;
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetAllTasksRequest extends Request implements HasBody
+class GetAllTasksRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
-
-    private const DEFAULT_FIELDS = ['id', 'name', 'description', 'project_id', 'user_ids', 'stage_id', 'date_deadline', 'priority'];
+    use HasOdooCaching;
+    use HasTaskFields;
 
     protected Method $method = Method::POST;
 
@@ -25,8 +28,7 @@ class GetAllTasksRequest extends Request implements HasBody
         private readonly array $fields = [],
         private readonly array $domain = [],
         private readonly int $limit = 100,
-    ) {
-    }
+    ) {}
 
     public function resolveEndpoint(): string
     {

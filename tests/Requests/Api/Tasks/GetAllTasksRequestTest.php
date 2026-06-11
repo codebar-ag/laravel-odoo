@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = TasksResponse::fromResponse(
-        $connector->send(new GetAllTasksRequest())
+        $connector->send(new GetAllTasksRequest)
     );
 
     $mockClient->assertSent(GetAllTasksRequest::class);
@@ -28,14 +28,14 @@ it('sends correct body with domain and limit', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetAllTasksRequest());
+    $connector->send(new GetAllTasksRequest);
 
     $mockClient->assertSent(function (GetAllTasksRequest $request) {
         $body = $request->body()->all();
 
-        return $body['domain'] === []
-            && $body['limit'] === 100
-            && in_array('name', $body['fields']);
+        return data_get($body, 'domain') === []
+            && data_get($body, 'limit') === 100
+            && in_array('name', data_get($body, 'fields', []));
     });
 });
 
@@ -47,14 +47,17 @@ it('parses tasks from response', function () {
     $connector->withMockClient($mockClient);
 
     $response = TasksResponse::fromResponse(
-        $connector->send(new GetAllTasksRequest())
+        $connector->send(new GetAllTasksRequest)
     );
 
     $tasks = $response->tasks();
 
     expect($tasks)->toHaveCount(1);
-    expect($tasks[0]->id)->toBe(1);
-    expect($tasks[0]->name)->toBe('Fix Bug');
-    expect($tasks[0]->projectId)->toBe(1);
-    expect($tasks[0]->projectName)->toBe('Internal');
+    expect(data_get($tasks, '0.id'))->toBe(1);
+    expect(data_get($tasks, '0.name'))->toBe('Fix Bug');
+    expect(data_get($tasks, '0.projectId'))->toBe(1);
+    expect(data_get($tasks, '0.projectName'))->toBe('Internal');
+    expect(data_get($tasks, '0.active'))->toBeTrue();
+    expect(data_get($tasks, '0.state'))->toBe('01_in_progress');
+    expect(data_get($tasks, '0.companyName'))->toBe('MyCompany');
 });

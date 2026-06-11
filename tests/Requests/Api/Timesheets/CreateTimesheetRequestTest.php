@@ -50,13 +50,12 @@ it('sends correct vals_list body', function () {
 
     $mockClient->assertSent(function (CreateTimesheetRequest $request) {
         $body = $request->body()->all();
-        $vals = $body['vals_list'] ?? [];
 
-        return $vals['name'] === 'Test entry'
-            && $vals['project_id'] === 1
-            && $vals['task_id'] === 2
-            && $vals['unit_amount'] === 1.5
-            && $vals['employee_id'] === 3;
+        return data_get($body, 'vals_list.name') === 'Test entry'
+            && data_get($body, 'vals_list.project_id') === 1
+            && data_get($body, 'vals_list.task_id') === 2
+            && data_get($body, 'vals_list.unit_amount') === 1.5
+            && data_get($body, 'vals_list.employee_id') === 3;
     });
 });
 

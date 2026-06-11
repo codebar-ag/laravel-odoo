@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Tasks;
 
+use CodebarAg\Odoo\Requests\Api\Tasks\Concerns\HasTaskFields;
+use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
+use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetTasksByProjectRequest extends Request implements HasBody
+class GetTasksByProjectRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
-
-    private const DEFAULT_FIELDS = ['id', 'name', 'description', 'project_id', 'user_ids', 'stage_id', 'date_deadline', 'priority'];
+    use HasOdooCaching;
+    use HasTaskFields;
 
     protected Method $method = Method::POST;
 
@@ -21,8 +24,8 @@ class GetTasksByProjectRequest extends Request implements HasBody
     public function __construct(
         private readonly int $projectId,
         private readonly array $fields = [],
-    ) {
-    }
+        private readonly int $limit = 100,
+    ) {}
 
     public function resolveEndpoint(): string
     {
@@ -35,6 +38,7 @@ class GetTasksByProjectRequest extends Request implements HasBody
         return [
             'domain' => [['project_id', '=', $this->projectId]],
             'fields' => $this->fields ?: self::DEFAULT_FIELDS,
+            'limit' => $this->limit,
         ];
     }
 }

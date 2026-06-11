@@ -11,16 +11,18 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "codebar AG",
-            "email": "hello@codebar.ch",
+            "name": "codebar Solutions AG",
+            "email": "info@codebar.ch",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.4",
         "illuminate/contracts": "^13.0",
+        "saloonphp/cache-plugin": "^3.0",
         "saloonphp/laravel-plugin": "^4.0",
         "saloonphp/saloon": "^4.0",
+        "spatie/laravel-data": "^4.23",
         "spatie/laravel-package-tools": "^1.16"
     },
     "require-dev": {
@@ -45,7 +47,8 @@
     "scripts": {
         "test": "vendor/bin/pest --no-coverage",
         "test:live": "vendor/bin/pest tests/Live --no-coverage",
-        "lint": "vendor/bin/pint"
+        "lint": "vendor/bin/pint",
+        "analyse": "vendor/bin/phpstan analyse"
     },
     "config": {
         "sort-packages": true,

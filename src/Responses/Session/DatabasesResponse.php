@@ -5,20 +5,9 @@ declare(strict_types=1);
 namespace CodebarAg\Odoo\Responses\Session;
 
 use CodebarAg\Odoo\Responses\OdooResponse;
-use Saloon\Http\Response;
 
 class DatabasesResponse extends OdooResponse
 {
-    private function __construct(Response $response)
-    {
-        parent::__construct($response);
-    }
-
-    public static function fromResponse(Response $response): self
-    {
-        return new self($response);
-    }
-
     /** @return array<string> */
     public function databases(): array
     {
@@ -28,6 +17,9 @@ class DatabasesResponse extends OdooResponse
 
         $result = $this->response->json('result');
 
-        return \is_array($result) ? \array_values(\array_filter($result, '\is_string')) : [];
+        return collect(\is_array($result) ? $result : [])
+            ->filter(fn ($v) => \is_string($v))
+            ->values()
+            ->all();
     }
 }

@@ -6,20 +6,9 @@ namespace CodebarAg\Odoo\Responses\Api\Fields;
 
 use CodebarAg\Odoo\Dto\Fields\FieldDto;
 use CodebarAg\Odoo\Responses\OdooResponse;
-use Saloon\Http\Response;
 
 class FieldsResponse extends OdooResponse
 {
-    private function __construct(Response $response)
-    {
-        parent::__construct($response);
-    }
-
-    public static function fromResponse(Response $response): self
-    {
-        return new self($response);
-    }
-
     /** @return array<string, FieldDto> */
     public function fields(): array
     {

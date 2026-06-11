@@ -1,5 +1,22 @@
+<img src="https://banners.beyondco.de/Laravel%20Odoo.png?theme=light&packageManager=composer+require&packageName=codebar-ag%2Flaravel-odoo&pattern=circuitBoard&style=style_1&description=A+simple+way+to+interact+with+the+Odoo+API+in+Laravel&md=1&showWatermark=0&fontSize=175px&images=server">
+
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/codebar-ag/laravel-odoo.svg?style=flat-square)](https://packagist.org/packages/codebar-ag/laravel-odoo)
+[![Total Downloads](https://img.shields.io/packagist/dt/codebar-ag/laravel-odoo.svg?style=flat-square)](https://packagist.org/packages/codebar-ag/laravel-odoo)
+[![GitHub-Tests](https://github.com/codebar-ag/laravel-odoo/actions/workflows/run-tests.yml/badge.svg?branch=main)](https://github.com/codebar-ag/laravel-odoo/actions/workflows/run-tests.yml)
+[![GitHub Code Style](https://github.com/codebar-ag/laravel-odoo/actions/workflows/fix-php-code-style-issues.yml/badge.svg?branch=main)](https://github.com/codebar-ag/laravel-odoo/actions/workflows/fix-php-code-style-issues.yml)
+[![PHPStan](https://github.com/codebar-ag/laravel-odoo/actions/workflows/phpstan.yml/badge.svg)](https://github.com/codebar-ag/laravel-odoo/actions/workflows/phpstan.yml)
+[![Dependency Review](https://github.com/codebar-ag/laravel-odoo/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/codebar-ag/laravel-odoo/actions/workflows/dependency-review.yml)
+
+This package was developed to give you a quick start to communicate with the
+Odoo external API from Laravel. It wraps the most common endpoints — sessions,
+users, employees, projects, tasks and timesheets — behind a clean, typed
+connector built on [Saloon](https://docs.saloon.dev).
+
+⚠️ This package is not designed as a replacement of the official Odoo external API. See the [Odoo documentation](https://www.odoo.com/documentation) if you need further functionality. ⚠️
+
 ## 📑 Table of Contents
 
+<!-- TOC -->
 - [What is Odoo?](#-what-is-odoo)
 - [Requirements](#-requirements)
 - [Installation](#️-installation)
@@ -18,6 +35,20 @@
   - [Sync All](#sync-all)
 - [DTOs](#-dtos)
 - [Testing](#-testing)
+- [Changelog](#-changelog)
+- [Contributing](#️-contributing)
+- [Security Vulnerabilities](#-security-vulnerabilities)
+- [Credits](#-credits)
+- [License](#-license)
+<!-- TOC -->
+
+## 💡 What is Odoo?
+
+Odoo is an open-source suite of business applications covering CRM, sales,
+project management, timesheets, accounting, inventory and more. It exposes an
+external API that lets you read and write records across all of these modules.
+This package provides a typed, Laravel-friendly client for the most common Odoo
+endpoints used in day-to-day integrations.
 
 ## 🛠 Requirements
 
@@ -43,6 +74,38 @@ php artisan vendor:publish --provider="CodebarAg\Odoo\OdooServiceProvider" --tag
 
 You can generate an API key in your Odoo user profile under **Preferences → API Keys**.
 
+### Environment Variables
+
+Add the following variables to your `.env` file:
+
+```dotenv
+LARAVEL_ODOO_URL=https://your-odoo-instance.com
+LARAVEL_ODOO_API_KEY=your-api-key
+LARAVEL_ODOO_DB=your-database
+```
+
+### Response Caching
+
+Read-only requests (`search_read`, health, version, …) are cached through
+[Saloon's cache plugin](https://github.com/saloonphp/cache-plugin) using your
+Laravel cache store. Write requests (create/update/delete) are never cached.
+
+```dotenv
+# Any Laravel cache store; defaults to your CACHE_STORE, then "file"
+LARAVEL_ODOO_CACHE_DRIVER=file
+# Time-to-live in seconds (default 60)
+LARAVEL_ODOO_CACHE_LIFETIME_IN_SECONDS=60
+```
+
+Caching is opt-in per request and enabled by default on every read request. To
+bypass or refresh the cache for a single call, use the cache-plugin helpers on
+the request:
+
+```php
+$request->disableCaching();   // skip the cache for this request
+$request->invalidateCache();  // force a fresh response and re-cache it
+```
+
 ## 🚀 Basic Usage
 
 Create an `OdooConnector` instance with your Odoo URL, API key, and optionally a database name:
@@ -58,6 +121,19 @@ $connector = new OdooConnector(
 ```
 
 Each method returns a typed response object with dedicated methods for accessing the data.
+
+### Using the Facade
+
+If you set the environment variables above (or publish and edit the config file), the package binds a pre-configured `OdooConnector` in the container, so you can resolve it or use the `Odoo` facade instead of constructing it by hand:
+
+```php
+use CodebarAg\Odoo\Facades\Odoo;
+
+$response = Odoo::health();
+$response->isHealthy(); // bool
+```
+
+The facade reads `url`, `api_key`, and `db` from `config/laravel-odoo.php`. Direct instantiation with `new OdooConnector(...)` remains fully supported — for example when you need to talk to more than one Odoo instance.
 
 ## 📖 API Reference
 
@@ -81,9 +157,9 @@ $response->databases(); // array<string>
 ### User
 
 ```php
-// Get the currently authenticated user (returns raw Saloon Response)
+// Get the currently authenticated user
 $response = $connector->getUser();
-$response->json(); // array
+$user = $response->dto(); // ?UserDto  (id, name, lang)
 ```
 
 ### Employees
@@ -221,6 +297,12 @@ $timesheets = $results['timesheets']->entries();    // array<TimesheetEntryDto>
 
 ## 📦 DTOs
 
+Read DTOs are built on [spatie/laravel-data](https://spatie.be/docs/laravel-data).
+Odoo's relation tuples (`[id, name]`) are flattened onto paired properties
+(e.g. `projectId` / `projectName`) and its `false`-means-empty sentinel is
+normalised to `null`. Each DTO keeps a `fromArray()` factory for backwards
+compatibility and is also a full laravel-data `Data` object (`from()`, `collect()`, …).
+
 | DTO                  | Description                                    |
 |----------------------|------------------------------------------------|
 | `ProjectDto`         | Represents an Odoo project                     |
@@ -229,6 +311,7 @@ $timesheets = $results['timesheets']->entries();    // array<TimesheetEntryDto>
 | `CreateTimesheetDto` | Payload for creating a timesheet entry         |
 | `UpdateTimesheetDto` | Payload for updating a timesheet entry         |
 | `EmployeeDto`        | Represents an Odoo employee                    |
+| `UserDto`            | Represents the authenticated Odoo user         |
 | `FieldDto`           | Represents a field definition on an Odoo model |
 
 ## 🧪 Testing
@@ -237,8 +320,32 @@ $timesheets = $results['timesheets']->entries();    // array<TimesheetEntryDto>
 composer test
 ```
 
-For live integration tests against a real Odoo instance, copy `.env.testing` and fill in your credentials, then run:
+For live integration tests against a real Odoo instance, copy `phpunit.xml.dist` to `phpunit.xml`, fill in the `LARAVEL_ODOO_URL`, `LARAVEL_ODOO_API_KEY` and `LARAVEL_ODOO_DB` env values, then run:
 
 ```bash
 composer test:live
 ```
+
+## 📝 Changelog
+
+Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
+
+## ✏️ Contributing
+
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+
+## 🧑‍💻 Security Vulnerabilities
+
+Please review [our security policy](.github/SECURITY.md) on how to report security vulnerabilities.
+
+## 🙏 Credits
+
+- [Sebastian Bürgin-Fix](https://github.com/StanBarrows)
+- [Tobias Brogle](https://github.com/Astro2006)
+- [All Contributors](../../contributors)
+- [Skeleton Repository from Spatie](https://github.com/spatie/package-skeleton-laravel)
+- [Laravel Package Training from Spatie](https://spatie.be/videos/laravel-package-training)
+
+## 🎭 License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

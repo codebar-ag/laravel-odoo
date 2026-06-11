@@ -1,57 +1,52 @@
 <?php
 
 use CodebarAg\Odoo\OdooConnector;
-use CodebarAg\Odoo\Requests\Api\Fields\GetAllFieldsRequest;
-use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
+use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
-it('sends request to correct endpoint', function () {
+it('routes getAllFields through the account.analytic.line model', function () {
     $mockClient = new MockClient([
-        GetAllFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
+        GetFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = FieldsResponse::fromResponse(
-        $connector->send(new GetAllFieldsRequest())
-    );
+    $response = $connector->getAllFields();
 
-    $mockClient->assertSent(GetAllFieldsRequest::class);
+    $mockClient->assertSent(function (GetFieldsRequest $request) {
+        return str_contains($request->resolveEndpoint(), 'account.analytic.line');
+    });
     expect($response->successful())->toBeTrue();
 });
 
 it('sends correct attributes in body', function () {
     $mockClient = new MockClient([
-        GetAllFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
+        GetFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetAllFieldsRequest());
+    $connector->getAllFields();
 
-    $mockClient->assertSent(function (GetAllFieldsRequest $request) {
+    $mockClient->assertSent(function (GetFieldsRequest $request) {
         $body = $request->body()->all();
 
-        return $body['attributes'] === ['string', 'type', 'required'];
+        return data_get($body, 'attributes') === ['string', 'type', 'required', 'readonly', 'relation'];
     });
 });
 
 it('parses fields from response', function () {
     $mockClient = new MockClient([
-        GetAllFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
+        GetFieldsRequest::class => MockResponse::fixture('Api/Fields/fields'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = FieldsResponse::fromResponse(
-        $connector->send(new GetAllFieldsRequest())
-    );
-
-    $fields = $response->fields();
+    $fields = $connector->getAllFields()->fields();
 
     expect($fields)->toHaveKey('name');
     expect($fields)->toHaveKey('date');
-    expect($fields['name']->type)->toBe('char');
-    expect($fields['date']->type)->toBe('date');
+    expect(data_get($fields, 'name')->type)->toBe('char');
+    expect(data_get($fields, 'date')->type)->toBe('date');
 });
