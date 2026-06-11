@@ -12,7 +12,7 @@ it('sends request to correct endpoint', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new GetUserRequest);
+    $response = $connector->send(new GetUserRequest());
 
     $mockClient->assertSent(GetUserRequest::class);
     expect($response->successful())->toBeTrue();
@@ -25,7 +25,7 @@ it('sends correct body with id name lang fields and limit 1', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetUserRequest);
+    $connector->send(new GetUserRequest());
 
     $mockClient->assertSent(function (GetUserRequest $request) {
         $body = $request->body()->all();
@@ -44,7 +44,7 @@ it('parses user data from response', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new GetUserRequest);
+    $response = $connector->send(new GetUserRequest());
     $users = $response->json();
 
     expect($users)->not->toBeEmpty();

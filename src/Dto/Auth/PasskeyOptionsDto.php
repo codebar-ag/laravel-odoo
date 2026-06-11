@@ -15,7 +15,8 @@ readonly class PasskeyOptionsDto
         public ?int $timeout,
         public ?string $userVerification,
         public array $allowCredentials,
-    ) {}
+    ) {
+    }
 
     /** @param array<string, mixed> $data */
     public static function fromResponse(array $data): self

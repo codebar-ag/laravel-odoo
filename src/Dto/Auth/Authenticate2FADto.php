@@ -9,7 +9,8 @@ readonly class Authenticate2FADto
     public function __construct(
         public string $totpToken,
         public string $redirect = '/odoo',
-    ) {}
+    ) {
+    }
 
     /** @return array<string, string> */
     public function toArray(): array

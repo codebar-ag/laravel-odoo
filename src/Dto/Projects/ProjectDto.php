@@ -16,7 +16,8 @@ readonly class ProjectDto
         public ?string $userName,
         public ?string $dateStart,
         public ?string $date,
-    ) {}
+    ) {
+    }
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(array $data): self
