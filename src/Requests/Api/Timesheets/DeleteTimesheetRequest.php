@@ -15,9 +15,7 @@ class DeleteTimesheetRequest extends Request implements HasBody
 
     protected Method $method = Method::POST;
 
-    public function __construct(private readonly int $id)
-    {
-    }
+    public function __construct(private readonly int $id) {}
 
     public function resolveEndpoint(): string
     {
