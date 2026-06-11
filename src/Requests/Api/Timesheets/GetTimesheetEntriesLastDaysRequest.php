@@ -21,7 +21,8 @@ class GetTimesheetEntriesLastDaysRequest extends Request implements HasBody
     public function __construct(
         private readonly int $days,
         private readonly array $fields = [],
-    ) {}
+    ) {
+    }
 
     public function resolveEndpoint(): string
     {

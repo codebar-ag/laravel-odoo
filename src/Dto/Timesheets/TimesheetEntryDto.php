@@ -17,7 +17,8 @@ readonly class TimesheetEntryDto
         public string $date,
         public ?int $employeeId,
         public ?string $employeeName,
-    ) {}
+    ) {
+    }
 
     /** @param array<array-key, mixed> $data */
     public static function fromArray(array $data): self

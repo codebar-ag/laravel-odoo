@@ -14,7 +14,7 @@ it('sends request to correct endpoint', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest)
+        $connector->send(new GetProjectsRequest())
     );
 
     $mockClient->assertSent(GetProjectsRequest::class);
@@ -28,7 +28,7 @@ it('sends correct body with domain and limit', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetProjectsRequest);
+    $connector->send(new GetProjectsRequest());
 
     $mockClient->assertSent(function (GetProjectsRequest $request) {
         $body = $request->body()->all();
@@ -47,7 +47,7 @@ it('parses projects from response', function () {
     $connector->withMockClient($mockClient);
 
     $response = ProjectsResponse::fromResponse(
-        $connector->send(new GetProjectsRequest)
+        $connector->send(new GetProjectsRequest())
     );
 
     $projects = $response->projects();
