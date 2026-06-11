@@ -71,8 +71,6 @@ class OdooConnector extends Connector
         ];
     }
 
-    // Session
-
     public function health(): Response
     {
         return $this->send(new HealthRequest);
@@ -88,22 +86,16 @@ class OdooConnector extends Connector
         return $this->send(new GetDatabasesRequest);
     }
 
-    // User
-
     public function getUser(): Response
     {
         return $this->send(new GetUserRequest);
     }
-
-    // Employees
 
     /** @param array<string> $fields */
     public function getEmployeeByUserId(int $userId, array $fields = []): Response
     {
         return $this->send(new GetEmployeeByUserIdRequest($userId, $fields));
     }
-
-    // Fields
 
     /** @param array<string> $attributes */
     public function getFields(string $model, array $attributes = []): Response
@@ -116,14 +108,10 @@ class OdooConnector extends Connector
         return $this->send(new GetAllFieldsRequest);
     }
 
-    // Permissions
-
     public function getPermissions(string $model, string $operation): Response
     {
         return $this->send(new GetPermissionsRequest($model, $operation));
     }
-
-    // Projects
 
     /**
      * @param  array<string>  $fields
@@ -133,8 +121,6 @@ class OdooConnector extends Connector
     {
         return $this->send(new GetProjectsRequest($fields, $domain, $limit));
     }
-
-    // Tasks
 
     /**
      * @param  array<string>  $fields
@@ -150,8 +136,6 @@ class OdooConnector extends Connector
     {
         return $this->send(new GetTasksByProjectRequest($projectId, $fields));
     }
-
-    // Timesheets
 
     /**
      * @param  array<string>  $fields
@@ -188,8 +172,6 @@ class OdooConnector extends Connector
     {
         return $this->send(new DeleteTimesheetRequest($id));
     }
-
-    // Sync
 
     /** @return array<string, Response> */
     public function syncAll(): array

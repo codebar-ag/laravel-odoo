@@ -31,8 +31,8 @@ class VersionResponse extends OdooResponse
 
     public function serie(): ?string
     {
-        $v = $this->response->json('version');
+        $version = $this->response->json('version');
 
-        return \is_string($v) ? $v : null;
+        return \is_string($version) ? $version : null;
     }
 }

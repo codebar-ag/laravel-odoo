@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Timesheets;
 
-class TimesheetEntryDto
+readonly class TimesheetEntryDto
 {
     public function __construct(
         public int $id,

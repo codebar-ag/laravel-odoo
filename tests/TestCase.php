@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace CodebarAg\Odoo\Tests;
 
 use CodebarAg\Odoo\OdooConnector;
@@ -23,7 +25,7 @@ class TestCase extends Orchestra
         ];
     }
 
-    protected function connector()
+    protected function connector(): OdooConnector
     {
         return new OdooConnector(
             baseUrl: env('ODOO_URL'),

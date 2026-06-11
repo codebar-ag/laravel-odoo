@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Dto\Timesheets;
 
-class UpdateTimesheetDto
+readonly class UpdateTimesheetDto
 {
     /** @param array<string, mixed> $values */
     public function __construct(
