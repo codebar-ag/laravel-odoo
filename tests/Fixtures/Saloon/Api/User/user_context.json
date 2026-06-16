@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 2, \"tz\": \"Europe/Zurich\", \"lang\": \"en_US\"}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
