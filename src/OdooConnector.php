@@ -18,6 +18,7 @@ use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserByIdRequest;
 use CodebarAg\Odoo\Requests\Api\User\GetUserContextRequest;
 use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
@@ -107,6 +108,11 @@ class OdooConnector extends Connector
     public function getUserContext():UserContextResponse
     {
         return UserContextResponse::fromResponse($this->send(new GetUserContextRequest()));
+    }
+
+    public function getUserById(int $uid): UserResponse
+    {
+        return UserResponse::fromResponse($this->send(new GetUserByIdRequest($uid)));
     }
 
     /** @param array<string> $fields */
