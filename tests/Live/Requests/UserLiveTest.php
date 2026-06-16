@@ -17,5 +17,3 @@ it('gets user context data', function () {
         ->and($dto->lang)->toBeString()->not->toBeEmpty()
         ->and($dto->tz)->toBeString()->not->toBeEmpty();
 })->group('live');
-
-

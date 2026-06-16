@@ -29,7 +29,7 @@ class GetUserContextRequest extends Request implements Cacheable, HasBody
         return [
             'domain' => [],
             'fields' => [
-                'id', 'tz', 'lang'
+                'id', 'tz', 'lang',
             ],
             'limit' => 1,
         ];
