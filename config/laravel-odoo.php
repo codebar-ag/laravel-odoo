@@ -9,6 +9,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Maximum redirects
+    |--------------------------------------------------------------------------
+    |
+    | The maximum number of HTTP redirects the connector will follow for a
+    | single request (Guzzle's "allow_redirects.max").
+    |
+    */
+    'max_redirects' => env('LARAVEL_ODOO_MAX_REDIRECTS', 5),
+
+    /*
+    |--------------------------------------------------------------------------
     | Response cache
     |--------------------------------------------------------------------------
     |

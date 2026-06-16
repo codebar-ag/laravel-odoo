@@ -24,6 +24,7 @@ class GetTimesheetEntriesLastDaysRequest extends Request implements Cacheable, H
     public function __construct(
         private readonly int $days,
         private readonly array $fields = [],
+        private readonly string $operator = '>=',
     ) {}
 
     public function resolveEndpoint(): string
@@ -38,7 +39,7 @@ class GetTimesheetEntriesLastDaysRequest extends Request implements Cacheable, H
         $since = \date('Y-m-d', $timestamp !== false ? $timestamp : 0);
 
         return [
-            'domain' => [['date', '>=', $since]],
+            'domain' => [['date', $this->operator, $since]],
             'fields' => $this->fields ?: self::DEFAULT_FIELDS,
         ];
     }

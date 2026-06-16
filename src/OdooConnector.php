@@ -18,6 +18,8 @@ use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserByIdRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserContextRequest;
 use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
@@ -31,6 +33,7 @@ use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetEntriesResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
+use CodebarAg\Odoo\Responses\Api\User\UserContextResponse;
 use CodebarAg\Odoo\Responses\Api\User\UserResponse;
 use CodebarAg\Odoo\Responses\Session\DatabasesResponse;
 use CodebarAg\Odoo\Responses\Session\HealthResponse;
@@ -43,6 +46,7 @@ class OdooConnector extends Connector
         private readonly string $baseUrl,
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
+        private readonly int $maxRedirects = 5,
     ) {}
 
     public function resolveBaseUrl(): string
@@ -76,7 +80,7 @@ class OdooConnector extends Connector
     {
         return [
             'allow_redirects' => [
-                'max' => 5,
+                'max' => $this->maxRedirects,
                 'track_redirects' => true,
             ],
         ];
@@ -97,15 +101,34 @@ class OdooConnector extends Connector
         return DatabasesResponse::fromResponse($this->send(new GetDatabasesRequest));
     }
 
-    public function getUser(): UserResponse
+    /**
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
+     */
+    public function getUser(array $fields = [], array $domain = [], int $limit = 1): UserResponse
     {
-        return UserResponse::fromResponse($this->send(new GetUserRequest));
+        return UserResponse::fromResponse($this->send(new GetUserRequest($fields, $domain, $limit)));
+    }
+
+    /**
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
+     */
+    public function getUserContext(array $fields = [], array $domain = [], int $limit = 1): UserContextResponse
+    {
+        return UserContextResponse::fromResponse($this->send(new GetUserContextRequest($fields, $domain, $limit)));
     }
 
     /** @param array<string> $fields */
-    public function getEmployeeByUserId(int $userId, array $fields = []): EmployeeResponse
+    public function getUserById(int $uid, array $fields = [], int $limit = 1): UserResponse
     {
-        return EmployeeResponse::fromResponse($this->send(new GetEmployeeByUserIdRequest($userId, $fields)));
+        return UserResponse::fromResponse($this->send(new GetUserByIdRequest($uid, $fields, $limit)));
+    }
+
+    /** @param array<string> $fields */
+    public function getEmployeeByUserId(int $userId, array $fields = [], int $limit = 1): EmployeeResponse
+    {
+        return EmployeeResponse::fromResponse($this->send(new GetEmployeeByUserIdRequest($userId, $fields, $limit)));
     }
 
     /** @param array<string> $attributes */
@@ -143,9 +166,9 @@ class OdooConnector extends Connector
     }
 
     /** @param array<string> $fields */
-    public function getTasksByProject(int $projectId, array $fields = [], int $limit = 100): TasksResponse
+    public function getTasksByProject(int $projectId, array $fields = [], int $limit = 100, string $operator = '='): TasksResponse
     {
-        return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields, $limit)));
+        return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields, $limit, $operator)));
     }
 
     /**
@@ -158,9 +181,9 @@ class OdooConnector extends Connector
     }
 
     /** @param array<string> $fields */
-    public function getTimesheetEntriesLastDays(int $days, array $fields = []): TimesheetEntriesResponse
+    public function getTimesheetEntriesLastDays(int $days, array $fields = [], string $operator = '>='): TimesheetEntriesResponse
     {
-        return TimesheetEntriesResponse::fromResponse($this->send(new GetTimesheetEntriesLastDaysRequest($days, $fields)));
+        return TimesheetEntriesResponse::fromResponse($this->send(new GetTimesheetEntriesLastDaysRequest($days, $fields, $operator)));
     }
 
     /** @param array<string> $fields */

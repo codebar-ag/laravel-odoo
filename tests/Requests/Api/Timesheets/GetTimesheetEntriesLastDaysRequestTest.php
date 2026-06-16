@@ -40,6 +40,25 @@ it('sends correct domain with date >= filter', function () {
     });
 });
 
+it('sends custom domain operator when provided', function () {
+    $mockClient = new MockClient([
+        GetTimesheetEntriesLastDaysRequest::class => MockResponse::fixture('Api/Timesheets/timesheet-entries-last-days'),
+    ]);
+    $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
+    $connector->withMockClient($mockClient);
+
+    $connector->send(new GetTimesheetEntriesLastDaysRequest(7, ['id', 'date'], '>'));
+
+    $mockClient->assertSent(function (GetTimesheetEntriesLastDaysRequest $request) {
+        $body = $request->body()->all();
+        $domain = data_get($body, 'domain', []);
+
+        return data_get($domain, '0.0') === 'date'
+            && data_get($domain, '0.1') === '>'
+            && data_get($body, 'fields') === ['id', 'date'];
+    });
+});
+
 it('parses timesheet entries from response', function () {
     $mockClient = new MockClient([
         GetTimesheetEntriesLastDaysRequest::class => MockResponse::fixture('Api/Timesheets/timesheet-entries-last-days'),

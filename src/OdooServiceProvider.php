@@ -22,11 +22,13 @@ class OdooServiceProvider extends PackageServiceProvider
             $url = config('laravel-odoo.url', '');
             $apiKey = config('laravel-odoo.api_key');
             $db = config('laravel-odoo.db');
+            $maxRedirects = config('laravel-odoo.max_redirects', 5);
 
             return new OdooConnector(
                 baseUrl: \is_string($url) ? $url : '',
                 apiKey: \is_string($apiKey) && $apiKey !== '' ? $apiKey : null,
                 db: \is_string($db) && $db !== '' ? $db : null,
+                maxRedirects: \is_numeric($maxRedirects) ? (int) $maxRedirects : 5,
             );
         });
     }

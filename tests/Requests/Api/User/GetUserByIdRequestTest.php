@@ -1,74 +1,71 @@
 <?php
 
 use CodebarAg\Odoo\OdooConnector;
-use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserByIdRequest;
 use CodebarAg\Odoo\Responses\Api\User\UserResponse;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
 it('sends request to correct endpoint', function () {
     $mockClient = new MockClient([
-        GetUserRequest::class => MockResponse::fixture('Api/User/user'),
+        GetUserByIdRequest::class => MockResponse::fixture('Api/User/user'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new GetUserRequest);
+    $response = $connector->send(new GetUserByIdRequest(2));
 
-    $mockClient->assertSent(GetUserRequest::class);
+    $mockClient->assertSent(GetUserByIdRequest::class);
     expect($response->successful())->toBeTrue();
 });
 
-it('sends correct body with id name lang fields and limit 1', function () {
+it('sends correct body with id domain, fields, and limit 1', function () {
     $mockClient = new MockClient([
-        GetUserRequest::class => MockResponse::fixture('Api/User/user'),
+        GetUserByIdRequest::class => MockResponse::fixture('Api/User/user'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetUserRequest);
+    $connector->send(new GetUserByIdRequest(42));
 
-    $mockClient->assertSent(function (GetUserRequest $request) {
+    $mockClient->assertSent(function (GetUserByIdRequest $request) {
         $body = $request->body()->all();
 
-        return data_get($body, 'limit') === 1
+        return data_get($body, 'domain') === [['id', '=', 42]]
+            && data_get($body, 'limit') === 1
             && in_array('id', data_get($body, 'fields', []))
             && in_array('name', data_get($body, 'fields', []))
             && in_array('lang', data_get($body, 'fields', []));
     });
 });
 
-it('sends custom fields, domain and limit when provided', function () {
+it('sends custom fields and limit when provided', function () {
     $mockClient = new MockClient([
-        GetUserRequest::class => MockResponse::fixture('Api/User/user'),
+        GetUserByIdRequest::class => MockResponse::fixture('Api/User/user'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new GetUserRequest(
-        fields: ['id', 'name'],
-        domain: [['active', '=', true]],
-        limit: 5,
-    ));
+    $connector->send(new GetUserByIdRequest(42, ['id', 'email'], 3));
 
-    $mockClient->assertSent(function (GetUserRequest $request) {
+    $mockClient->assertSent(function (GetUserByIdRequest $request) {
         $body = $request->body()->all();
 
-        return data_get($body, 'fields') === ['id', 'name']
-            && data_get($body, 'domain') === [['active', '=', true]]
-            && data_get($body, 'limit') === 5;
+        return data_get($body, 'domain') === [['id', '=', 42]]
+            && data_get($body, 'fields') === ['id', 'email']
+            && data_get($body, 'limit') === 3;
     });
 });
 
 it('parses user data into a dto', function () {
     $mockClient = new MockClient([
-        GetUserRequest::class => MockResponse::fixture('Api/User/user'),
+        GetUserByIdRequest::class => MockResponse::fixture('Api/User/user'),
     ]);
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
     $response = UserResponse::fromResponse(
-        $connector->send(new GetUserRequest)
+        $connector->send(new GetUserByIdRequest(2))
     );
 
     $dto = $response->dto();
@@ -83,5 +80,4 @@ it('parses user data into a dto', function () {
     expect($dto->active)->toBeTrue();
     expect($dto->share)->toBeFalse();
     expect($dto->companyName)->toBe('MyCompany');
-    expect($dto->employeeId)->toBe(1);
 });

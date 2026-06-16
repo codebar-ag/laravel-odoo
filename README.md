@@ -116,7 +116,8 @@ use CodebarAg\Odoo\OdooConnector;
 $connector = new OdooConnector(
     baseUrl: 'https://your-odoo-instance.com',
     apiKey: 'your-api-key',
-    db: 'your-database', // optional
+    db: 'your-database',   // optional
+    maxRedirects: 5,       // optional — max HTTP redirects to follow (default 5)
 );
 ```
 
@@ -133,7 +134,7 @@ $response = Odoo::health();
 $response->isHealthy(); // bool
 ```
 
-The facade reads `url`, `api_key`, and `db` from `config/laravel-odoo.php`. Direct instantiation with `new OdooConnector(...)` remains fully supported — for example when you need to talk to more than one Odoo instance.
+The facade reads `url`, `api_key`, `db`, and `max_redirects` from `config/laravel-odoo.php` (the latter via the `LARAVEL_ODOO_MAX_REDIRECTS` env var, default `5`). Direct instantiation with `new OdooConnector(...)` remains fully supported — for example when you need to talk to more than one Odoo instance.
 
 ## 📖 API Reference
 
@@ -158,8 +159,21 @@ $response->databases(); // array<string>
 
 ```php
 // Get the currently authenticated user
-$response = $connector->getUser();
+$response = $connector->getUser(
+    fields: ['name', 'email'], // optional — omit to get the default field set
+    domain: [],                // optional
+    limit: 1,                  // optional, default 1
+);
 $user = $response->dto(); // ?UserDto  (id, name, lang)
+
+// Get a user by their Odoo ID
+$response = $connector->getUserById(
+    uid: 1,
+    fields: ['name', 'email'], // optional
+);
+
+// Get the authenticated user's context (timezone, language)
+$response = $connector->getUserContext();
 ```
 
 ### Employees
@@ -169,6 +183,7 @@ $user = $response->dto(); // ?UserDto  (id, name, lang)
 $response = $connector->getEmployeeByUserId(
     userId: 1,
     fields: ['name', 'job_title'], // optional — omit to get all fields
+    limit: 1,                      // optional, default 1
 );
 $response->dto(); // ?EmployeeDto
 ```
@@ -229,6 +244,8 @@ $tasks = $response->tasks();
 $response = $connector->getTasksByProject(
     projectId: 42,
     fields: ['name', 'stage_id', 'date_deadline'], // optional
+    limit: 100,                                     // optional, default 100
+    operator: '=',                                  // optional domain operator, default '='
 );
 
 /** @var array<TaskDto> $tasks */
@@ -252,7 +269,11 @@ $response = $connector->getTimesheetEntries(
 $entries = $response->entries();
 
 // Get timesheet entries from the last N days
-$response = $connector->getTimesheetEntriesLastDays(days: 7);
+$response = $connector->getTimesheetEntriesLastDays(
+    days: 7,
+    fields: ['name', 'date', 'unit_amount'], // optional
+    operator: '>=',                          // optional domain operator, default '>='
+);
 $entries = $response->entries(); // array<TimesheetEntryDto>
 
 // Read a single timesheet entry
