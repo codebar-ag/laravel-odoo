@@ -18,6 +18,7 @@ use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\ReadTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\UpdateTimesheetRequest;
+use CodebarAg\Odoo\Requests\Api\User\GetUserContextRequest;
 use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
@@ -31,6 +32,7 @@ use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetEntriesResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
+use CodebarAg\Odoo\Responses\Api\User\UserContextResponse;
 use CodebarAg\Odoo\Responses\Api\User\UserResponse;
 use CodebarAg\Odoo\Responses\Session\DatabasesResponse;
 use CodebarAg\Odoo\Responses\Session\HealthResponse;
@@ -100,6 +102,11 @@ class OdooConnector extends Connector
     public function getUser(): UserResponse
     {
         return UserResponse::fromResponse($this->send(new GetUserRequest));
+    }
+
+    public function getUserContext():UserContextResponse
+    {
+        return UserContextResponse::fromResponse($this->send(new GetUserContextRequest()));
     }
 
     /** @param array<string> $fields */
