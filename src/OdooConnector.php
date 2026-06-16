@@ -104,9 +104,9 @@ class OdooConnector extends Connector
         return UserResponse::fromResponse($this->send(new GetUserRequest));
     }
 
-    public function getUserContext():UserContextResponse
+    public function getUserContext(): UserContextResponse
     {
-        return UserContextResponse::fromResponse($this->send(new GetUserContextRequest()));
+        return UserContextResponse::fromResponse($this->send(new GetUserContextRequest));
     }
 
     /** @param array<string> $fields */
