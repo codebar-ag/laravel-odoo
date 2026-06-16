@@ -38,6 +38,24 @@ it('sends correct domain filtering by project id', function () {
     });
 });
 
+it('sends custom limit and domain operator when provided', function () {
+    $mockClient = new MockClient([
+        GetTasksByProjectRequest::class => MockResponse::fixture('Api/Tasks/tasks-by-project'),
+    ]);
+    $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
+    $connector->withMockClient($mockClient);
+
+    $connector->send(new GetTasksByProjectRequest(5, ['id', 'name'], 25, '!='));
+
+    $mockClient->assertSent(function (GetTasksByProjectRequest $request) {
+        $body = $request->body()->all();
+
+        return data_get($body, 'domain') === [['project_id', '!=', 5]]
+            && data_get($body, 'fields') === ['id', 'name']
+            && data_get($body, 'limit') === 25;
+    });
+});
+
 it('parses tasks from response', function () {
     $mockClient = new MockClient([
         GetTasksByProjectRequest::class => MockResponse::fixture('Api/Tasks/tasks-by-project'),

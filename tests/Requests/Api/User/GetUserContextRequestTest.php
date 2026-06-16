@@ -39,6 +39,28 @@ it('sends correct body with id tz lang fields and limit 1', function () {
     });
 });
 
+it('sends custom fields, domain and limit when provided', function () {
+    $mockClient = new MockClient([
+        GetUserContextRequest::class => MockResponse::fixture('Api/User/user_context'),
+    ]);
+    $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
+    $connector->withMockClient($mockClient);
+
+    $connector->send(new GetUserContextRequest(
+        fields: ['id', 'tz'],
+        domain: [['id', '=', 2]],
+        limit: 2,
+    ));
+
+    $mockClient->assertSent(function (GetUserContextRequest $request) {
+        $body = $request->body()->all();
+
+        return data_get($body, 'fields') === ['id', 'tz']
+            && data_get($body, 'domain') === [['id', '=', 2]]
+            && data_get($body, 'limit') === 2;
+    });
+});
+
 it('parses user context into a dto', function () {
     $mockClient = new MockClient([
         GetUserContextRequest::class => MockResponse::fixture('Api/User/user_context'),

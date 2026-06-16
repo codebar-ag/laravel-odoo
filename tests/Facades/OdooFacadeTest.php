@@ -42,3 +42,33 @@ it('resolves through the Odoo facade', function () {
 
     expect(Odoo::getDb())->toBe('facade-db');
 });
+
+it('applies a custom max redirects to the request config', function () {
+    $connector = new OdooConnector('https://demo.odoo.com', maxRedirects: 9);
+
+    $method = new ReflectionMethod($connector, 'defaultConfig');
+    $config = $method->invoke($connector);
+
+    expect(data_get($config, 'allow_redirects.max'))->toBe(9);
+});
+
+it('reads max redirects from config when resolved from the container', function () {
+    config()->set('laravel-odoo.url', 'https://config.odoo.com');
+    config()->set('laravel-odoo.max_redirects', 7);
+
+    $connector = app(OdooConnector::class);
+
+    $method = new ReflectionMethod($connector, 'defaultConfig');
+    $config = $method->invoke($connector);
+
+    expect(data_get($config, 'allow_redirects.max'))->toBe(7);
+});
+
+it('defaults max redirects to 5', function () {
+    $connector = new OdooConnector('https://demo.odoo.com');
+
+    $method = new ReflectionMethod($connector, 'defaultConfig');
+    $config = $method->invoke($connector);
+
+    expect(data_get($config, 'allow_redirects.max'))->toBe(5);
+});

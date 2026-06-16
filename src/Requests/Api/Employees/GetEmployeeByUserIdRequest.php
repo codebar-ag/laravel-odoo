@@ -28,6 +28,7 @@ class GetEmployeeByUserIdRequest extends Request implements Cacheable, HasBody
     public function __construct(
         private readonly int $userId,
         private readonly array $fields = [],
+        private readonly int $limit = 1,
     ) {}
 
     public function resolveEndpoint(): string
@@ -41,7 +42,7 @@ class GetEmployeeByUserIdRequest extends Request implements Cacheable, HasBody
         return [
             'domain' => [['user_id', '=', $this->userId]],
             'fields' => $this->fields ?: self::DEFAULT_FIELDS,
-            'limit' => 1,
+            'limit' => $this->limit,
         ];
     }
 }

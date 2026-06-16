@@ -25,6 +25,7 @@ class GetTasksByProjectRequest extends Request implements Cacheable, HasBody
         private readonly int $projectId,
         private readonly array $fields = [],
         private readonly int $limit = 100,
+        private readonly string $operator = '=',
     ) {}
 
     public function resolveEndpoint(): string
@@ -36,7 +37,7 @@ class GetTasksByProjectRequest extends Request implements Cacheable, HasBody
     protected function defaultBody(): array
     {
         return [
-            'domain' => [['project_id', '=', $this->projectId]],
+            'domain' => [['project_id', $this->operator, $this->projectId]],
             'fields' => $this->fields ?: self::DEFAULT_FIELDS,
             'limit' => $this->limit,
         ];

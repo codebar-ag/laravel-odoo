@@ -40,6 +40,24 @@ it('sends correct body with user id domain and limit 1', function () {
     });
 });
 
+it('sends custom fields and limit when provided', function () {
+    $mockClient = new MockClient([
+        GetEmployeeByUserIdRequest::class => MockResponse::fixture('Api/Employees/employee'),
+    ]);
+    $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
+    $connector->withMockClient($mockClient);
+
+    $connector->send(new GetEmployeeByUserIdRequest(42, ['id', 'name'], 10));
+
+    $mockClient->assertSent(function (GetEmployeeByUserIdRequest $request) {
+        $body = $request->body()->all();
+
+        return data_get($body, 'domain') === [['user_id', '=', 42]]
+            && data_get($body, 'fields') === ['id', 'name']
+            && data_get($body, 'limit') === 10;
+    });
+});
+
 it('parses employee from response', function () {
     $mockClient = new MockClient([
         GetEmployeeByUserIdRequest::class => MockResponse::fixture('Api/Employees/employee'),

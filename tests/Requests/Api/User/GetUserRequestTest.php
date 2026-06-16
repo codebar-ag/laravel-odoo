@@ -38,6 +38,28 @@ it('sends correct body with id name lang fields and limit 1', function () {
     });
 });
 
+it('sends custom fields, domain and limit when provided', function () {
+    $mockClient = new MockClient([
+        GetUserRequest::class => MockResponse::fixture('Api/User/user'),
+    ]);
+    $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
+    $connector->withMockClient($mockClient);
+
+    $connector->send(new GetUserRequest(
+        fields: ['id', 'name'],
+        domain: [['active', '=', true]],
+        limit: 5,
+    ));
+
+    $mockClient->assertSent(function (GetUserRequest $request) {
+        $body = $request->body()->all();
+
+        return data_get($body, 'fields') === ['id', 'name']
+            && data_get($body, 'domain') === [['active', '=', true]]
+            && data_get($body, 'limit') === 5;
+    });
+});
+
 it('parses user data into a dto', function () {
     $mockClient = new MockClient([
         GetUserRequest::class => MockResponse::fixture('Api/User/user'),

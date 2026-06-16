@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\User;
 
+use CodebarAg\Odoo\Requests\Api\User\Concerns\HasUserFields;
 use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
 use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
@@ -15,11 +16,15 @@ class GetUserByIdRequest extends Request implements Cacheable, HasBody
 {
     use HasJsonBody;
     use HasOdooCaching;
+    use HasUserFields;
 
     protected Method $method = Method::POST;
 
+    /** @param array<string> $fields */
     public function __construct(
         private readonly int $uid,
+        private readonly array $fields = [],
+        private readonly int $limit = 1,
     ) {}
 
     public function resolveEndpoint(): string
@@ -32,8 +37,8 @@ class GetUserByIdRequest extends Request implements Cacheable, HasBody
     {
         return [
             'domain' => [['id', '=', $this->uid]],
-            'fields' => ['id', 'name', 'lang', 'login', 'email', 'tz', 'active', 'share', 'partner_id', 'company_id'],
-            'limit' => 1,
+            'fields' => $this->fields ?: self::DEFAULT_FIELDS,
+            'limit' => $this->limit,
         ];
     }
 }
