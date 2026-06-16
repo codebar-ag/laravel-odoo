@@ -31,9 +31,9 @@ class GetUserByIdRequest extends Request implements Cacheable, HasBody
     protected function defaultBody(): array
     {
         return [
-            "domain" => [["id", "=", $this->uid]],
-            "fields" => ["id", "name", "lang", "login", "email", "tz", "active", "share", "partner_id", "company_id"],
-            "limit" => 1,
+            'domain' => [['id', '=', $this->uid]],
+            'fields' => ['id', 'name', 'lang', 'login', 'email', 'tz', 'active', 'share', 'partner_id', 'company_id'],
+            'limit' => 1,
         ];
     }
 }
