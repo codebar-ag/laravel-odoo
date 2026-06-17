@@ -11,8 +11,8 @@ use Saloon\Http\Request;
 
 class GetUserContextRequest extends Request implements Cacheable
 {
-    use HasOdooCaching;    
-    
+    use HasOdooCaching;
+
     protected Method $method = Method::POST;
 
     public function resolveEndpoint(): string

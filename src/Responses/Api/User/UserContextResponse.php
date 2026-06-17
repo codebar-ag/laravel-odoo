@@ -22,10 +22,9 @@ class UserContextResponse extends OdooResponse
         }
 
         return UserDto::fromArray([
-            'id'   => data_get($data, 'uid'),
+            'id' => data_get($data, 'uid'),
             'lang' => data_get($data, 'lang'),
-            'tz'   => data_get($data, 'tz'),
+            'tz' => data_get($data, 'tz'),
         ]);
     }
-
 }
