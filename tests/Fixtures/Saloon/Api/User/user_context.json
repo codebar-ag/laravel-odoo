@@ -1,5 +1,5 @@
 {
-    "data": "[{\"id\": 2, \"tz\": \"Europe/Zurich\", \"lang\": \"en_US\"}]",
+    "data": "{\"uid\": 2, \"tz\": \"Europe/Zurich\", \"lang\": \"en_US\"}",
     "statusCode": 200,
     "headers": {
         "Content-Type": [

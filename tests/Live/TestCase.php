@@ -7,6 +7,7 @@ use CodebarAg\Odoo\OdooServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
 use Saloon\Config;
 use Saloon\Http\Faking\MockClient;
+use Spatie\LaravelData\LaravelDataServiceProvider;
 
 class TestCase extends Orchestra
 {
@@ -25,6 +26,7 @@ class TestCase extends Orchestra
     protected function getPackageProviders($app): array
     {
         return [
+            LaravelDataServiceProvider::class,
             OdooServiceProvider::class,
         ];
     }

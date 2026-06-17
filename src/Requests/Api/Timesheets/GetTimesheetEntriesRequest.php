@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace CodebarAg\Odoo\Requests\Api\Timesheets;
 
 use CodebarAg\Odoo\Requests\Api\Timesheets\Concerns\HasTimesheetFields;
-use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
-use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetTimesheetEntriesRequest extends Request implements Cacheable, HasBody
+class GetTimesheetEntriesRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    use HasOdooCaching;
     use HasTimesheetFields;
 
     protected Method $method = Method::POST;

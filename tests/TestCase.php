@@ -27,12 +27,6 @@ class TestCase extends Orchestra
         ];
     }
 
-    protected function defineEnvironment($app): void
-    {
-        // Use the in-memory array store so cached responses never leak between tests.
-        $app['config']->set('laravel-odoo.cache.driver', 'array');
-    }
-
     protected function connector(): OdooConnector
     {
         return new OdooConnector(

@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Employees;
 
-use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
-use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetEmployeeByUserIdRequest extends Request implements Cacheable, HasBody
+class GetEmployeeByUserIdRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    use HasOdooCaching;
 
     private const DEFAULT_FIELDS = [
         'id', 'name', 'work_email', 'work_phone', 'mobile_phone', 'job_title',
