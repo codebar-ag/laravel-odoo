@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\User;
 
-use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
-use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 
-class GetUserContextRequest extends Request implements Cacheable
+class GetUserContextRequest extends Request
 {
-    use HasOdooCaching;
 
     protected Method $method = Method::POST;
 
