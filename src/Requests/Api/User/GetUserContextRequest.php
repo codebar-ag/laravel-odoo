@@ -9,7 +9,6 @@ use Saloon\Http\Request;
 
 class GetUserContextRequest extends Request
 {
-
     protected Method $method = Method::POST;
 
     public function resolveEndpoint(): string
