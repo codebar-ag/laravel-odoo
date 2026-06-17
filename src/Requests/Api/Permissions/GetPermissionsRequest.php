@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo\Requests\Api\Permissions;
 
-use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
-use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetPermissionsRequest extends Request implements Cacheable, HasBody
+class GetPermissionsRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    use HasOdooCaching;
 
     protected Method $method = Method::POST;
 

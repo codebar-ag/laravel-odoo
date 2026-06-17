@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace CodebarAg\Odoo\Requests\Api\User;
 
 use CodebarAg\Odoo\Requests\Api\User\Concerns\HasUserFields;
-use CodebarAg\Odoo\Requests\Concerns\HasOdooCaching;
-use Saloon\CachePlugin\Contracts\Cacheable;
 use Saloon\Contracts\Body\HasBody;
 use Saloon\Enums\Method;
 use Saloon\Http\Request;
 use Saloon\Traits\Body\HasJsonBody;
 
-class GetUserByIdRequest extends Request implements Cacheable, HasBody
+class GetUserByIdRequest extends Request implements HasBody
 {
     use HasJsonBody;
-    use HasOdooCaching;
     use HasUserFields;
 
     protected Method $method = Method::POST;
