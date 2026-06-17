@@ -17,6 +17,10 @@ class UserContextResponse extends OdooResponse
 
         $data = $this->response->json();
 
+        if (! empty($data)) {
+            return null;
+        }
+
         return UserDto::fromArray([
             'id' => data_get($data, 'uid'),
             'lang' => data_get($data, 'lang'),
