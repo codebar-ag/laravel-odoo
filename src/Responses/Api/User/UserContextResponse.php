@@ -17,7 +17,7 @@ class UserContextResponse extends OdooResponse
 
         $data = $this->response->json();
 
-        if (! empty($data)) {
+        if (empty($data)) {
             return null;
         }
 
