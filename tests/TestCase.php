@@ -27,7 +27,7 @@ class TestCase extends Orchestra
         ];
     }
 
-protected function connector(): OdooConnector
+    protected function connector(): OdooConnector
     {
         return new OdooConnector(
             baseUrl: env('LARAVEL_ODOO_URL'),
