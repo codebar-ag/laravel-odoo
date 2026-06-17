@@ -15,12 +15,17 @@ class UserContextResponse extends OdooResponse
             return null;
         }
 
-        $user = data_get($this->response->json(), 0);
+        $data = $this->response->json();
 
-        if (! \is_array($user)) {
+        if (! \is_array($data) || empty($data)) {
             return null;
         }
 
-        return UserDto::fromArray($user);
+        return UserDto::fromArray([
+            'id'   => data_get($data, 'uid'),
+            'lang' => data_get($data, 'lang'),
+            'tz'   => data_get($data, 'tz'),
+        ]);
     }
+
 }
