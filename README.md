@@ -82,6 +82,8 @@ Add the following variables to your `.env` file:
 LARAVEL_ODOO_URL=https://your-odoo-instance.com
 LARAVEL_ODOO_API_KEY=your-api-key
 LARAVEL_ODOO_DB=your-database
+LARAVEL_ODOO_TIMEOUT=15        # optional — request timeout in seconds (default 15, 0 = no timeout)
+LARAVEL_ODOO_MAX_REDIRECTS=5   # optional — max HTTP redirects to follow (default 5)
 ```
 
 
@@ -97,6 +99,7 @@ $connector = new OdooConnector(
     apiKey: 'your-api-key',
     db: 'your-database',   // optional
     maxRedirects: 5,       // optional — max HTTP redirects to follow (default 5)
+    timeout: 15.0,         // optional — request timeout in seconds (default 15, 0 = no timeout)
 );
 ```
 
@@ -113,7 +116,7 @@ $response = Odoo::health();
 $response->isHealthy(); // bool
 ```
 
-The facade reads `url`, `api_key`, `db`, and `max_redirects` from `config/laravel-odoo.php` (the latter via the `LARAVEL_ODOO_MAX_REDIRECTS` env var, default `5`). Direct instantiation with `new OdooConnector(...)` remains fully supported — for example when you need to talk to more than one Odoo instance.
+The facade reads `url`, `api_key`, `db`, `timeout`, and `max_redirects` from `config/laravel-odoo.php` (configurable via their respective `LARAVEL_ODOO_*` env vars). Direct instantiation with `new OdooConnector(...)` remains fully supported — for example when you need to talk to more than one Odoo instance.
 
 ## 📖 API Reference
 

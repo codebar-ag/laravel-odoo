@@ -1,0 +1,28 @@
+<?php
+
+declare(strict_types=1);
+
+use CodebarAg\Odoo\OdooConnector;
+use Saloon\Exceptions\Request\FatalRequestException;
+
+it('respects a custom timeout on live requests', function () {
+    $connector = new OdooConnector(
+        baseUrl: env('LARAVEL_ODOO_URL'),
+        apiKey: env('LARAVEL_ODOO_API_KEY'),
+        db: ($db = env('LARAVEL_ODOO_DB')) !== '' ? $db : null,
+        timeout: 5,
+    );
+
+    $response = $connector->health();
+
+    expect($response->successful())->toBeTrue()
+        ->and($connector->config()->get('timeout'))->toBe(5.0);
+})->group('live');
+
+it('throws when a request cannot be completed within the configured timeout', function () {
+    $connector = new OdooConnector(
+        baseUrl: 'http://192.0.2.1',
+        timeout: 1,
+    );
+    $connector->health();
+})->throws(FatalRequestException::class)->group('live');
