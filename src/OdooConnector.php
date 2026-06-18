@@ -11,8 +11,8 @@ use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetAllTasksRequest;
-use CodebarAg\Odoo\Requests\Api\Timer\GetAllRunningTimerRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetTasksByProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Timer\GetAllRunningTimerRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\CreateTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\DeleteTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
@@ -206,8 +206,8 @@ class OdooConnector extends Connector
     }
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed>  $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function getRunningTimers(array $fields = [], array $domain = [], int $limit = 500): RunningTimersResponse
     {

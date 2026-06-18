@@ -33,8 +33,8 @@ class GetAllRunningTimerRequest extends Request implements HasBody
     protected Method $method = Method::POST;
 
     /**
-     * @param array<string> $fields
-     * @param array<mixed>  $domain
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
      */
     public function __construct(
         private readonly array $fields = self::DEFAULT_FIELDS,
@@ -53,7 +53,7 @@ class GetAllRunningTimerRequest extends Request implements HasBody
         return [
             'domain' => $this->domain,
             'fields' => $this->fields,
-            'limit' => $this->limit
+            'limit' => $this->limit,
         ];
     }
 }
