@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 7, \"display_name\": \"timer.timer,7\", \"timer_start\": \"2026-06-18 12:16:34\", \"timer_pause\": false, \"is_timer_running\": true, \"res_model\": \"account.analytic.line\", \"res_id\": 54, \"user_id\": [6, \"Max Mustermann\"], \"parent_res_model\": false, \"parent_res_id\": 0, \"create_uid\": [6, \"Max Mustermann\"], \"create_date\": \"2026-06-18 12:16:34\", \"write_uid\": [6, \"Max Mustermann\"], \"write_date\": \"2026-06-18 12:16:34\"}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
