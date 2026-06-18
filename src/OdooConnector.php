@@ -47,6 +47,7 @@ class OdooConnector extends Connector
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
         private readonly int $maxRedirects = 5,
+        private readonly int $timeout = 15,
     ) {}
 
     public function resolveBaseUrl(): string
@@ -83,6 +84,7 @@ class OdooConnector extends Connector
                 'max' => $this->maxRedirects,
                 'track_redirects' => true,
             ],
+            'timeout' => $this->timeout,
         ];
     }
 
