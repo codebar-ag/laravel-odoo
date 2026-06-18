@@ -19,7 +19,7 @@ it('respects a custom timeout on live requests', function () {
         ->and($connector->config()->get('timeout'))->toBe(5.0);
 })->group('live');
 
-it('throws when the timeout is exceeded', function () {
+it('throws when a request cannot be completed within the configured timeout', function () {
     $connector = new OdooConnector(
         baseUrl: 'http://192.0.2.1',
         timeout: 1,
