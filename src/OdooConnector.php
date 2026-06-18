@@ -47,7 +47,7 @@ class OdooConnector extends Connector
         private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
         private readonly int $maxRedirects = 5,
-        private readonly int $timeout = 15,
+        private readonly float $timeout = 15,
     ) {}
 
     public function resolveBaseUrl(): string

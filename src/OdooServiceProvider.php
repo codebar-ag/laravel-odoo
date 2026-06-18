@@ -30,7 +30,7 @@ class OdooServiceProvider extends PackageServiceProvider
                 apiKey: \is_string($apiKey) && $apiKey !== '' ? $apiKey : null,
                 db: \is_string($db) && $db !== '' ? $db : null,
                 maxRedirects: \is_numeric($maxRedirects) ? (int) $maxRedirects : 5,
-                timeout: \is_numeric($timeout) ? (int) $timeout : 15,
+                timeout: \is_numeric($timeout) ? (float) $timeout : 15,
             );
         });
     }

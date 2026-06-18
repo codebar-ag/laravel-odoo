@@ -21,9 +21,8 @@ it('respects a custom timeout on live requests', function () {
 
 it('throws when the timeout is exceeded', function () {
     $connector = new OdooConnector(
-        baseUrl: 'http://10.255.255.1',
+        baseUrl: 'http://192.0.2.1',
         timeout: 1,
     );
-
     $connector->health();
 })->throws(FatalRequestException::class)->group('live');

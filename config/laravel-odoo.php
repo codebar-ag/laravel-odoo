@@ -20,7 +20,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Maximum Execution Time
+    | Request Timeout
     |--------------------------------------------------------------------------
     |
     | The maximum number of seconds to wait for a server response before
