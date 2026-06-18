@@ -7,13 +7,13 @@ use CodebarAg\Odoo\OdooConnector;
 it('uses the default timeout when none is provided', function () {
     $connector = new OdooConnector(baseUrl: 'https://demo.odoo.com');
 
-    expect($connector->config()->get('timeout'))->toBe(15);
+    expect($connector->config()->get('timeout'))->toBe(15.0);
 });
 
 it('uses a custom timeout passed to the constructor', function () {
     $connector = new OdooConnector(baseUrl: 'https://demo.odoo.com', timeout: 60);
 
-    expect($connector->config()->get('timeout'))->toBe(60);
+    expect($connector->config()->get('timeout'))->toBe(60.0);
 });
 
 it('applies timeout from laravel config via the service container', function () {
@@ -22,5 +22,5 @@ it('applies timeout from laravel config via the service container', function () 
     /** @var OdooConnector $connector */
     $connector = app(OdooConnector::class);
 
-    expect($connector->config()->get('timeout'))->toBe(45);
+    expect($connector->config()->get('timeout'))->toBe(45.0);
 });

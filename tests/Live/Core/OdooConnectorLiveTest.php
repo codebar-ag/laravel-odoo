@@ -16,7 +16,7 @@ it('respects a custom timeout on live requests', function () {
     $response = $connector->health();
 
     expect($response->successful())->toBeTrue()
-        ->and($connector->config()->get('timeout'))->toBe(5);
+        ->and($connector->config()->get('timeout'))->toBe(5.0);
 })->group('live');
 
 it('throws when the timeout is exceeded', function () {
