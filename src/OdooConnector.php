@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
+use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
+use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
+use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
@@ -213,5 +216,10 @@ class OdooConnector extends Connector
             'tasks' => $this->getAllTasks(),
             'timesheets' => $this->getTimesheetEntries(),
         ];
+    }
+
+    public function createContact(CreateContactDto $dto): CreateContactResponse
+    {
+        return CreateContactResponse::fromResponse($this->send(new CreateContactRequest($dto)));
     }
 }
