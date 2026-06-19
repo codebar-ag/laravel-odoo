@@ -12,8 +12,8 @@ use Saloon\Traits\Body\HasJsonBody;
 
 class ReadContactRequest extends Request implements HasBody
 {
-    use HasJsonBody;
     use HasContactFields;
+    use HasJsonBody;
 
     protected Method $method = Method::POST;
 
