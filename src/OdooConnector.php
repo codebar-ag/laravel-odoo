@@ -6,11 +6,11 @@ namespace CodebarAg\Odoo;
 
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
 use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
+use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
+use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\DeleteContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
-use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
-use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;

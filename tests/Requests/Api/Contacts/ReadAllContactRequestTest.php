@@ -13,7 +13,7 @@ it('sends request to correct endpoint', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new ReadAllContactRequest());
+    $response = $connector->send(new ReadAllContactRequest);
 
     $mockClient->assertSent(ReadAllContactRequest::class);
     expect($response->successful())->toBeTrue();
@@ -26,7 +26,7 @@ it('sends empty domain and default fields body', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $connector->send(new ReadAllContactRequest());
+    $connector->send(new ReadAllContactRequest);
 
     $mockClient->assertSent(function (ReadAllContactRequest $request) {
         $body = $request->body()->all();
@@ -60,7 +60,7 @@ it('maps response to ContactDto collection', function () {
     $connector = new OdooConnector('https://demo.odoo.com', 'api-key-123');
     $connector->withMockClient($mockClient);
 
-    $response = $connector->send(new ReadAllContactRequest());
+    $response = $connector->send(new ReadAllContactRequest);
 
     $contacts = collect($response->json())
         ->map(fn (array $record) => ContactDto::fromArray($record))
