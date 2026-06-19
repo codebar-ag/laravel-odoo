@@ -43,13 +43,12 @@ it('updates a contact', function () {
 
     $updateResponse = $this->connector()->updateContact($updateDto);
 
-
     expect($updateResponse)->toBeInstanceOf(MutateContactResponse::class);
     expect($updateResponse->ok())->toBeTrue();
 })->group('live');
 
 it('reads all contacts and maps them to ContactDto', function () {
-    $response = $this->connector()->send(new ReadAllContactRequest());
+    $response = $this->connector()->send(new ReadAllContactRequest);
 
     expect($response->successful())->toBeTrue();
 
