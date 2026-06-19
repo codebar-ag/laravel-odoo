@@ -1,0 +1,9 @@
+{
+    "data": "[42, 43]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
