@@ -86,3 +86,20 @@ it('creates and reads a contact by id', function () {
     expect($contact->id)->toBe($createResponse->id());
     expect($contact->name)->toBe('Test Contact Read');
 })->group('live');
+
+it('creates and deletes a contact', function () {
+    $createResponse = $this->connector()->createContact(new CreateContactDto(
+        name: 'Test Contact Delete',
+        isCompany: false,
+        email: 'delete-test@example.com',
+    ));
+
+    expect($createResponse->id())->toBeInt();
+
+    $deleteResponse = $this->connector()->deleteContact($createResponse->id());
+
+    ray($deleteResponse->ok());
+
+    expect($deleteResponse)->toBeInstanceOf(MutateContactResponse::class);
+    expect($deleteResponse->ok())->toBeTrue();
+})->group('live');

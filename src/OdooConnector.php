@@ -7,6 +7,7 @@ namespace CodebarAg\Odoo;
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
 use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
 use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\DeleteContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
 use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\MutateContactResponse;
@@ -229,5 +230,10 @@ class OdooConnector extends Connector
     public function updateContact(UpdateContactDto $dto): MutateContactResponse
     {
         return MutateContactResponse::fromResponse($this->send(new UpdateContactRequest($dto)));
+    }
+
+    public function deleteContact(int $id): MutateContactResponse
+    {
+        return MutateContactResponse::fromResponse($this->send(new DeleteContactRequest($id)));
     }
 }
