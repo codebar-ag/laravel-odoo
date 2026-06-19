@@ -1,7 +1,10 @@
 <?php
 
+use CodebarAg\Odoo\Dto\Contacts\ContactDto;
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
 use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
+use CodebarAg\Odoo\Requests\Api\Contacts\ReadAllContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\ReadContactRequest;
 use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\MutateContactResponse;
 
@@ -40,8 +43,46 @@ it('updates a contact', function () {
 
     $updateResponse = $this->connector()->updateContact($updateDto);
 
-    ray($updateResponse->body());
 
     expect($updateResponse)->toBeInstanceOf(MutateContactResponse::class);
     expect($updateResponse->ok())->toBeTrue();
+})->group('live');
+
+it('reads all contacts and maps them to ContactDto', function () {
+    $response = $this->connector()->send(new ReadAllContactRequest());
+
+    expect($response->successful())->toBeTrue();
+
+    $contacts = collect($response->json())
+        ->map(fn (array $record) => ContactDto::fromArray($record))
+        ->all();
+
+    expect($contacts)->toBeArray();
+
+    if ($contacts !== []) {
+        expect($contacts[0])->toBeInstanceOf(ContactDto::class);
+        expect($contacts[0]->id)->toBeInt();
+        expect($contacts[0]->name)->toBeString();
+    }
+})->group('live');
+
+it('creates and reads a contact by id', function () {
+    $createResponse = $this->connector()->createContact(new CreateContactDto(
+        name: 'Test Contact Read',
+        isCompany: false,
+        email: 'read-test@example.com',
+        phone: '+41 44 000 00 00',
+    ));
+
+    expect($createResponse->id())->toBeInt();
+
+    $response = $this->connector()->send(new ReadContactRequest($createResponse->id()));
+
+    expect($response->successful())->toBeTrue();
+
+    $contact = ContactDto::fromArray($response->json()[0]);
+
+    expect($contact)->toBeInstanceOf(ContactDto::class);
+    expect($contact->id)->toBe($createResponse->id());
+    expect($contact->name)->toBe('Test Contact Read');
 })->group('live');
