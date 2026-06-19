@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace CodebarAg\Odoo;
 
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
+use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
 use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
 use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
+use CodebarAg\Odoo\Responses\Api\Contacts\MutateContactResponse;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
@@ -221,5 +224,10 @@ class OdooConnector extends Connector
     public function createContact(CreateContactDto $dto): CreateContactResponse
     {
         return CreateContactResponse::fromResponse($this->send(new CreateContactRequest($dto)));
+    }
+
+    public function updateContact(UpdateContactDto $dto): MutateContactResponse
+    {
+        return MutateContactResponse::fromResponse($this->send(new UpdateContactRequest($dto)));
     }
 }
