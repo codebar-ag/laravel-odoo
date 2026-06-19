@@ -97,8 +97,6 @@ it('creates and deletes a contact', function () {
 
     $deleteResponse = $this->connector()->deleteContact($createResponse->id());
 
-    ray($deleteResponse->ok());
-
     expect($deleteResponse)->toBeInstanceOf(MutateContactResponse::class);
     expect($deleteResponse->ok())->toBeTrue();
 })->group('live');
