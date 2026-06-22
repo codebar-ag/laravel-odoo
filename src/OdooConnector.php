@@ -4,8 +4,16 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
+use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
+use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
+use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\DeleteContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\NameSearchContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\SearchContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\SearchCountContactRequest;
+use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
@@ -24,6 +32,11 @@ use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
+use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
+use CodebarAg\Odoo\Responses\Api\Contacts\MutateContactResponse;
+use CodebarAg\Odoo\Responses\Api\Contacts\NameSearchContactResponse;
+use CodebarAg\Odoo\Responses\Api\Contacts\SearchContactResponse;
+use CodebarAg\Odoo\Responses\Api\Contacts\SearchCountContactResponse;
 use CodebarAg\Odoo\Responses\Api\Employees\EmployeeResponse;
 use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
 use CodebarAg\Odoo\Responses\Api\Permissions\PermissionsResponse;
@@ -213,5 +226,38 @@ class OdooConnector extends Connector
             'tasks' => $this->getAllTasks(),
             'timesheets' => $this->getTimesheetEntries(),
         ];
+    }
+
+    public function createContact(CreateContactDto $dto): CreateContactResponse
+    {
+        return CreateContactResponse::fromResponse($this->send(new CreateContactRequest($dto)));
+    }
+
+    public function updateContact(UpdateContactDto $dto): MutateContactResponse
+    {
+        return MutateContactResponse::fromResponse($this->send(new UpdateContactRequest($dto)));
+    }
+
+    public function deleteContact(int $id): MutateContactResponse
+    {
+        return MutateContactResponse::fromResponse($this->send(new DeleteContactRequest($id)));
+    }
+
+    /** @param array<mixed> $domain */
+    public function searchContacts(array $domain): SearchContactResponse
+    {
+        return SearchContactResponse::fromResponse($this->send(new SearchContactRequest($domain)));
+    }
+
+    /** @param array<mixed> $domain */
+    public function searchCountContacts(array $domain = []): SearchCountContactResponse
+    {
+        return SearchCountContactResponse::fromResponse($this->send(new SearchCountContactRequest($domain)));
+    }
+
+    /** @param array<mixed> $domain */
+    public function nameSearchContacts(string $name, array $domain = [], int $limit = 100): NameSearchContactResponse
+    {
+        return NameSearchContactResponse::fromResponse($this->send(new NameSearchContactRequest($name, $domain, $limit)));
     }
 }

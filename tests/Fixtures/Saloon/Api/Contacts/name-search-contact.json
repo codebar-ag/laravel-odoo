@@ -1,0 +1,9 @@
+{
+    "data": "[[42, \"Max Mustermann\"], [43, \"Max Mustermann GmbH\"]]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

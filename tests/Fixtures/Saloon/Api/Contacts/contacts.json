@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 42, \"name\": \"Fixture Contact\", \"email\": \"fixture@example.com\", \"phone\": \"+41 44 000 00 00\", \"street\": \"Bahnhofstrasse 1\", \"city\": \"Zurich\", \"zip\": \"8001\", \"country_id\": [176, \"Switzerland\"], \"is_company\": false, \"parent_id\": false}, {\"id\": 43, \"name\": \"Fixture Company\", \"email\": \"company@example.com\", \"phone\": \"+41 44 111 11 11\", \"street\": \"Rennweg 5\", \"city\": \"Zurich\", \"zip\": \"8001\", \"country_id\": [176, \"Switzerland\"], \"is_company\": true, \"parent_id\": false}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
