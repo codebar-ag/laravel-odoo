@@ -20,6 +20,7 @@ use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetAllTasksRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetTasksByProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Timer\GetAllRunningTimerRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\CreateTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\DeleteTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
@@ -42,6 +43,7 @@ use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
 use CodebarAg\Odoo\Responses\Api\Permissions\PermissionsResponse;
 use CodebarAg\Odoo\Responses\Api\Projects\ProjectsResponse;
 use CodebarAg\Odoo\Responses\Api\Tasks\TasksResponse;
+use CodebarAg\Odoo\Responses\Api\Timer\RunningTimersResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetEntriesResponse;
@@ -216,6 +218,19 @@ class OdooConnector extends Connector
     public function deleteTimesheet(int $id): MutateTimesheetResponse
     {
         return MutateTimesheetResponse::fromResponse($this->send(new DeleteTimesheetRequest($id)));
+    }
+
+    /**
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
+     */
+    public function getRunningTimers(array $fields = [], array $domain = [], int $limit = 500): RunningTimersResponse
+    {
+        return RunningTimersResponse::fromResponse($this->send(new GetAllRunningTimerRequest(
+            fields: $fields ?: GetAllRunningTimerRequest::DEFAULT_FIELDS,
+            domain: $domain,
+            limit: $limit,
+        )));
     }
 
     /** @return array{projects: ProjectsResponse, tasks: TasksResponse, timesheets: TimesheetEntriesResponse} */
