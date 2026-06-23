@@ -207,6 +207,31 @@ $response = $connector->getProjects(
 
 /** @var array<ProjectDto> $projects */
 $projects = $response->projects();
+
+use CodebarAg\Odoo\Dto\Projects\CreateProjectDto;
+use CodebarAg\Odoo\Dto\Projects\UpdateProjectDto;
+
+// Create a project
+$response = $connector->createProject(new CreateProjectDto(
+    name: 'Website Relaunch',
+    partnerId: 7,         // optional, linked contact
+    userId: 2,            // optional, project manager
+    allocatedHours: 40.0, // optional
+    tagIds: [1, 2],       // optional many-to-many tags
+    extraValues: [],      // optional, custom/studio fields
+));
+$id = $response->id(); // ?int
+
+// Update a project (only provided fields are written)
+$response = $connector->updateProject(new UpdateProjectDto(
+    id: 42,
+    name: 'Website Relaunch 2.0',
+));
+$response->ok(); // bool
+
+// Delete a project
+$response = $connector->deleteProject(id: 42);
+$response->ok(); // bool
 ```
 
 ### Tasks
@@ -232,6 +257,33 @@ $response = $connector->getTasksByProject(
 
 /** @var array<TaskDto> $tasks */
 $tasks = $response->tasks();
+
+use CodebarAg\Odoo\Dto\Tasks\CreateTaskDto;
+use CodebarAg\Odoo\Dto\Tasks\UpdateTaskDto;
+
+// Create a task
+$response = $connector->createTask(new CreateTaskDto(
+    name: 'Design homepage',
+    projectId: 42,        // optional
+    userIds: [5, 6],      // optional assignees (many-to-many)
+    stageId: 1,           // optional
+    dateDeadline: '2026-07-01',
+    priority: '1',        // optional
+    extraValues: [],      // optional, custom/studio fields
+));
+$id = $response->id(); // ?int
+
+// Update a task (only provided fields are written)
+$response = $connector->updateTask(new UpdateTaskDto(
+    id: 42,
+    name: 'Design homepage v2',
+    stageId: 2,
+));
+$response->ok(); // bool
+
+// Delete a task
+$response = $connector->deleteTask(id: 42);
+$response->ok(); // bool
 ```
 
 ### Timesheets
