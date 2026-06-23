@@ -6,6 +6,10 @@ namespace CodebarAg\Odoo;
 
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
 use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
+use CodebarAg\Odoo\Dto\Projects\CreateProjectDto;
+use CodebarAg\Odoo\Dto\Projects\UpdateProjectDto;
+use CodebarAg\Odoo\Dto\Tasks\CreateTaskDto;
+use CodebarAg\Odoo\Dto\Tasks\UpdateTaskDto;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
@@ -17,9 +21,15 @@ use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
+use CodebarAg\Odoo\Requests\Api\Projects\CreateProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Projects\DeleteProjectRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\GetProjectsRequest;
+use CodebarAg\Odoo\Requests\Api\Projects\UpdateProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\CreateTaskRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\DeleteTaskRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetAllTasksRequest;
 use CodebarAg\Odoo\Requests\Api\Tasks\GetTasksByProjectRequest;
+use CodebarAg\Odoo\Requests\Api\Tasks\UpdateTaskRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\CreateTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\DeleteTimesheetRequest;
 use CodebarAg\Odoo\Requests\Api\Timesheets\GetTimesheetEntriesLastDaysRequest;
@@ -40,7 +50,11 @@ use CodebarAg\Odoo\Responses\Api\Contacts\SearchCountContactResponse;
 use CodebarAg\Odoo\Responses\Api\Employees\EmployeeResponse;
 use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
 use CodebarAg\Odoo\Responses\Api\Permissions\PermissionsResponse;
+use CodebarAg\Odoo\Responses\Api\Projects\CreateProjectResponse;
+use CodebarAg\Odoo\Responses\Api\Projects\MutateProjectResponse;
 use CodebarAg\Odoo\Responses\Api\Projects\ProjectsResponse;
+use CodebarAg\Odoo\Responses\Api\Tasks\CreateTaskResponse;
+use CodebarAg\Odoo\Responses\Api\Tasks\MutateTaskResponse;
 use CodebarAg\Odoo\Responses\Api\Tasks\TasksResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\MutateTimesheetResponse;
@@ -167,6 +181,21 @@ class OdooConnector extends Connector
         return ProjectsResponse::fromResponse($this->send(new GetProjectsRequest($fields, $domain, $limit)));
     }
 
+    public function createProject(CreateProjectDto $dto): CreateProjectResponse
+    {
+        return CreateProjectResponse::fromResponse($this->send(new CreateProjectRequest($dto)));
+    }
+
+    public function updateProject(UpdateProjectDto $dto): MutateProjectResponse
+    {
+        return MutateProjectResponse::fromResponse($this->send(new UpdateProjectRequest($dto)));
+    }
+
+    public function deleteProject(int $id): MutateProjectResponse
+    {
+        return MutateProjectResponse::fromResponse($this->send(new DeleteProjectRequest($id)));
+    }
+
     /**
      * @param  array<string>  $fields
      * @param  array<mixed>  $domain
@@ -180,6 +209,21 @@ class OdooConnector extends Connector
     public function getTasksByProject(int $projectId, array $fields = [], int $limit = 100, string $operator = '='): TasksResponse
     {
         return TasksResponse::fromResponse($this->send(new GetTasksByProjectRequest($projectId, $fields, $limit, $operator)));
+    }
+
+    public function createTask(CreateTaskDto $dto): CreateTaskResponse
+    {
+        return CreateTaskResponse::fromResponse($this->send(new CreateTaskRequest($dto)));
+    }
+
+    public function updateTask(UpdateTaskDto $dto): MutateTaskResponse
+    {
+        return MutateTaskResponse::fromResponse($this->send(new UpdateTaskRequest($dto)));
+    }
+
+    public function deleteTask(int $id): MutateTaskResponse
+    {
+        return MutateTaskResponse::fromResponse($this->send(new DeleteTaskRequest($id)));
     }
 
     /**
