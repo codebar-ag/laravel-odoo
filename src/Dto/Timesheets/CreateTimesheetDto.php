@@ -41,6 +41,7 @@ class CreateTimesheetDto extends Data
             data_set($data, 'employee_id', $this->employeeId);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }

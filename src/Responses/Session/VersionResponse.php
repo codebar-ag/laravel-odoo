@@ -39,7 +39,7 @@ class VersionResponse extends OdooResponse
         $major = data_get($info, 0);
         $minor = data_get($info, 1);
 
-        if ($major === null || $minor === null) {
+        if (! is_scalar($major) || ! is_scalar($minor)) {
             return null;
         }
 

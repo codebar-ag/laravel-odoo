@@ -68,6 +68,7 @@ class CreateBankAccountDto extends Data
             data_set($data, 'sequence', $this->sequence);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }

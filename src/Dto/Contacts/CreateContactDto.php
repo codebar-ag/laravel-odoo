@@ -138,6 +138,7 @@ class CreateContactDto extends Data
             data_set($data, 'active', $this->active);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }

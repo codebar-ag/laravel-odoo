@@ -64,6 +64,8 @@ class BankAccountDto extends OdooData
         foreach (self::MODERN_ALIASES as $modern => $canonical) {
             if (data_get($data, $modern) !== null && data_get($data, $canonical) === null) {
                 data_set($data, $canonical, data_get($data, $modern));
+
+                /** @var array<array-key, mixed> $data */
                 Arr::forget($data, $modern);
             }
         }
