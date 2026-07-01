@@ -43,61 +43,62 @@ class UpdateTaskDto extends Data
         $data = [];
 
         if ($this->name !== null) {
-            $data['name'] = $this->name;
+            data_set($data, 'name', $this->name);
         }
 
         if ($this->projectId !== null) {
-            $data['project_id'] = $this->projectId;
+            data_set($data, 'project_id', $this->projectId);
         }
 
         if ($this->description !== null) {
-            $data['description'] = $this->description;
+            data_set($data, 'description', $this->description);
         }
 
         if ($this->userIds !== []) {
-            $data['user_ids'] = [[6, 0, $this->userIds]];
+            data_set($data, 'user_ids', [[6, 0, $this->userIds]]);
         }
 
         if ($this->stageId !== null) {
-            $data['stage_id'] = $this->stageId;
+            data_set($data, 'stage_id', $this->stageId);
         }
 
         if ($this->dateDeadline !== null) {
-            $data['date_deadline'] = $this->dateDeadline;
+            data_set($data, 'date_deadline', $this->dateDeadline);
         }
 
         if ($this->priority !== null) {
-            $data['priority'] = $this->priority;
+            data_set($data, 'priority', $this->priority);
         }
 
         if ($this->partnerId !== null) {
-            $data['partner_id'] = $this->partnerId;
+            data_set($data, 'partner_id', $this->partnerId);
         }
 
         if ($this->companyId !== null) {
-            $data['company_id'] = $this->companyId;
+            data_set($data, 'company_id', $this->companyId);
         }
 
         if ($this->parentId !== null) {
-            $data['parent_id'] = $this->parentId;
+            data_set($data, 'parent_id', $this->parentId);
         }
 
         if ($this->milestoneId !== null) {
-            $data['milestone_id'] = $this->milestoneId;
+            data_set($data, 'milestone_id', $this->milestoneId);
         }
 
         if ($this->allocatedHours !== null) {
-            $data['allocated_hours'] = $this->allocatedHours;
+            data_set($data, 'allocated_hours', $this->allocatedHours);
         }
 
         if ($this->tagIds !== []) {
-            $data['tag_ids'] = [[6, 0, $this->tagIds]];
+            data_set($data, 'tag_ids', [[6, 0, $this->tagIds]]);
         }
 
         if ($this->active !== null) {
-            $data['active'] = $this->active;
+            data_set($data, 'active', $this->active);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }

@@ -51,93 +51,94 @@ class CreateContactDto extends Data
         ];
 
         if ($this->isCompany !== null) {
-            $data['is_company'] = $this->isCompany;
+            data_set($data, 'is_company', $this->isCompany);
         }
 
         if ($this->parentId !== null) {
-            $data['parent_id'] = $this->parentId;
+            data_set($data, 'parent_id', $this->parentId);
         }
 
         if ($this->type !== null) {
-            $data['type'] = $this->type;
+            data_set($data, 'type', $this->type);
         }
 
         if ($this->street !== null) {
-            $data['street'] = $this->street;
+            data_set($data, 'street', $this->street);
         }
 
         if ($this->street2 !== null) {
-            $data['street2'] = $this->street2;
+            data_set($data, 'street2', $this->street2);
         }
 
         if ($this->city !== null) {
-            $data['city'] = $this->city;
+            data_set($data, 'city', $this->city);
         }
 
         if ($this->zip !== null) {
-            $data['zip'] = $this->zip;
+            data_set($data, 'zip', $this->zip);
         }
 
         if ($this->stateId !== null) {
-            $data['state_id'] = $this->stateId;
+            data_set($data, 'state_id', $this->stateId);
         }
 
         if ($this->countryId !== null) {
-            $data['country_id'] = $this->countryId;
+            data_set($data, 'country_id', $this->countryId);
         }
 
         if ($this->phone !== null) {
-            $data['phone'] = $this->phone;
+            data_set($data, 'phone', $this->phone);
         }
 
         if ($this->mobile !== null) {
-            $data['mobile'] = $this->mobile;
+            data_set($data, 'mobile', $this->mobile);
         }
 
         if ($this->email !== null) {
-            $data['email'] = $this->email;
+            data_set($data, 'email', $this->email);
         }
 
         if ($this->website !== null) {
-            $data['website'] = $this->website;
+            data_set($data, 'website', $this->website);
         }
 
         if ($this->comment !== null) {
-            $data['comment'] = $this->comment;
+            data_set($data, 'comment', $this->comment);
         }
 
         if ($this->function !== null) {
-            $data['function'] = $this->function;
+            data_set($data, 'function', $this->function);
         }
 
         if ($this->lang !== null) {
-            $data['lang'] = $this->lang;
+            data_set($data, 'lang', $this->lang);
         }
 
         if ($this->titleId !== null) {
-            $data['title'] = $this->titleId;
+            data_set($data, 'title', $this->titleId);
         }
 
         if ($this->userId !== null) {
-            $data['user_id'] = $this->userId;
+            data_set($data, 'user_id', $this->userId);
         }
 
         if ($this->categoryId !== null) {
-            $data['category_id'] = $this->categoryId;
+            data_set($data, 'category_id', $this->categoryId);
         }
 
         if ($this->vat !== null) {
-            $data['vat'] = $this->vat;
+            data_set($data, 'vat', $this->vat);
         }
 
         if ($this->ref !== null) {
-            $data['ref'] = $this->ref;
+            data_set($data, 'ref', $this->ref);
         }
 
         if ($this->active !== null) {
-            $data['active'] = $this->active;
+            data_set($data, 'active', $this->active);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }

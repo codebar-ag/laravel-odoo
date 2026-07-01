@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CodebarAg\Odoo;
 
+use CodebarAg\Odoo\Dto\BankAccounts\CreateBankAccountDto;
+use CodebarAg\Odoo\Dto\BankAccounts\UpdateBankAccountDto;
 use CodebarAg\Odoo\Dto\Contacts\CreateContactDto;
 use CodebarAg\Odoo\Dto\Contacts\UpdateContactDto;
 use CodebarAg\Odoo\Dto\Projects\CreateProjectDto;
@@ -12,6 +14,14 @@ use CodebarAg\Odoo\Dto\Tasks\CreateTaskDto;
 use CodebarAg\Odoo\Dto\Tasks\UpdateTaskDto;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\BankAccountFields;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\CreateBankAccountRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\DeleteBankAccountRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\GetBankAccountsRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\ReadBankAccountRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\SearchBankAccountRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\SearchCountBankAccountRequest;
+use CodebarAg\Odoo\Requests\Api\BankAccounts\UpdateBankAccountRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\CreateContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\DeleteContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\NameSearchContactRequest;
@@ -42,6 +52,11 @@ use CodebarAg\Odoo\Requests\Api\User\GetUserRequest;
 use CodebarAg\Odoo\Requests\Session\Database\GetDatabasesRequest;
 use CodebarAg\Odoo\Requests\Session\Health\HealthRequest;
 use CodebarAg\Odoo\Requests\Session\Version\GetOdooVersionRequest;
+use CodebarAg\Odoo\Responses\Api\BankAccounts\BankAccountsResponse;
+use CodebarAg\Odoo\Responses\Api\BankAccounts\CreateBankAccountResponse;
+use CodebarAg\Odoo\Responses\Api\BankAccounts\MutateBankAccountResponse;
+use CodebarAg\Odoo\Responses\Api\BankAccounts\SearchBankAccountResponse;
+use CodebarAg\Odoo\Responses\Api\BankAccounts\SearchCountBankAccountResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\CreateContactResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\MutateContactResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\NameSearchContactResponse;
@@ -69,6 +84,8 @@ use Saloon\Http\Connector;
 
 class OdooConnector extends Connector
 {
+    private ?bool $modernBankAccountSchema = null;
+
     public function __construct(
         private readonly string $baseUrl,
         private readonly ?string $apiKey = null,
@@ -303,5 +320,83 @@ class OdooConnector extends Connector
     public function nameSearchContacts(string $name, array $domain = [], int $limit = 100): NameSearchContactResponse
     {
         return NameSearchContactResponse::fromResponse($this->send(new NameSearchContactRequest($name, $domain, $limit)));
+    }
+
+    /**
+     * @param  array<string>  $fields
+     * @param  array<mixed>  $domain
+     */
+    public function getBankAccounts(array $fields = [], array $domain = [], int $limit = 100): BankAccountsResponse
+    {
+        $fields = $fields ?: BankAccountFields::for($this->usesModernBankAccountSchema());
+
+        return BankAccountsResponse::fromResponse($this->send(new GetBankAccountsRequest($fields, $domain, $limit)));
+    }
+
+    /** @param array<mixed> $domain */
+    public function searchBankAccounts(array $domain): SearchBankAccountResponse
+    {
+        return SearchBankAccountResponse::fromResponse($this->send(new SearchBankAccountRequest($domain)));
+    }
+
+    /** @param array<string> $fields */
+    public function readBankAccount(int $id, array $fields = []): BankAccountsResponse
+    {
+        $fields = $fields ?: BankAccountFields::for($this->usesModernBankAccountSchema());
+
+        return BankAccountsResponse::fromResponse($this->send(new ReadBankAccountRequest($id, $fields)));
+    }
+
+    /** @param array<mixed> $domain */
+    public function searchCountBankAccounts(array $domain = []): SearchCountBankAccountResponse
+    {
+        return SearchCountBankAccountResponse::fromResponse($this->send(new SearchCountBankAccountRequest($domain)));
+    }
+
+    public function createBankAccount(CreateBankAccountDto $dto): CreateBankAccountResponse
+    {
+        return CreateBankAccountResponse::fromResponse($this->send(new CreateBankAccountRequest($dto, $this->usesModernBankAccountSchema())));
+    }
+
+    public function updateBankAccount(UpdateBankAccountDto $dto): MutateBankAccountResponse
+    {
+        return MutateBankAccountResponse::fromResponse($this->send(new UpdateBankAccountRequest($dto, $this->usesModernBankAccountSchema())));
+    }
+
+    public function deleteBankAccount(int $id): MutateBankAccountResponse
+    {
+        return MutateBankAccountResponse::fromResponse($this->send(new DeleteBankAccountRequest($id)));
+    }
+
+    /**
+     * Whether the connected Odoo uses the 19.3+ `res.partner.bank` schema
+     * (`account_number` / `holder_name`, no `bank_id` / `currency_id`).
+     *
+     * The server version is queried once and memoised. Detection failures fall
+     * back to the classic (<= 19.0) schema.
+     */
+    public function usesModernBankAccountSchema(): bool
+    {
+        if ($this->modernBankAccountSchema !== null) {
+            return $this->modernBankAccountSchema;
+        }
+
+        $version = $this->version()->majorMinor();
+
+        $modern = $version !== null
+            && ($version[0] > 19 || ($version[0] === 19 && $version[1] >= 3));
+
+        return $this->modernBankAccountSchema = $modern;
+    }
+
+    /**
+     * Force the `res.partner.bank` schema dialect, bypassing version detection
+     * (useful in tests or to avoid the extra version lookup).
+     */
+    public function withBankAccountSchema(bool $modern): static
+    {
+        $this->modernBankAccountSchema = $modern;
+
+        return $this;
     }
 }

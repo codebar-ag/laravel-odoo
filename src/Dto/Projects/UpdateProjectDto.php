@@ -40,53 +40,54 @@ class UpdateProjectDto extends Data
         $data = [];
 
         if ($this->name !== null) {
-            $data['name'] = $this->name;
+            data_set($data, 'name', $this->name);
         }
 
         if ($this->description !== null) {
-            $data['description'] = $this->description;
+            data_set($data, 'description', $this->description);
         }
 
         if ($this->partnerId !== null) {
-            $data['partner_id'] = $this->partnerId;
+            data_set($data, 'partner_id', $this->partnerId);
         }
 
         if ($this->userId !== null) {
-            $data['user_id'] = $this->userId;
+            data_set($data, 'user_id', $this->userId);
         }
 
         if ($this->dateStart !== null) {
-            $data['date_start'] = $this->dateStart;
+            data_set($data, 'date_start', $this->dateStart);
         }
 
         if ($this->date !== null) {
-            $data['date'] = $this->date;
+            data_set($data, 'date', $this->date);
         }
 
         if ($this->companyId !== null) {
-            $data['company_id'] = $this->companyId;
+            data_set($data, 'company_id', $this->companyId);
         }
 
         if ($this->allocatedHours !== null) {
-            $data['allocated_hours'] = $this->allocatedHours;
+            data_set($data, 'allocated_hours', $this->allocatedHours);
         }
 
         if ($this->privacyVisibility !== null) {
-            $data['privacy_visibility'] = $this->privacyVisibility;
+            data_set($data, 'privacy_visibility', $this->privacyVisibility);
         }
 
         if ($this->tagIds !== []) {
-            $data['tag_ids'] = [[6, 0, $this->tagIds]];
+            data_set($data, 'tag_ids', [[6, 0, $this->tagIds]]);
         }
 
         if ($this->color !== null) {
-            $data['color'] = $this->color;
+            data_set($data, 'color', $this->color);
         }
 
         if ($this->active !== null) {
-            $data['active'] = $this->active;
+            data_set($data, 'active', $this->active);
         }
 
+        /** @var array<string, mixed> $data */
         return [...$data, ...$this->extraValues];
     }
 }
