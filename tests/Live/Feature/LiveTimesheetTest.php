@@ -1,19 +1,25 @@
 <?php
 
+use CodebarAg\Odoo\Dto\Projects\CreateProjectDto;
+use CodebarAg\Odoo\Dto\Tasks\CreateTaskDto;
 use CodebarAg\Odoo\Dto\Timesheets\CreateTimesheetDto;
 use CodebarAg\Odoo\Dto\Timesheets\UpdateTimesheetDto;
 use CodebarAg\Odoo\Responses\Api\Timesheets\CreateTimesheetResponse;
 use CodebarAg\Odoo\Responses\Api\Timesheets\TimesheetResponse;
 
 it('creates , reads updates,reads and deletes a timesheetentry', function () {
+    // A timesheet can only be booked on a task that belongs to a project — Odoo
+    // rejects project-less ("private") tasks — so provision both first instead of
+    // assuming fixed ids exist in the target instance.
+    $projectId = $this->connector()->createProject(new CreateProjectDto(name: 'Timesheet Test Project'))->id();
+    $taskId = $this->connector()->createTask(new CreateTaskDto(name: 'Timesheet Test Task', projectId: $projectId))->id();
 
     $dto = new CreateTimesheetDto(
         name: 'TestTimesheet',
-        projectId: 1,
-        taskId: 1,
+        projectId: $projectId,
+        taskId: $taskId,
         date: now()->toDateString(),
         unitAmount: 2.5,
-        employeeId: 1,
         extraValues: []
     );
 
@@ -44,6 +50,8 @@ it('creates , reads updates,reads and deletes a timesheetentry', function () {
     expect($readUpdatedTimesheetResponse->dto()->unitAmount)->toBe(4.5);
     expect($readUpdatedTimesheetResponse)->toBeInstanceOf(TimesheetResponse::class);
 
-    $deleteTimesheetEntry = $this->connector()->deleteTimesheet($creationResponse->id());
+    $this->connector()->deleteTimesheet($creationResponse->id());
+    $this->connector()->deleteTask($taskId);
+    $this->connector()->deleteProject($projectId);
 
 })->group('live', 'feature');

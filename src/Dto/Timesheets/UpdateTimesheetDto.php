@@ -34,27 +34,27 @@ class UpdateTimesheetDto extends Data
         $data = [];
 
         if ($this->name !== null) {
-            $data['name'] = $this->name;
+            data_set($data, 'name', $this->name);
         }
 
         if ($this->projectId !== null) {
-            $data['project_id'] = $this->projectId;
+            data_set($data, 'project_id', $this->projectId);
         }
 
         if ($this->taskId !== null) {
-            $data['task_id'] = $this->taskId;
+            data_set($data, 'task_id', $this->taskId);
         }
 
         if ($this->date !== null) {
-            $data['date'] = $this->date;
+            data_set($data, 'date', $this->date);
         }
 
         if ($this->unitAmount !== null) {
-            $data['unit_amount'] = $this->unitAmount;
+            data_set($data, 'unit_amount', $this->unitAmount);
         }
 
         if ($this->employeeId !== null) {
-            $data['employee_id'] = $this->employeeId;
+            data_set($data, 'employee_id', $this->employeeId);
         }
 
         return array_merge($data, $this->extraValues);

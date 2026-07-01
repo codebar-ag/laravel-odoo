@@ -32,6 +32,7 @@ connector built on [Saloon](https://docs.saloon.dev).
   - [Projects](#projects)
   - [Tasks](#tasks)
   - [Timesheets](#timesheets)
+  - [Bank Accounts](#bank-accounts)
   - [Sync All](#sync-all)
 - [DTOs](#-dtos)
 - [Testing](#-testing)
@@ -335,6 +336,71 @@ $response->ok(); // bool
 
 // Delete a timesheet entry
 $response = $connector->deleteTimesheet(id: 123);
+$response->ok(); // bool
+```
+
+### Bank Accounts
+
+CRUD and search operations for the `res.partner.bank` model.
+
+> **Odoo 19.0 vs 19.3:** Odoo renamed the bank-account fields in 19.3 (`acc_number` →
+> `account_number`, `acc_holder_name` → `holder_name`, and the `bank_id` / `currency_id`
+> relations were dropped). The connector detects the server version once (cached) and
+> transparently uses the right field names for reads and writes, so the API below is the
+> same on both. Read DTOs always expose the classic property names (`accNumber`,
+> `accHolderName`, …). To skip the version lookup, force it with
+> `$connector->withBankAccountSchema(modern: true)`.
+
+```php
+use CodebarAg\Odoo\Dto\BankAccounts\CreateBankAccountDto;
+use CodebarAg\Odoo\Dto\BankAccounts\UpdateBankAccountDto;
+
+// Search + read fields in one call (search_read)
+$response = $connector->getBankAccounts(
+    fields: ['id', 'acc_number', 'partner_id', 'bank_id'], // optional (version-aware default)
+    domain: [['partner_id', '=', 7]],                      // optional
+    limit: 100,                                            // optional
+);
+
+/** @var array<BankAccountDto> $bankAccounts */
+$bankAccounts = $response->bankAccounts();
+
+// Search only for matching IDs (search)
+$response = $connector->searchBankAccounts(domain: [['partner_id', '=', 7]]);
+$ids = $response->ids(); // array<int>
+
+// Read a record by ID (read)
+$response = $connector->readBankAccount(id: 5);
+$bankAccounts = $response->bankAccounts(); // array<BankAccountDto>
+
+// Count matching records (search_count)
+$response = $connector->searchCountBankAccounts(domain: [['partner_id', '=', 7]]);
+$count = $response->count(); // ?int
+
+// Create a bank account (create)
+$response = $connector->createBankAccount(new CreateBankAccountDto(
+    accNumber: 'CH9300762011623852957',
+    partnerId: 7,
+    accHolderName: 'Jane Doe', // optional
+    bankName: 'UBS',           // optional
+    bankBic: 'UBSWCHZH80A',    // optional
+    bankId: 3,                 // optional — Odoo 19.0 only (ignored on 19.3)
+    currencyId: 1,             // optional — Odoo 19.0 only (ignored on 19.3)
+    allowOutPayment: true,     // optional
+    sequence: 10,              // optional
+    extraValues: [],           // optional — extra Odoo fields (e.g. custom Studio fields)
+));
+$newId = $response->id(); // ?int
+
+// Update a bank account (write)
+$response = $connector->updateBankAccount(new UpdateBankAccountDto(
+    id: 5,
+    accHolderName: 'John Doe',
+));
+$response->ok(); // bool
+
+// Delete a bank account (unlink)
+$response = $connector->deleteBankAccount(id: 5);
 $response->ok(); // bool
 ```
 

@@ -38,7 +38,7 @@ class CreateTimesheetDto extends Data
         ];
 
         if ($this->employeeId !== null) {
-            $data['employee_id'] = $this->employeeId;
+            data_set($data, 'employee_id', $this->employeeId);
         }
 
         return [...$data, ...$this->extraValues];

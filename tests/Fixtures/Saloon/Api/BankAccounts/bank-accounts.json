@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 5, \"acc_number\": \"CH9300762011623852957\", \"acc_type\": \"iban\", \"sanitized_acc_number\": \"CH9300762011623852957\", \"acc_holder_name\": \"Jane Doe\", \"partner_id\": [7, \"Jane Doe\"], \"bank_id\": [3, \"UBS Switzerland AG\"], \"bank_name\": \"UBS Switzerland AG\", \"currency_id\": [1, \"CHF\"], \"company_id\": [1, \"MyCompany\"], \"allow_out_payment\": true, \"sequence\": 10}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
