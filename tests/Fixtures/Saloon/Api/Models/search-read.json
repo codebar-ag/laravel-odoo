@@ -1,0 +1,9 @@
+{
+    "data": "[{\"id\": 12, \"name\": \"S00012\", \"state\": \"sale\", \"partner_id\": [7, \"Jane Doe\"]}, {\"id\": 11, \"name\": \"S00011\", \"state\": \"draft\", \"partner_id\": [7, \"Jane Doe\"]}]",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}
