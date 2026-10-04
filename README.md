@@ -54,9 +54,10 @@ endpoints used in day-to-day integrations.
 
 ## 🛠 Requirements
 
-| Package  | PHP          | Laravel |
-|----------|--------------|---------|
-| v1.0.0   | ^8.4         | ^13.0   |
+| Package  | PHP          | Laravel | Saloon | saloonphp/laravel-plugin |
+|----------|--------------|---------|--------|--------------------------|
+| v1.11.0+ | ^8.4         | ^13.0   | ^4.5   | ^5.0                     |
+| v1.0.0   | ^8.4         | ^13.0   | ^4.0   | ^4.0                     |
 
 ## ⚙️ Installation
 
