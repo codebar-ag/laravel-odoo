@@ -1,0 +1,9 @@
+{
+    "data": "\"/my/orders/12?access_token=abc&report_type=pdf&download=true\"",
+    "statusCode": 200,
+    "headers": {
+        "Content-Type": [
+            "application/json"
+        ]
+    }
+}

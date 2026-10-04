@@ -9,6 +9,9 @@ on:
 jobs:
   release:
     name: Release
+    # Only merged PRs release. Closing a PR without merging (e.g. a superseded
+    # Dependabot PR) must not tag its test-merge commit.
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

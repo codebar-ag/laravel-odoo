@@ -33,6 +33,7 @@ connector built on [Saloon](https://docs.saloon.dev).
   - [Tasks](#tasks)
   - [Timesheets](#timesheets)
   - [Bank Accounts](#bank-accounts)
+  - [Generic Model Calls](#generic-model-calls)
   - [Sync All](#sync-all)
 - [DTOs](#-dtos)
 - [Testing](#-testing)
@@ -53,9 +54,10 @@ endpoints used in day-to-day integrations.
 
 ## 🛠 Requirements
 
-| Package  | PHP          | Laravel |
-|----------|--------------|---------|
-| v1.0.0   | ^8.4         | ^13.0   |
+| Package  | PHP          | Laravel | Saloon | saloonphp/laravel-plugin |
+|----------|--------------|---------|--------|--------------------------|
+| v1.11.0+ | ^8.4         | ^13.0   | ^4.5   | ^5.0                     |
+| v1.0.0   | ^8.4         | ^13.0   | ^4.0   | ^4.0                     |
 
 ## ⚙️ Installation
 
@@ -402,6 +404,56 @@ $response->ok(); // bool
 // Delete a bank account (unlink)
 $response = $connector->deleteBankAccount(id: 5);
 $response->ok(); // bool
+```
+
+### Generic Model Calls
+
+Model-agnostic JSON-2 calls for any Odoo model and any public model method
+(`POST /json/2/<model>/<method>`). Use them for models the package has no typed
+requests for. Records come back as plain arrays exactly as Odoo returns them.
+
+```php
+// Search + read with paging and ordering (search_read)
+$response = $connector->searchRead(
+    model: 'sale.order',
+    domain: [['partner_id', '=', 7]], // optional
+    fields: ['name', 'state'],        // optional
+    limit: 20,                        // optional (default 80)
+    offset: 40,                       // optional (default 0)
+    order: 'date_order desc',         // optional — omitted from the body when null
+);
+$records = $response->records(); // array<int, array<string, mixed>>
+
+// Create a record (create) — sent as {"vals_list": [values]}
+$response = $connector->create('crm.lead', ['name' => 'Portal enquiry', 'partner_id' => 7]);
+$newId = $response->id(); // ?int
+
+// Write the same values to records (write) — sent as {"ids": [...], "vals": {...}}
+$response = $connector->write('res.partner', [7, 8], ['phone' => '+41 44 000 00 00']);
+$response->ok(); // bool — true when Odoo answered `true`
+
+// Call any public model method — params are sent as the JSON body unchanged
+$response = $connector->callMethod('sale.order', 'action_confirm', ['ids' => [12]]);
+$response = $connector->callMethod('sale.order', 'get_portal_url', [
+    'ids' => [12],
+    'report_type' => 'pdf',
+    'download' => true,
+]);
+$result = $response->result(); // mixed — any decoded JSON value (true, an id, a string, a list, …)
+```
+
+The underlying requests can also be sent directly:
+
+```php
+use CodebarAg\Odoo\Requests\Api\Models\CallMethodRequest;
+use CodebarAg\Odoo\Requests\Api\Models\CreateRequest;
+use CodebarAg\Odoo\Requests\Api\Models\SearchReadRequest;
+use CodebarAg\Odoo\Requests\Api\Models\WriteRequest;
+
+$connector->send(new SearchReadRequest('sale.order', [['state', '=', 'sale']], ['name'], limit: 10, order: 'id desc'));
+$connector->send(new CreateRequest('crm.lead', ['name' => 'Portal enquiry']));
+$connector->send(new WriteRequest('res.partner', [7], ['phone' => '+41 44 000 00 00']));
+$connector->send(new CallMethodRequest('sale.order', 'action_confirm', ['ids' => [12]]));
 ```
 
 ### Sync All

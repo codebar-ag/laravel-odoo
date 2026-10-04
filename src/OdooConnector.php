@@ -30,6 +30,10 @@ use CodebarAg\Odoo\Requests\Api\Contacts\SearchCountContactRequest;
 use CodebarAg\Odoo\Requests\Api\Contacts\UpdateContactRequest;
 use CodebarAg\Odoo\Requests\Api\Employees\GetEmployeeByUserIdRequest;
 use CodebarAg\Odoo\Requests\Api\Fields\GetFieldsRequest;
+use CodebarAg\Odoo\Requests\Api\Models\CallMethodRequest;
+use CodebarAg\Odoo\Requests\Api\Models\CreateRequest;
+use CodebarAg\Odoo\Requests\Api\Models\SearchReadRequest;
+use CodebarAg\Odoo\Requests\Api\Models\WriteRequest;
 use CodebarAg\Odoo\Requests\Api\Permissions\GetPermissionsRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\CreateProjectRequest;
 use CodebarAg\Odoo\Requests\Api\Projects\DeleteProjectRequest;
@@ -64,6 +68,10 @@ use CodebarAg\Odoo\Responses\Api\Contacts\SearchContactResponse;
 use CodebarAg\Odoo\Responses\Api\Contacts\SearchCountContactResponse;
 use CodebarAg\Odoo\Responses\Api\Employees\EmployeeResponse;
 use CodebarAg\Odoo\Responses\Api\Fields\FieldsResponse;
+use CodebarAg\Odoo\Responses\Api\Models\CallMethodResponse;
+use CodebarAg\Odoo\Responses\Api\Models\CreateResponse;
+use CodebarAg\Odoo\Responses\Api\Models\SearchReadResponse;
+use CodebarAg\Odoo\Responses\Api\Models\WriteResponse;
 use CodebarAg\Odoo\Responses\Api\Permissions\PermissionsResponse;
 use CodebarAg\Odoo\Responses\Api\Projects\CreateProjectResponse;
 use CodebarAg\Odoo\Responses\Api\Projects\MutateProjectResponse;
@@ -366,6 +374,36 @@ class OdooConnector extends Connector
     public function deleteBankAccount(int $id): MutateBankAccountResponse
     {
         return MutateBankAccountResponse::fromResponse($this->send(new DeleteBankAccountRequest($id)));
+    }
+
+    /**
+     * @param  array<mixed>  $domain
+     * @param  array<string>  $fields
+     */
+    public function searchRead(string $model, array $domain = [], array $fields = [], int $limit = 80, int $offset = 0, ?string $order = null): SearchReadResponse
+    {
+        return SearchReadResponse::fromResponse($this->send(new SearchReadRequest($model, $domain, $fields, $limit, $offset, $order)));
+    }
+
+    /** @param array<string, mixed> $values */
+    public function create(string $model, array $values): CreateResponse
+    {
+        return CreateResponse::fromResponse($this->send(new CreateRequest($model, $values)));
+    }
+
+    /**
+     * @param  array<int>  $ids
+     * @param  array<string, mixed>  $values
+     */
+    public function write(string $model, array $ids, array $values): WriteResponse
+    {
+        return WriteResponse::fromResponse($this->send(new WriteRequest($model, $ids, $values)));
+    }
+
+    /** @param array<string, mixed> $params */
+    public function callMethod(string $model, string $method, array $params = []): CallMethodResponse
+    {
+        return CallMethodResponse::fromResponse($this->send(new CallMethodRequest($model, $method, $params)));
     }
 
     /**
