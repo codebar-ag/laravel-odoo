@@ -23,7 +23,7 @@ class GetFieldsRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/json/2/{$this->model}/fields_get";
+        return '/json/2/'.rawurlencode($this->model).'/fields_get';
     }
 
     /** @return array<string, mixed> */
