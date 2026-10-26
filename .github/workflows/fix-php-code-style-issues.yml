@@ -12,23 +12,23 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v7
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.head_ref }}
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@2.40.0
         with:
           php-version: '8.5'
           coverage: none
 
       - name: Install composer dependencies
-        uses: ramsey/composer-install@v4
+        uses: ramsey/composer-install@4.0.0
 
       - name: Run Laravel Pint
         run: vendor/bin/pint
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v7
+        uses: stefanzweifel/git-auto-commit-action@v7.2.1
         with:
           commit_message: Fix styling
