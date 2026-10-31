@@ -11,9 +11,10 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "codebar Solutions AG",
-            "email": "info@codebar.ch",
-            "role": "Developer"
+            "name": "Sebastian Bürgin-Fix",
+            "email": "helpdesk@codebar.ch",
+            "homepage": "https://www.codebar.ch",
+            "role": "Software-Engineer"
         }
     ],
     "require": {
@@ -47,7 +48,8 @@
         "test": "vendor/bin/pest --no-coverage",
         "test:live": "vendor/bin/pest tests/Live --no-coverage",
         "lint": "vendor/bin/pint",
-        "analyse": "vendor/bin/phpstan analyse"
+        "analyse": "vendor/bin/phpstan analyse",
+        "format": "vendor/bin/pint"
     },
     "config": {
         "sort-packages": true,
