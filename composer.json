@@ -45,7 +45,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/pest --no-coverage",
+        "test": "vendor/bin/pest --no-coverage --exclude-group=live",
         "test:live": "vendor/bin/pest tests/Live --no-coverage",
         "lint": "vendor/bin/pint",
         "analyse": "vendor/bin/phpstan analyse",
