@@ -26,7 +26,7 @@ class CreateRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/json/2/{$this->model}/create";
+        return '/json/2/'.rawurlencode($this->model).'/create';
     }
 
     /** @return array<string, mixed> */

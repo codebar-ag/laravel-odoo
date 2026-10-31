@@ -24,3 +24,10 @@ it('applies timeout from laravel config via the service container', function () 
 
     expect($connector->config()->get('timeout'))->toBe(45.0);
 });
+
+it('redacts the api key from stack traces', function () {
+    $parameter = collect((new ReflectionMethod(OdooConnector::class, '__construct'))->getParameters())
+        ->firstOrFail(fn (ReflectionParameter $parameter) => $parameter->getName() === 'apiKey');
+
+    expect($parameter->getAttributes(SensitiveParameter::class))->toHaveCount(1);
+});

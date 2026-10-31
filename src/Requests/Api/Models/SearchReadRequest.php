@@ -33,7 +33,7 @@ class SearchReadRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/json/2/{$this->model}/search_read";
+        return '/json/2/'.rawurlencode($this->model).'/search_read';
     }
 
     /** @return array<string, mixed> */

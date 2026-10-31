@@ -96,7 +96,7 @@ class OdooConnector extends Connector
 
     public function __construct(
         private readonly string $baseUrl,
-        private readonly ?string $apiKey = null,
+        #[\SensitiveParameter] private readonly ?string $apiKey = null,
         private readonly ?string $db = null,
         private readonly int $maxRedirects = 5,
         private readonly float $timeout = 15,

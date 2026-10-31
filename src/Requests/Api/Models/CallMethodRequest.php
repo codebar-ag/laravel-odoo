@@ -28,7 +28,7 @@ class CallMethodRequest extends Request implements HasBody
 
     public function resolveEndpoint(): string
     {
-        return "/json/2/{$this->model}/{$this->modelMethod}";
+        return '/json/2/'.rawurlencode($this->model).'/'.rawurlencode($this->modelMethod);
     }
 
     /** @return array<string, mixed> */
